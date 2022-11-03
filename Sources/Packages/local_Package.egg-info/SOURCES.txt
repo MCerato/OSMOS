@@ -1,0 +1,11 @@
+setup.cfg
+setup.py
+Controlbox/ControlBox.py
+File/CSVFile.py
+File/FileWrapper.py
+File/PDFFile.py
+File/TXTFile.py
+local_Package.egg-info/PKG-INFO
+local_Package.egg-info/SOURCES.txt
+local_Package.egg-info/dependency_links.txt
+local_Package.egg-info/top_level.txt
