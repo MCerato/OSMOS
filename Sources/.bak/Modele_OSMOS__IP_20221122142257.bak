@@ -1,0 +1,236 @@
+[SystemInfo]
+Firmware=DMC4183s56g
+Serial=15953.0000
+Device=DMC41x3
+Axis=8
+
+[Configuration]
+EO=false
+VF=VF 10.4\r
+PF=PF 10.0\r
+LZ=LZ 1\r
+MT\size=8
+MT\1\Cmd="MTA=2.0\r"
+MT\2\Cmd="MTB=2.0\r"
+MT\3\Cmd="MTC=2.0\r"
+MT\4\Cmd="MTD=2.0\r"
+MT\5\Cmd="MTE=2.0\r"
+MT\6\Cmd="MTF=2.0\r"
+MT\7\Cmd="MTG=2.0\r"
+MT\8\Cmd="MTH=2.0\r"
+GA\size=0
+BA\size=1
+BA\1\Cmd=BA N\r
+CE="CEA=4\rCEB=4\rCEC=4\rCED=4\rCEE=4\rCEF=4\rCEG=4\rCEH=6\r"
+AF="AFA=0\rAFB=0\rAFC=0\rAFD=0\rAFE=0\rAFF=0\rAFG=0\rAFH=0\r"
+DV="DVA=0\rDVB=0\rDVC=0\rDVD=0\rDVE=0\rDVF=0\rDVG=0\rDVH=0\r"
+BR="BRA=0\rBRB=0\rBRC=0\rBRD=0\rBRE=0\rBRF=0\rBRG=0\rBRH=0\r"
+FL="FLA=2147483647\rFLB=2147483647\rFLC=2147483647\rFLD=2147483647\rFLE=2147483647\rFLF=2147483647\rFLG=2147483647\rFLH=2147483647\r"
+BL="BLA=-2147483648\rBLB=-2147483648\rBLC=-2147483648\rBLD=-2147483648\rBLE=-2147483648\rBLF=-2147483648\rBLG=-2147483648\rBLH=-2147483648\r"
+CL="CLA=0\rCLB=0\rCLC=0\rCLD=0\rCLE=0\rCLF=0\rCLG=0\rCLH=0\r"
+SI="SIA=0,25,12,5<0>0\rSIB=0,0,0,0<0>0\rSIC=0,0,0,0<0>0\rSID=0,0,0,0<0>0\rSIE=0,0,0,0<0>0\rSIF=0,0,0,0<0>0\rSIG=0,0,0,0<0>0\rSIH=0,0,0,0<0>0\r"
+SS="SSA=0,0,0,0<0\rSSB=0,0,0,0<0\rSSC=0,0,0,0<0\rSSD=0,0,0,0<0\rSSE=0,0,0,0<0\rSSF=0,0,0,0<0\rSSG=0,0,0,0<0\rSSH=1,27,27,0<14\r"
+DB="DBA=0\rDBB=0\rDBC=0\rDBD=0\rDBE=0\rDBF=0\rDBG=0\rDBH=0\r"
+DS="DSA=0\rDSB=0\rDSC=0\rDSD=0\rDSE=0\rDSF=0\rDSG=0\rDSH=0\r"
+BW="BWA=0\rBWB=0\rBWC=0\rBWD=0\rBWE=0\rBWF=0\rBWG=0\rBWH=0\r"
+ZA="ZAA=0\rZAB=0\rZAC=0\rZAD=0\rZAE=0\rZAF=0\rZAG=0\rZAH=0\r"
+KD="KDA=64.00\rKDB=64.00\rKDC=64.00\rKDD=64.00\rKDE=64.00\rKDF=64.00\rKDG=64.00\rKDH=64.00\r"
+KI="KIA=0.0000\rKIB=0.0000\rKIC=0.0000\rKID=0.0000\rKIE=0.0000\rKIF=0.0000\rKIG=0.0000\rKIH=0.0000\r"
+KP="KPA=6.00\rKPB=6.00\rKPC=6.00\rKPD=6.00\rKPE=6.00\rKPF=6.00\rKPG=6.00\rKPH=6.00\r"
+K3="K3A=64.00\rK3B=64.00\rK3C=64.00\rK3D=64.00\rK3E=64.00\rK3F=64.00\rK3G=64.00\rK3H=64.00\r"
+K2="K2A=0.000\rK2B=0.000\rK2C=0.000\rK2D=0.000\rK2E=0.000\rK2F=0.000\rK2G=0.000\rK2H=0.000\r"
+K1="K1A=6.00\rK1B=6.00\rK1C=6.00\rK1D=6.00\rK1E=6.00\rK1F=6.00\rK1G=6.00\rK1H=6.00\r"
+ZN="ZNA=0.0000\rZNB=0.0000\rZNC=0.0000\rZND=0.0000\rZNE=0.0000\rZNF=0.0000\rZNG=0.0000\rZNH=0.0000\r"
+ZP="ZPA=0.0000\rZPB=0.0000\rZPC=0.0000\rZPD=0.0000\rZPE=0.0000\rZPF=0.0000\rZPG=0.0000\rZPH=0.0000\r"
+CP="CPA=-1\rCPB=-1\rCPC=-1\rCPD=-1\rCPE=-1\rCPF=-1\rCPG=-1\rCPH=-1\r"
+CT="CTA=0.0000\rCTB=0.0000\rCTC=0.0000\rCTD=0.0000\rCTE=0.0000\rCTF=0.0000\rCTG=0.0000\rCTH=0.0000\r"
+IL="ILA=-9.9982\rILB=-9.9982\rILC=-9.9982\rILD=-9.9982\rILE=-9.9982\rILF=-9.9982\rILG=-9.9982\rILH=-9.9982\r"
+TK="TKA=0.0000\rTKB=0.0000\rTKC=0.0000\rTKD=0.0000\rTKE=0.0000\rTKF=0.0000\rTKG=0.0000\rTKH=0.0000\r"
+TL="TLA=9.9982\rTLB=9.9982\rTLC=9.9982\rTLD=9.9982\rTLE=9.9982\rTLF=9.9982\rTLG=9.9982\rTLH=9.9982\r"
+OF="OFA=0.0000\rOFB=0.0000\rOFC=0.0000\rOFD=0.0000\rOFE=0.0000\rOFF=0.0000\rOFG=0.0000\rOFH=0.0000\r"
+FA="FAA=0.00\rFAB=0.00\rFAC=0.00\rFAD=0.00\rFAE=0.00\rFAF=0.00\rFAG=0.00\rFAH=0.00\r"
+FV="FVA=0\rFVB=0\rFVC=0\rFVD=0\rFVE=0\rFVF=0\rFVG=0\rFVH=0\r"
+PL="PLA=0.0000\rPLB=0.0000\rPLC=0.0000\rPLD=0.0000\rPLE=0.0000\rPLF=0.0000\rPLG=0.0000\rPLH=0.0000\r"
+IT="ITA=1.0000\rITB=1.0000\rITC=1.0000\rITD=1.0000\rITE=1.0000\rITF=1.0000\rITG=1.0000\rITH=1.0000\r"
+NB="NBA=0.5\rNBB=0.5\rNBC=0.5\rNBD=0.5\rNBE=0.5\rNBF=0.5\rNBG=0.5\rNBH=0.5\r"
+NF="NFA=0\rNFB=0\rNFC=0\rNFD=0\rNFE=0\rNFF=0\rNFG=0\rNFH=0\r"
+NZ="NZA=0.0\rNZB=0.0\rNZC=0.0\rNZD=0.0\rNZE=0.0\rNZF=0.0\rNZG=0.0\rNZH=0.0\r"
+AC="ACA=1024\rACB=256000\rACC=256000\rACD=256000\rACE=256000\rACF=256000\rACG=49152\rACH=4096\r"
+DC="DCA=1024\rDCB=256000\rDCC=256000\rDCD=256000\rDCE=256000\rDCF=256000\rDCG=49152\rDCH=4096\r"
+SP="SPA=2000\rSPB=20\rSPC=30\rSPD=40\rSPE=50\rSPF=60\rSPG=10000\rSPH=2000\r"
+PT="PTA=0\rPTB=0\rPTC=0\rPTD=0\rPTE=0\rPTF=0\rPTG=0\rPTH=0\r"
+GD="GDA=0\rGDB=0\rGDC=0\rGDD=0\rGDE=0\rGDF=0\rGDG=0\rGDH=0\r"
+GM="GMA=0\rGMB=0\rGMC=0\rGMD=0\rGME=0\rGMF=0\rGMG=0\rGMH=0\r"
+GR="GRA=0.0000\rGRB=0.0000\rGRC=0.0000\rGRD=0.0000\rGRE=0.0000\rGRF=0.0000\rGRG=0.0000\rGRH=0.0000\r"
+AG="AGA=1\rAGB=1\rAGC=1\rAGD=1\rAGE=1\rAGF=1\rAGG=1\rAGH=1\r"
+AU="AUA=0.0\rAUB=0.0\rAUC=0.0\rAUD=0.0\rAUE=0.0\rAUF=0.0\rAUG=0.0\rAUH=0.0\r"
+OE="OEA=0\rOEB=0\rOEC=0\rOED=0\rOEE=0\rOEF=0\rOEG=0\rOEH=0\r"
+ER="ERA=16384\rERB=16384\rERC=16384\rERD=16384\rERE=16384\rERF=16384\rERG=16384\rERH=16384\r"
+LD="LDA=0\rLDB=0\rLDC=0\rLDD=0\rLDE=0\rLDF=0\rLDG=0\rLDH=0\r"
+OA="OAA=0\rOAB=0\rOAC=0\rOAD=0\rOAE=0\rOAF=0\rOAG=0\rOAH=0\r"
+OT="OTA=30\rOTB=30\rOTC=30\rOTD=30\rOTE=30\rOTF=30\rOTG=30\rOTH=30\r"
+OV="OVA=0.9438\rOVB=0.9438\rOVC=0.9438\rOVD=0.9438\rOVE=0.9438\rOVF=0.9438\rOVG=0.9438\rOVH=0.9438\r"
+HV="HVA=256\rHVB=256\rHVC=256\rHVD=256\rHVE=256\rHVF=256\rHVG=256\rHVH=256\r"
+SD="SDA=256000\rSDB=256000\rSDC=256000\rSDD=256000\rSDE=256000\rSDF=256000\rSDG=256000\rSDH=256000\r"
+TW="TWA=32766\rTWB=32766\rTWC=32766\rTWD=32766\rTWE=32766\rTWF=32766\rTWG=32766\rTWH=32766\r"
+BB="BBA=0.00\rBBB=0.00\rBBC=0.00\rBBD=0.00\rBBE=0.00\rBBF=0.00\rBBG=0.00\rBBH=0.00\r"
+BI="BIA=0\rBIB=0\rBIC=0\rBID=0\rBIE=0\rBIF=0\rBIG=0\rBIH=0\r"
+BM="BMA=2000.0000\rBMB=2000.0000\rBMC=2000.0000\rBMD=2000.0000\rBME=2000.0000\rBMF=2000.0000\rBMG=2000.0000\rBMH=2000.0000\r"
+BO="BOA=0.0000\rBOB=0.0000\rBOC=0.0000\rBOD=0.0000\rBOE=0.0000\rBOF=0.0000\rBOG=0.0000\rBOH=0.0000\r"
+LC="LCA=0\rLCB=0\rLCC=0\rLCD=0\rLCE=0\rLCF=0\rLCG=0\rLCH=0\r"
+KS="KSA=2.000\rKSB=2.000\rKSC=2.000\rKSD=2.000\rKSE=2.000\rKSF=2.000\rKSG=2.000\rKSH=2.000\r"
+YA="YAA=2\rYAB=2\rYAC=2\rYAD=2\rYAE=2\rYAF=2\rYAG=2\rYAH=2\r"
+YB="YBA=200\rYBB=200\rYBC=200\rYBD=200\rYBE=200\rYBF=200\rYBG=200\rYBH=200\r"
+YC="YCA=4000\rYCB=4000\rYCC=4000\rYCD=4000\rYCE=4000\rYCF=4000\rYCG=4000\rYCH=4000\r"
+VA="VAS=8192\rVAT=8192\r"
+VD="VDS=8192\rVDT=8192\r"
+VS="VSS=25000\rVST=25000\r"
+ACI="ACN=256000\rACM=256000\r"
+DCI="DCN=256000\rDCM=256000\r"
+SPI="SPN=25000\rSPM=25000\r"
+IA="IA 172,16,3,65\r"
+SM="SM 0,0,0,0\r"
+DH=DH 0\r
+IK=IK 1\r
+TM=TM 1000.0000\r
+MW=MW 1\r
+EI=EI 0.0000\r
+AQ1="AQ 1,2.0000\r"
+AQ2="AQ 2,2.0000\r"
+AQ3="AQ 3,2.0000\r"
+AQ4="AQ 4,2.0000\r"
+AQ5="AQ 5,2.0000\r"
+AQ6="AQ 6,2.0000\r"
+AQ7="AQ 7,2.0000\r"
+AQ8="AQ 8,2.0000\r"
+CW=CW 1.0000\r
+CN0=CN 1.0000\r
+CN1="CN ,-1.0000\r"
+CN2="CN ,,-1.0000\r"
+CN3="CN ,,,0.0000\r"
+CN4="CN ,,,,0.0000\r"
+MO\size=1
+MO\1\Cmd=MO\r
+
+[Data]
+Variable\size=28
+Variable\1\Name=CTA
+Variable\1\Value=0.0000
+Variable\2\Name=CTB
+Variable\2\Value=0.0000
+Variable\3\Name=CTC
+Variable\3\Value=0.0000
+Variable\4\Name=CTD
+Variable\4\Value=0.0000
+Variable\5\Name=CTE
+Variable\5\Value=0.0000
+Variable\6\Name=CTF
+Variable\6\Value=0.0000
+Variable\7\Name=CTG
+Variable\7\Value=0.0000
+Variable\8\Name=CTH
+Variable\8\Value=0.0000
+Variable\9\Name=CmdHvOk
+Variable\9\Value=1.0000
+Variable\10\Name=DcLimSwi
+Variable\10\Value=1024000.0000
+Variable\11\Name=Debug
+Variable\11\Value=0.0000
+Variable\12\Name=GrpAxes
+Variable\12\Value=0.0000
+Variable\13\Name=GrpCmd
+Variable\13\Value=0.0000
+Variable\14\Name=LastAxis
+Variable\14\Value=-1.0000
+Variable\15\Name=McRevGen
+Variable\15\Value=33882114.0000
+Variable\16\Name=McRevSpe
+Variable\16\Value=0.0000
+Variable\17\Name=OldGrpAx
+Variable\17\Value=-1.0000
+Variable\18\Name=SpMini
+Variable\18\Value=32.0000
+Variable\19\Name=TstCmdEr
+Variable\19\Value=58.0000
+Variable\20\Name=i
+Variable\20\Value=8.0000
+Variable\21\Name=i16
+Variable\21\Value=24.0000
+Variable\22\Name=i8
+Variable\22\Value=16.0000
+Variable\23\Name=iBit
+Variable\23\Value=256.0000
+Variable\24\Name=iPE
+Variable\24\Value=0.0000
+Variable\25\Name=iPE8
+Variable\25\Value=8.0000
+Variable\26\Name=iPom
+Variable\26\Value=0.0000
+Variable\27\Name=iPom8
+Variable\27\Value=8.0000
+Variable\28\Name=iRem
+Variable\28\Value=0.0000
+Array\size=20
+Array\1\Name=Bck
+Array\1\Size=8
+Array\1\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\2\Name=Cmd
+Array\2\Size=8
+Array\2\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\3\Name=CpMp
+Array\3\Size=16
+Array\3\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\4\Name=Dbw
+Array\4\Size=8
+Array\4\Value=10.0000, 10.0000, 10.0000, 10.0000, 10.0000, 10.0000, 10.0000, 10.0000
+Array\5\Name=DcOld
+Array\5\Size=8
+Array\5\Value=1024.0000, 256000.0000, 256000.0000, 256000.0000, 256000.0000, 256000.0000, 49152.0000, 4096.0000
+Array\6\Name=EnRem
+Array\6\Size=16
+Array\6\Value=1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\7\Name=GrAxis
+Array\7\Size=8
+Array\7\Value=-1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000
+Array\8\Name=GrRatio
+Array\8\Size=8
+Array\8\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\9\Name=GrTemp
+Array\9\Size=24
+Array\9\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, -1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\10\Name=GrpAx
+Array\10\Size=4
+Array\10\Value=0.0000, 0.0000, 0.0000, 0.0000
+Array\11\Name=IniPos
+Array\11\Size=8
+Array\11\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\12\Name=IniSpeed
+Array\12\Size=8
+Array\12\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\13\Name=IniTyp
+Array\13\Size=8
+Array\13\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\14\Name=NbRetry
+Array\14\Size=24
+Array\14\Value=5.0000, 5.0000, 5.0000, 5.0000, 5.0000, 5.0000, 5.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\15\Name=Percent
+Array\15\Size=8
+Array\15\Value=1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 1.0000
+Array\16\Name=Pos
+Array\16\Size=16
+Array\16\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000, 2147483647.0000
+Array\17\Name=PosStat
+Array\17\Size=16
+Array\17\Value=0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\18\Name=SpBackup
+Array\18\Size=24
+Array\18\Value=2000.0000, 20.0000, 30.0000, 40.0000, 50.0000, 60.0000, 10000.0000, 2000.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 2000.0000, 20.0000, 30.0000, 40.0000, 50.0000, 60.0000, 10000.0000, 2000.0000
+Array\19\Name=StabTime
+Array\19\Size=16
+Array\19\Value=100.0000, 100.0000, 100.0000, 100.0000, 100.0000, 100.0000, 100.0000, 100.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000
+Array\20\Name=Stat
+Array\20\Size=8
+Array\20\Value=224.0000, 224.0000, 224.0000, 224.0000, 224.0000, 224.0000, 224.0000, 224.0000
+
+[Program]
+Program="'************************************************************************\n'\n'*            *\n'\n'*      Microcode generique V2.5    *\n'\n'*            *\n'\n'************************************************************************\n'\n'* Microcode Generique :  Version : 2.5.0.2   *\n'\n'*      Date : 12-11-2010   *\n'\n'*      Auteur : Benjamin Gombert- Matthieu Cerato  *\n'\n'*  Dernieres modifications :  02-12-2016    *\n'\n'*  =======================       *\n'\n'* 2.5.0.2 - Erreur corrige: pointer ~b (sous #CMDPOM) n'a pas          *\n'\n'*    ete initiee correctement.\n'\n'* 2.5.0.0 - Ajout du controle des SSI pour initialisation          *\n'\n'*   - Ajout de detection de type de carte pour parametre HV-SD         *\n'\n'*     et restauration de la decel apres mouvement.\n'\n'* 2.4.0.1 - Ajout du forcage de la vitesse mini a 32cnt/s (SpMini) *\n'\n'*    sur les commandes de Jog (Forward - Backward).  *\n'\n'* 2.4.0.0 - Ajout du support de la property AxisInitSpeed via  *\n'\n'*    IniSpeed[] pour definir la vitesse de prise d'origine. *\n'\n'* 2.3.0.7 - Modification de la syntaxe de la routine #LIMSWI,  *\n'\n'*    reduction du nombre de IF empiles.    *\n'\n'* 2.3.0.6 - Correction des lenteurs microcode lorsqu'une erreur de *\n'\n'*    poursuite est excessive sur un servomoteur (cf. #POSERR). *\n'\n'* 2.3.0.5 - Ajout de la fonctionnalite Correction de l'erreur  *"

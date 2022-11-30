@@ -55,10 +55,10 @@ from File import FileWrapper as fw
 
 class CSV(fw.File):
     # In[1]: constructor & destructor
-    """Class representing the TXT file.
+    """Class representing the CSV file.
 
     :param userPath:
-        where the TXT file is.
+        where the CSV file is.
         Path should be, preferably, absolute with format :
         ``C:/file1/file2/sourcefile``
     :type userPath:
@@ -70,7 +70,7 @@ class CSV(fw.File):
 
         self.CreateFile(userPath)  # link the PDF to the object
 
-        if self.GetFileFormat() != ".txt":
+        if self.GetFileFormat() != ".csv":
             print("wrong file format")
             print(f"This is a {self.GetFileFormat()}")
             print("")
@@ -80,11 +80,11 @@ class CSV(fw.File):
 
         Mainly used to close file in case something went wrong
         """
-        print(f"{self} deleted")
+        print(f"object {self} deleted")
 
     def __repr__(self):
         """Display the object of the file."""
-        return f"txt file : {self.GetFileName()}"
+        return f"csv file : {self.GetFileName()}"
 
 # In[3]: Content of the file
     def GetAllContent(self):
@@ -102,8 +102,8 @@ class CSV(fw.File):
         if self.GetFileFormat() == ".csv":
             with open(os.path.join(self.GetFilePath(), self.GetFileName()),
                       mode='r', encoding="utf-8") as file:
-                for i in len(file.readlines()):
-                    content += file.readline()
+                for line in file.readlines():
+                    content += line
             return content
         else:
             return None
@@ -199,7 +199,7 @@ class CSV(fw.File):
                       mode='w', encoding="utf-8") as file:
                 file.writelines("")
 
-    def GetColomnDatas(self):
+    def GetColumnDatas(self):
         """Extract Datas as colomn in a dictionnary form.
 
         :param contentToWrite:
@@ -247,7 +247,7 @@ class CSV(fw.File):
             str, list
 
         .. warning::
-            Worksd only on .CSV.
+            Works only on .CSV.
         """
         newContent = []
         if self.GetFileFormat() == ".csv":
@@ -273,3 +273,7 @@ class CSV(fw.File):
         else:
             isEmpty = True
         return isEmpty
+
+if __name__ == '__main__':
+    csvf = CSV("D:/Temp_pro/OSMOS/Sources/OSM_LIST_CDE.csv")
+    plop = csvf.GetColumnDatas()

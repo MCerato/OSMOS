@@ -68,7 +68,7 @@ class TXT(fw.File):
     def __init__(self, userPath):
         fw.File.__init__(self)
 
-        self.CreateFile(userPath)  # link the PDF to the object
+        self.CreateFile(userPath)  # link the file to the object
 
         if self.GetFileFormat() != ".txt":
             print("wrong file format")

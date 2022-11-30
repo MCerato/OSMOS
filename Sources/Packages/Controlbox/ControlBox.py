@@ -47,6 +47,7 @@ Members
 
 import gclib
 
+
 class ControlBox:
     """Class representing the file.
 
@@ -83,8 +84,9 @@ class ControlBox:
         .. note::
             displays the carriage return + line feed
         """
-        print("disconnected")
-        self.g.GClose()
+        if self.__IsConnected():
+            print("disconnected")
+            self.g.GClose()
 
     def Connect(self, ip):
         """Return the entire file.
@@ -105,6 +107,25 @@ class ControlBox:
             print(f"couldn't connect to {ip})")
             return False
 
+    def Disconnect(self):
+        """Return the entire file.
+
+        :return:
+            Return the entire content of the file as one big string
+        :rtype:
+            str
+
+        .. note::
+            displays the carriage return + line feed
+        """
+        self.g.GClose()
+        if self.__IsConnected() is True:
+            print("Disconnection failed")
+            return False
+        else:
+            print("Disconnected")
+            return True
+
     def Reset(self):
         """Return the entire file.
 
@@ -122,10 +143,11 @@ class ControlBox:
         .. note::
             displays the carriage return + line feed
         """
-        savedIP = self.GetIp()
-        self.g.GCommand("RS")
-        # try to connect until it does connect or timeout
-        # self.g.Connect(savedIP)
+        if self.__IsConnected() is True:
+            savedIP = self.GetIp()
+            self.g.GCommand("RS")
+            # try to connect until it does connect or timeout
+            # self.g.Connect(savedIP)
 
     def GetMicrocode(self):
         """Return the entire file.
@@ -187,6 +209,50 @@ class ControlBox:
         if self.__IsConnected() is True:
             return self.g.GCommand(galilVar + "=?")
 
+    def GetAllVariables(self):
+        """Return the entire file.
+
+        :param userPath:
+            where the TXT file is.
+            Path should be, preferably, absolute with format :
+            ``C:/file1/file2/sourcefile``
+        :type userPath:
+            str
+        :return:
+            Return the entire content of the file as one big string
+        :rtype:
+            str
+
+        .. note::
+            displays the carriage return + line feed
+        """
+        if self.__IsConnected() is True:
+            rawVariables = self.g.GCommand("LV")
+            variables = rawVariables.split("\r\n")
+            return variables
+            
+    def GetAllArrays(self):
+        """Return the entire file.
+
+        :param userPath:
+            where the TXT file is.
+            Path should be, preferably, absolute with format :
+            ``C:/file1/file2/sourcefile``
+        :type userPath:
+            str
+        :return:
+            Return the entire content of the file as one big string
+        :rtype:
+            str
+
+        .. note::
+            displays the carriage return + line feed
+        """
+        if self.__IsConnected() is True:
+            rawArrays = self.g.GCommand("LA")
+            arrays = rawArrays.split("\r\n")
+            return arrays            
+
     def GetParameter(self, command):
         """Return the entire file.
 
@@ -207,6 +273,10 @@ class ControlBox:
         if self.__IsConnected() is True:
             if command[-1:] == "?":
                 return self.g.GCommand(command)
+
+            elif command[:3] == "MG_":
+                return self.g.GCommand(command)
+
             else:
                 print(f"the command {command} is not a query")
 
@@ -250,7 +320,7 @@ class ControlBox:
         if self.__IsConnected() is True:
             return self.g.GCommand("IA?")
 
-    def GetCBVersion(self):
+    def GetFWVersion(self):
         """Return the entire file.
 
         :param userPath:
@@ -270,7 +340,7 @@ class ControlBox:
         if self.__IsConnected() is True:
             return self.g.GInfo().split(", ")[1]
 
-    def __IsValidIp(self):
+    def GetSerial(self):
         """Return the entire file.
 
         :param userPath:
@@ -287,7 +357,8 @@ class ControlBox:
         .. note::
             displays the carriage return + line feed
         """
-        pass
+        if self.__IsConnected() is True:
+            return self.g.GInfo().split(", ")[2] + ".0000"
 
     def __IsConnected(self):
         """Return the entire file.
@@ -310,5 +381,4 @@ class ControlBox:
             self.g.GCommand("IA?")
             return True
         except gclib.GclibError:
-            print("error")
             return False
