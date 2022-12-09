@@ -46,8 +46,8 @@ Members
 """
 import os
 import time
-from Controlbox import ControlBox
 from File import TXTFile as txtf
+from Controlbox import ControlBox
 import OSMOSFiles
 
 
@@ -62,58 +62,158 @@ class OSMOS:
         str
     """
 
-    def __init__(self, network=None, ipAdress=None):
+    def __init__(self,
+                 CBFile=os.path.dirname(__file__)+"\\OSM_LIST_CB.csv",
+                 CdeFile=os.path.dirname(__file__)+"\\OSM_LIST_CDE2.csv",
+                 bakFolder=os.path.dirname(__file__)+"\\.bak\\",
+                 logFolder=os.path.dirname(__file__)+"\\.log\\"):
 
+        self.CBFile = CBFile
+        self.CdeFile = CdeFile
+        self.bakFolder = bakFolder
+        self.logFolder = logFolder
+        self.osmosf = OSMOSFiles.OSMOSFiles(self.CBFile, self.CdeFile)
         self.listOfCBToGet = []
 
         srcDirectory = os.path.dirname(__file__)
         print(srcDirectory)
-        CBFile = srcDirectory + "\\OSM_LIST_CB.csv"
-        CdeFile = srcDirectory + "\\OSM_LIST_CDE2.csv"
 
-        self.osmosf = OSMOSFiles.OSMOSFiles(CBFile, CdeFile)
         # print(self.osmosf.CdeDatas)
         self.CB = ControlBox.ControlBox()
 
-        self.network = network
-
-        if self.network is None and ipAdress is not None:
-            self.listOfCBToGet.append(ipAdress)
-
-        elif self.network is None and ipAdress is None:
-            self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(self.network)
-
-        elif self.network is not None and ipAdress is not None:
-            self.listOfCBToGet.append(ipAdress)
-
-        else:
-            self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter("TEST")
-
         self.axis = ["A", "B", "C", "D", "E", "F", "G", "H"]
+        self.vectors = ["S", "T"]
 
+    def OSMOSSeq(self, network="TEST", userIP=None):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+# =============================================================================
+#         self.network = network
+#         self.userIP = userIP
+# =============================================================================
+        print(network)
+        print(userIP)
+
+        if userIP:
+            self.listOfCBToGet.append(userIP)
+            logName = self.__GenerateFileName(None, userIP)
+        else:
+            if network:
+                self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(network)
+                logName = self.__GenerateFileName(network, None)
+            else:
+                print("nothing to work on!")
+                return None
+
+        parametersList = self.osmosf.CdeFileParamList()
+
+        # ----------------- log File Preparation ----------------------
+        self.logFolder = os.path.dirname(__file__) + "\\.log\\"
+        logFullName = self.logFolder + logName
+        self.logFile = txtf.TXT(logFullName)
+        self.logFile.EraseContent()
+        
+        self.logFile.AddContent(f" SOLEIL network : {network}")
         # sequence
         for ip in self.listOfCBToGet:
-            self.CB.Connect(ip)
-            bakFolder = os.path.dirname(__file__) + "\\.bak\\"
-            bakName = self.GenerateFileName()
-            bakFullName = bakFolder + bakName
-            bakFile = txtf.TXT(bakFullName)
-            bakFile.EraseContent()
 
-            bakFile.AddContent(self.SystemInfo())
-            bakFile.AddContent(self.Configuration())
-            bakFile.AddContent(self.Data())
-            bakFile.AddContent(self.Program())
-            self.CB.Disconnect()
-            bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
-        # end of sequence
+            # ----------------- bak File Preparation ----------------------
+            self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
+            bakName = self.__GenerateFileName(network, ip)
+            bakFullName = self.bakFolder + bakName
 
-# =============================================================================
-#     def CBconnection(self, ip):
-#         self.CB.Connect(ip)
-# =============================================================================
+            connected = self.CB.Connect(ip)
 
-    def SystemInfo(self):
+            if connected:
+                bakFile = txtf.TXT(bakFullName)
+                bakFile.EraseContent()
+                self.logFile.AddContent("------------------------------------")
+                self.logFile.AddContent(f"connected to {ip}")
+
+                # -------------------- system Info Part -----------------------
+                try:
+                    print("System Info : run...")
+                    bakFile.AddContent(self.__SystemInfo())
+                    self.logFile.AddContent("System ok")
+                    print("System Info : Done")
+
+                except Exception as ex:
+                    self.logFile.AddContent("Getting System Info Failed")
+                    self.logFile.AddContent(f"due to : {ex}")
+
+                # -------------------- Parameters Part ------------------------
+                try:
+                    print("Parameters : run...")
+                    bakFile.AddContent(self.__Configuration(parametersList))
+                    self.logFile.AddContent("parameters ok")
+                    print("Parameters : Done")
+
+                except Exception as ex:
+                    self.logFile.AddContent("Getting configuration Failed")
+                    self.logFile.AddContent(f"error : {ex}")
+
+                # -------------------- Variables Part -------------------------
+                try:
+                    print("Variables : run...")
+                    bakFile.AddContent(self.__Data())
+                    self.logFile.AddContent("Variables ok")
+                    print("Variables : Done")
+
+                except Exception as ex:
+                    self.logFile.AddContent("Getting Datas (variables) Failed")
+                    self.logFile.AddContent(f"error : {ex}")
+                    print("Variables : Done")
+
+                # -------------------- Microcode Part -------------------------
+                try:
+                    print("Microcode : run...")
+                    bakFile.AddContent(self.__Program())
+                    self.logFile.AddContent("Microcode ok")
+                    print("Microcode : Done")
+
+                except Exception as ex:
+                    self.logFile.AddContent("Getting Microcode Failed")
+                    self.logFile.AddContent(f"error : {ex}")
+                self.CB.Disconnect()
+
+                self.logFile.AddContent(f"disconnected from {ip}\n\n")
+
+                bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
+            # end of sequence
+            else:
+                self.logFile.AddContent("------------------------------------")
+                self.logFile.AddContent(f"couldn't connect to {ip}\n\n")
+
+            # ----------------------- Format Files ----------------------------
+
+        self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
+ 
+    def GetAllNetworks(self):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        networksList = []
+        for network in self.osmosf.CBFileNtwrks():               
+            if networksList.count(network)<1:
+                networksList.append(network)
+        return networksList
+           
+    def __SystemInfo(self):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -133,9 +233,12 @@ class OSMOS:
         systemInfo = "[SystemInfo]\n" + firmware + serial
         systemInfo = systemInfo + device + axisNb
         systemInfo = systemInfo + "\n"
+
+        self.logFile.AddContent(f"firmware : {firmware}")
+        self.logFile.AddContent(f"serial : {serial}")
         return systemInfo
 
-    def Configuration(self):
+    def __Configuration(self, parametersList):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -148,119 +251,25 @@ class OSMOS:
         """
 # ******************************** init ***************************************
         echo = "EO=false" + "\n"
-        firmware = "REM Source Firmware = " + self.CB.GetFWVersion() + "\n"
-        setupCmd = "REM Setup Command" + "\n"
-        rc = "RC 0" + "\n"
         motOFF = "MO\\size=1\n" + "MO\\1\\Cmd=MO" + "\\r" + "\n"
-        stop = "ST" + "\n"
-        specialConf = "REM special configuration" + "\n"
         variableFormat = "VF=VF " + self.CB.GetParameter("VF?") + "\\r" + "\n"
         positionFormat = "PF=PF " + self.CB.GetParameter("PF?") + "\\r" + "\n"
         ommitLeading0 = "LZ=LZ 1\\r" + "\n"
-        rem = "REM" + "\n"
-        motEncsetup = "REM motor encoder setup" + "\n"
 
-        config = "[Configuration]\n" + echo + firmware + setupCmd + rc
-        config = config + motOFF + stop + specialConf + variableFormat
-        config = config + positionFormat + ommitLeading0 + rem + motEncsetup
+        config = "[Configuration]\n" + echo
+        config = config + variableFormat
+        config = config + positionFormat + ommitLeading0
 
-# ********************************* MT ****************************************
-        mt = "MT\\"
-        mtCmd = ""
+        for param in parametersList:
+            if self.__DoesFWExists(param):
+                # print(param)
+                config = config + self.__ParamTrt(param)
 
-        for index, element in enumerate(self.axis):
-            cmd = self.osmosf.GetFormattedCmd("MT", element)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = cmd.replace("?", ans)
-            mtCmd = mtCmd + mt + str(index+1) + "\\Cmd=\"" + cmdAns + "\\r\""
-            mtCmd = mtCmd + "\n"
-
-        mtSize = mt + "size=" + self.CB.GetFWVersion()[5] + "\n"
-        config = config + mtSize
-        config = config + mtCmd
-
-# ********************************* GA ****************************************
-        ga = "GA\\"
-        gaCmd = ""
-        gaSizeNb = 0
-
-        for index, element in enumerate(self.axis):
-            cmd = self.osmosf.GetFormattedCmd("GA", element)
-            ans = self.CB.GetParameter(cmd)
-            if ans != "0":
-                gaSizeNb += 1
-                cmdAns = cmd.replace("?", ans)
-                gaCmd = gaCmd + ga + str(gaSizeNb-1)
-                gaCmd = gaCmd + "\\Cmd=\"" + cmdAns + "\\r\""
-                gaCmd = gaCmd + "\n"
-
-        gaSize = ga + "size=" + str(gaSizeNb)
-        config = config + gaSize + "\n"
-        config = config + gaCmd
-
-# *****************************************************************************
-        config = config + self.__GetStdParameters("CE")
-        config = config + self.__GetStdParameters("AF")
-        config = config + self.__GetStdParameters("DV")
-        config = config + self.__GetStdParameters("FL")
-        config = config + self.__GetStdParameters("BL")
-        config = config + self.__GetStdParameters("CL")
-
-
-# ********************************* SI ****************************************
-        config = config + self.__GetStdParameters("SI")
-        config = config + self.__GetStdParameters("DB")
-        print(config)
-        config = config + self.__GetStdParameters("DS")
-        config = config + self.__GetStdParameters("KD")
-        config = config + self.__GetStdParameters("KI")
-        config = config + self.__GetStdParameters("KP")
-        config = config + self.__GetStdParameters("K3")
-        config = config + self.__GetStdParameters("K2")
-        config = config + self.__GetStdParameters("K1")
-        config = config + self.__GetStdParameters("ZN")
-        config = config + self.__GetStdParameters("ZP")
-        config = config + self.__GetStdParameters("CP")
-        config = config + self.__GetStdParameters("CT")
-        config = config + self.__GetStdParameters("IL")
-        config = config + self.__GetStdParameters("TK")
-        config = config + self.__GetStdParameters("TL")
-        config = config + self.__GetStdParameters("OF")
-        config = config + self.__GetStdParameters("FA")
-        config = config + self.__GetStdParameters("FV")
-        config = config + self.__GetStdParameters("PL")
-        config = config + self.__GetStdParameters("IT")
-        config = config + self.__GetStdParameters("NB")
-        config = config + self.__GetStdParameters("NF")
-        config = config + self.__GetStdParameters("NZ")
-        config = config + self.__GetStdParameters("AC")
-        config = config + self.__GetStdParameters("DC")
-        config = config + self.__GetStdParameters("SP")
-        config = config + self.__GetStdParameters("GD")
-        config = config + self.__GetStdParameters("GM")
-        config = config + self.__GetStdParameters("GR")
-        config = config + self.__GetStdParameters("OE")
-        config = config + self.__GetStdParameters("ER")
-        config = config + self.__GetStdParameters("TW")
-        config = config + self.__GetStdParameters("BW")
-        config = config + self.__GetStdParameters("KS")
-        config = config + self.__GetStdParameters("YA")
-        config = config + self.__GetStdParameters("YB")
-        config = config + self.__GetStdParameters("YC")
-        config = config + self.__GetUniqueParameters("IA")
-        config = config + self.__GetMessageParameters("TM")
-        config = config + self.__GetUniqueParameters("MW")
-        config = config + self.__GetMessageParameters("CW")
-        config = config + self.__GetMessageParameters("CN0")
-        config = config + self.__GetMessageParameters("CN1")
-        config = config + self.__GetMessageParameters("CN2")
-        config = config + self.__GetMessageParameters("CN3")
-        config = config + self.__GetMessageParameters("CN4")
-        config = config + "\n"
-
+        config = config + motOFF + "\n"
+        # print(config)
         return config
 
-    def Data(self):
+    def __Data(self):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -330,7 +339,7 @@ class OSMOS:
         data = data + "\n"
         return data
 
-    def Program(self):
+    def __Program(self):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -347,7 +356,8 @@ class OSMOS:
         program = program + programInit + mcode + "\""
         return program
 
-    def GenerateFileName(self):
+        # In[1]: internal function for Class OSMOSGui
+    def __GenerateFileName(self, network = None, ip = None):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -358,6 +368,8 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
+        CVSName = self.osmosf.CBFileGetName(ip)
+
         fullTime = time.gmtime()
         year = str(fullTime.tm_year)
         month = str(fullTime.tm_mon)
@@ -366,15 +378,30 @@ class OSMOS:
         minute = str(fullTime.tm_min)
         second = str(fullTime.tm_sec)
 
-        if self.network is not None:
-            name = "OSMOS_" + self.network + "_IP_"
+        if ip is not None and network is not None:
+            name = "OSMOS_" + "_" + CVSName
+            name = name + "_" + year + month + day
+            name = name + "_" + hour + minute + second
+            name = name + ".txt"
+
+        elif ip is not None and network is None:
+
+            name = "OSMOS_" + ip
+            name = name + "_" + year + month + day
+            name = name + "_" + hour + minute + second
+            name = name + ".txt"
+
+        elif ip is None and network is not None:
+            name = "OSMOS_" + network
+            name = name + "_" + year + month + day
+            name = name + "_" + hour + minute + second
+            name = name + ".txt"
         else:
-            name = "OSMOS_" + "_IP_"
-        name = name + year + month + day + hour + minute + second + ".txt"
+            print("nothing to work on!")
 
         return name
 
-    def __GetStdParameters(self, param):
+    def __ParamTrt(self, param):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -385,19 +412,76 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        init = param + "=\""
-        outputStr = ""
-        for index, element in enumerate(self.axis):
-            cmd = self.osmosf.GetFormattedCmd(param, element)
+        howToRead, howToWrite = self.osmosf.CdeFileReadWriteType(param)
+
+        if howToRead == "Standard":
+            resultFromCB = self.__StdRead(param)
+
+        elif howToRead == "Unique":
+            resultFromCB = self.__UniqueRead(param)
+
+        elif howToRead == "Message":
+            resultFromCB = self.__MessageRead(param)
+
+        elif howToRead == "Vector":
+            resultFromCB = self.__VectorRead(param)
+
+        else:
+            resultFromCB = None
+            # error
+
+        if howToWrite == "Standard":
+            result = self.__StdWrite(param, resultFromCB)
+
+        elif howToWrite == "Sized":
+            result = self.__SizedWrite(param, resultFromCB)
+
+        elif howToWrite == "Special":
+            result = self.__SpecialWrite(param, resultFromCB)
+
+        elif howToWrite == "Unique":
+            result = self.__UniqueWrite(param, resultFromCB)
+
+        elif howToWrite == "Vector":
+            result = self.__VectorWrite(param, resultFromCB)
+
+        else:
+            print("plop2")
+            # error
+
+        return result
+
+        # In[1]: internal function for Class OSMOSGui
+    def __StdRead(self, param):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        answers = []
+        for axisValue in self.axis:
+            cmd = self.osmosf.GetFormattedCmd(param, axisValue)
             ans = self.CB.GetParameter(cmd)
-            cmdAns = cmd.replace("?", ans)
-            outputStr = outputStr + cmdAns + "\\r"
-            if (index+1) == len(self.axis):
-                outputStr = outputStr + "\"" + "\n"
-        output = init + outputStr
+            answers.append(ans)
+
+        return answers
+
+    def __StdWrite(self, param, answerFromCB):
+        output = self.osmosf.writeFormattedParam(param)
+
+        for index, axisValue in enumerate(self.axis):
+            output = output.replace(param + axisValue + "=v", 
+                                    param + axisValue + "=" + answerFromCB[index])
+
         return output
 
-    def __GetUniqueParameters(self, param):
+        # In[1]: internal function for Class OSMOSGui
+    def __UniqueRead(self, param):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -408,26 +492,12 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        if param == "MW":
-            init = param + "="
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = cmd.replace("?", ans)
-            outputStr = cmdAns + "\\r" + "\n"
-            output = init + outputStr
-            return output
-        else:
-            init = param + "=\""
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = cmd.replace("?", ans)
-            outputStr = cmdAns + "\\r\"" + "\n"
-            output = init + outputStr
-            return output
+        cmd = self.osmosf.GetFormattedCmd(param)
+        ans = [self.CB.GetParameter(cmd)]
 
-    def __GetMessageParameters(self, param):
+        return ans
+
+    def __UniqueWrite(self, param, answerFromCB):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -438,73 +508,162 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        if param == "CN0":
-            init = param + "="
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = param[:2] + " " + ans
-            outputStr = cmdAns + "\\r" + "\n"
-            output = init + outputStr
-            return output
+        output = self.osmosf.writeFormattedParam(param)
+        answerFromCB[0] = answerFromCB[0].replace(", ", ",")
+        output = output.replace("v", answerFromCB[0])
 
-        elif param == "CN1":
-            init = param + "=\""
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = param[:2] + " ," + ans
-            outputStr = cmdAns + "\\r\"" + "\n"
-            output = init + outputStr
-            return output
+        return output
 
-        elif param == "CN2":
-            init = param + "=\""
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = param[:2] + " ,," + ans
-            outputStr = cmdAns + "\\r\"" + "\n"
-            output = init + outputStr
-            return output
+        # In[1]: internal function for Class OSMOSGui
+    def __MessageRead(self, param):
+        """Extract the IPs according to the network input.
 
-        elif param == "CN3":
-            init = param + "=\""
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = param[:2] + " ,,," + ans
-            outputStr = cmdAns + "\\r\"" + "\n"
-            output = init + outputStr
-            return output
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
 
-        elif param == "CN4":
-            init = param + "=\""
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
-            ans = self.CB.GetParameter(cmd)
-            cmdAns = param[:2] + " ,,,," + ans
-            outputStr = cmdAns + "\\r\"" + "\n"
-            output = init + outputStr
-            return output
+        .. warning::
+            Works only on .CSV.
+        """
+        cmd = self.osmosf.GetFormattedCmd(param)
+        ans = [self.CB.GetParameter(cmd)]
+        return ans
 
-        else:
-            init = param + "="
-            outputStr = ""
-            cmd = self.osmosf.GetFormattedCmd(param)
+        # In[1]: internal function for Class OSMOSGui
+    def __SizedWrite(self, param, resultFromCB):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        Size = 0
+        output = self.osmosf.writeFormattedParam(param, "1")
+        if param != "BA":
+            for value in resultFromCB:
+                if value != "0":
+                    Size += 1
+
+            output = self.osmosf.writeFormattedParam(param, Size)
+            output = output.replace("size=v", "size=" + str(Size))
+
+        if param != "BA":
+            nb = 0
+            for index, axisValue in enumerate(self.axis):
+                ans = resultFromCB[index]
+                if ans != "0":
+                    nb += 1
+                    output = output.replace(param + "\\" + str(nb) + "\\Cmd=\"" + param + "x=v",
+                                            param + "\\" + str(nb) + "\\Cmd=\"" + param + axisValue + "=" + ans)
+
+        return output
+
+        # In[1]: internal function for Class OSMOSGui
+    def __SpecialWrite(self, param, resultFromCB):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        output = self.osmosf.writeFormattedParam(param)
+
+        if resultFromCB[0].count(",") == 5:
+            for index, axisValue in enumerate(self.axis):
+                ansListed = resultFromCB[index].split(", ")
+                a = ansListed[0] + ","
+                b = ansListed[1] + ","
+                c = ansListed[2] + ","
+                d = ansListed[3] + "<"
+                e = ansListed[4] + ">"
+                f = ansListed[5]
+
+                output = output.replace(param + axisValue + "=a,b,c,d<e>f",
+                                        param +  axisValue + "=" + a + b + c + d + e + f)
+
+        if resultFromCB[0].count(",") == 4:
+            for index, axisValue in enumerate(self.axis):
+                ansListed = resultFromCB[index].split(", ")
+                a = ansListed[0] + ","
+                b = ansListed[1] + ","
+                c = ansListed[2] + ","
+                d = ansListed[3] + "<"
+                e = ansListed[4]
+
+                output = output.replace(param + axisValue + "=a,b,c,d<e",
+                                        param +  axisValue + "=" + a + b + c + d + e)
+
+        return output
+        # output = self.osmosf.writeFormattedParam(param, Size)
+
+        # In[1]: internal function for Class OSMOSGui
+    def __VectorRead(self, param):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        answers = []
+        for axisValue in self.vectors:
+            cmd = self.osmosf.GetFormattedCmd(param, axisValue)
             ans = self.CB.GetParameter(cmd)
-            cmdAns = param + " " + ans
-            outputStr = cmdAns + "\\r" + "\n"
-            output = init + outputStr
-            return output
+            answers.append(ans)
+
+        return answers
+
+    def __VectorWrite(self, param, resultFromCB):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        output = self.osmosf.writeFormattedParam(param)
+        for index, axisValue in enumerate(self.vectors):
+            output = output.replace(param + axisValue + "=v",
+                                    param + axisValue + "=" + resultFromCB[index])
+
+        return output
+
+    def __DoesFWExists(self, parameter):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        firmwares = self.osmosf.CdeFileGetFWAvail(parameter)
+        firmware = self.CB.GetFWVersion()
+        for FW in firmwares:
+            if FW == firmware:
+                return True
+
+        return False
 
 
 if __name__ == '__main__':
     # osmos = OSMOS(network=None, ipAdress="172.16.3.65")
-    osmos = OSMOS(network="TEST", ipAdress=None)
-    # print(osmos.SystemInfo())
-    # print(osmos.Configuration())
-    # print(osmos.Data())
-    # print(osmos.Program())
-
-    # osmos = OSMOSSeq("RCM")
+    osmos = OSMOS()
+    osmos.OSMOSSeq(network="TEST", userIP=None)

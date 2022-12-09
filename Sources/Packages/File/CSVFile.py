@@ -80,7 +80,7 @@ class CSV(fw.File):
 
         Mainly used to close file in case something went wrong
         """
-        print(f"object {self} deleted")
+        # print(f"object {self} deleted")
 
     def __repr__(self):
         """Display the object of the file."""

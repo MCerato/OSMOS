@@ -44,7 +44,7 @@ Copyright (c) 2022 Cerato Workshop.  All rights reserved.
 Members
 -------
 """
-
+import os
 from File import CSVFile as csvf
 
 class OSMOSFiles:
@@ -58,8 +58,8 @@ class OSMOSFiles:
         str
     """
 
-    def __init__(self, listCB="D:/Temp_pro/OSMOS/Sources/OSM_LIST_CB.csv",
-                 listCmd="D:/Temp_pro/OSMOS/Sources/OSM_LIST_CDE2.csv"):
+    def __init__(self, listCB=os.path.dirname(__file__)+"\\OSM_LIST_CB.csv",
+                 listCmd=os.path.dirname(__file__)+"\\OSM_LIST_CDE2.csv"):
 
         listCB = csvf.CSV(listCB)
         listCde = csvf.CSV(listCmd)
@@ -67,34 +67,22 @@ class OSMOSFiles:
         self.__CBDatas = listCB.GetColumnDatas()
         self.__networks = self.FileCleanup(self.__CBDatas["ssh aile"], '')
         self.__Ips = self.FileCleanup(self.__CBDatas["Adresse-IP"], '')
-
+        self.__Names = self.FileCleanup(self.__CBDatas["Racine-nom-CVS"], '')
         # example (uncomment line below)
         # self.listOfCBToGet = self.CBFileNtwrkFilter("TEST")
 
         self.CdeDatas = listCde.GetColumnDatas()
-        self.keyParam = self.FileCleanup(self.CdeDatas["key-param"], '')
-        self.syntaxParam = self.FileCleanup(self.CdeDatas["syntax-param"], '')
-        self.param = self.FileCleanup(self.CdeDatas["keyword"], '')
+        self.FWAvailable = self.FileCleanup(self.CdeDatas["Firmware"], '')
+        self.syntaxGetParam = self.FileCleanup(self.CdeDatas["type-getparam"], '')
+        self.param = self.FileCleanup(self.CdeDatas["parameter"], '')
         self.getParamFormat = self.FileCleanup(self.CdeDatas["get"], '')
         self.setParamFormat = self.FileCleanup(self.CdeDatas["set"], '')
 
-        self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["syntax-bak"], '')
+        self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["type-wrtbak"], '')
         self.writeBakFormat = self.FileCleanup(self.CdeDatas["write"], '')
-        plop = print(self.writeBakFormat[0])
-        self.writeFormattedParam("MT")
+        # self.writeFormattedParam("MT")
         # example (uncomment line below)
         # self.listOfCmdToGet = self.CdeFileCmdFilter("3")
-
-# =============================================================================
-#         print(self.param)  # all parameters
-#         print(self.CdeFileCmdFilter("3"))  # parameters according to the values of key
-#         print(self.CBFileNtwrkFilter("TEST"))
-#         print(self.GetFormattedCmd("MT", "B"))
-#         print(self.GetFormattedCmd("IA"))
-#         print(self.GetFormattedCmd("IA", "B"))  # B is ignored
-#         print(self.SetFormattedCmd("MT", "1", "B"))
-#         print(self.SetFormattedCmd("MT", "2", "B"))
-# =============================================================================
 
     def FileCleanup(self, listToClean, strToclean):
         """Take the empty lines off the column in the the file.
@@ -113,6 +101,21 @@ class OSMOSFiles:
                 listCleaned.remove(element)
         return listCleaned
 
+        # In[1]: internal function for Class OSMOSGui
+
+    def CBFileNtwrks(self):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        return self.__networks
+
     def CBFileNtwrkFilter(self, network):
         """Extract the IPs according to the network input.
 
@@ -130,6 +133,27 @@ class OSMOSFiles:
                 networkIPs.append(self.__Ips[index])
         return networkIPs
 
+    def CBFileGetName(self, IP):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        for index, ip in enumerate(self.__Ips):
+            if ip == IP:
+                CVSName = self.__Names[index]
+                CVSName = CVSName.replace("_parameters", "")
+                return CVSName
+
+        return "NameNotFound"
+
+        # In[1]: internal function for Class OSMOSGui
+
     def CdeFileCmdFilter(self, key):
         """Extract the IPs according to the network input.
 
@@ -142,10 +166,56 @@ class OSMOSFiles:
             Works only on .CSV.
         """
         parameters = []
-        for index, keyValue in enumerate(self.keyParam):
+        for index, keyValue in enumerate(self.FWAvailable):
             if keyValue == key:
                 parameters.append(self.param[index])
         return parameters
+
+    def CdeFileParamList(self):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        return self.FileCleanup(self.CdeDatas["parameter"], '')
+
+    def CdeFileReadWriteType(self, parameter):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        commandIndex = self.param.index(parameter)
+        readType = self.syntaxGetParam[commandIndex]
+        Writetype = self.syntaxWriteBak[commandIndex]
+
+        return readType, Writetype
+
+    def CdeFileGetFWAvail(self, parameter):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        commandIndex = self.param.index(parameter)
+        WhichFW = self.FWAvailable[commandIndex].split(", ")
+
+        return WhichFW
 
     def GetFormattedCmd(self, commandToGet, axis="A"):
         """Extract the IPs according to the network input.
@@ -159,114 +229,25 @@ class OSMOSFiles:
             Works only on .CSV.
         """
         commandIndex = self.param.index(commandToGet)
-        if self.syntaxParam[commandIndex] == "1":
+        if self.syntaxGetParam[commandIndex] == "Standard":
             paramCommandFormat = self.getParamFormat[commandIndex]
             command = paramCommandFormat.replace("x", axis)
 
-        elif self.syntaxParam[commandIndex] == "2":
+        elif self.syntaxGetParam[commandIndex] == "Unique":
             command = self.getParamFormat[commandIndex]
 
-        elif self.syntaxParam[commandIndex] == "3":
+        elif self.syntaxGetParam[commandIndex] == "Message":
             command = self.getParamFormat[commandIndex]
 
-        elif self.syntaxParam[commandIndex] == "4":
-            command = self.getParamFormat[commandIndex]
-
-        elif self.syntaxParam[commandIndex] == "5":
-            command = self.getParamFormat[commandIndex]
-
-        elif self.syntaxParam[commandIndex] == "6":
-            command = self.getParamFormat[commandIndex]
-
-        elif self.syntaxParam[commandIndex] == "7":
-            command = self.getParamFormat[commandIndex]
-
-        elif self.syntaxParam[commandIndex] == "8":
-            command = self.getParamFormat[commandIndex]
-
-        elif self.syntaxParam[commandIndex] == "9":
-            paramCommandFormat = self.getParamFormat[commandIndex]
-            command = paramCommandFormat.replace("i", "0")
-
-        elif self.syntaxParam[commandIndex] == "10":
-            paramCommandFormat = self.getParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
-
-        elif self.syntaxParam[commandIndex] == "11":
-            paramCommandFormat = self.getParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
+# =============================================================================
+#         elif self.syntaxGetParam[commandIndex] == "9":
+#             paramCommandFormat = self.getParamFormat[commandIndex]
+#             command = paramCommandFormat.replace("i", "0")
+# =============================================================================
 
         else:
             paramCommandFormat = self.getParamFormat[commandIndex]
             command = paramCommandFormat.replace("x", axis)
-
-        return command
-
-    def SetFormattedCmd(self, commandToSet, valueToGive, axis="A"):
-        """Extract the IPs according to the network input.
-
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
-        """
-        commandIndex = self.param.index(commandToSet)
-
-        if self.syntaxParam[commandIndex] == "1":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
-            command = command.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "2":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "3":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "4":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "5":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "6":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "7":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "8":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "9":
-            paramCommandFormat = self.getParamFormat[commandIndex]
-            command = paramCommandFormat.replace("i", "0")
-            command = command.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "10":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
-            command = command.replace("v", valueToGive)
-
-        elif self.syntaxParam[commandIndex] == "11":
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
-            command = command.replace("v", valueToGive)
-
-        else:
-            paramCommandFormat = self.setParamFormat[commandIndex]
-            command = paramCommandFormat.replace("x", axis)
-            command = command.replace("v", valueToGive)
 
         return command
 
@@ -282,68 +263,25 @@ class OSMOSFiles:
             Works only on .CSV.
         """
         commandIndex = self.param.index(paramTolook)
-        print(commandIndex)
-        print(size)
-        print(self.syntaxWriteBak)
-        if self.syntaxWriteBak[commandIndex] == "1":
-            if size == "4":
-                paramWriteFormat = self.writeBakFormat[commandIndex]
-            else:
-                paramWriteFormat = self.writeBakFormat[commandIndex]
-                tempFormat = paramWriteFormat.split("\\n")
-                print(paramWriteFormat)
-                print(tempFormat)     
-                print(tempFormat[0])
 
-        if self.syntaxWriteBak == "3":
+        if self.syntaxWriteBak[commandIndex] == "Sized":
             paramWriteFormat = self.writeBakFormat[commandIndex]
+            paramList = paramWriteFormat.split(r"\n")
+            paramList = paramList[:int(size)+1]
+            paramWriteFormat = ""
 
-        return paramWriteFormat
+            for elt in paramList:
+                if elt != paramList[-1]:
+                    paramWriteFormat = paramWriteFormat + elt + "\n"
+                else:
+                    paramWriteFormat = paramWriteFormat + elt
+            paramWriteFormat = paramWriteFormat.replace("'", '"')
+        
+        else:
+            paramWriteFormat = self.writeBakFormat[commandIndex]
+            paramWriteFormat = paramWriteFormat.replace("'", '"')            
 
-# =============================================================================
-#         if self.syntaxParam[commandIndex] == "1":
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("x", axis)
-# 
-#         elif self.syntaxParam[commandIndex] == "2":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "3":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "4":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "5":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "6":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "7":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "8":
-#             command = self.getParamFormat[commandIndex]
-# 
-#         elif self.syntaxParam[commandIndex] == "9":
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("i", "0")
-# 
-#         elif self.syntaxParam[commandIndex] == "10":
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("x", axis)
-# 
-#         elif self.syntaxParam[commandIndex] == "11":
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("x", axis)
-# 
-#         else:
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("x", axis)
-# 
-#         return command
-# =============================================================================
+        return paramWriteFormat + "\n"
 
 if __name__ == '__main__':
     osmosf = OSMOSFiles()

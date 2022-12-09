@@ -80,7 +80,7 @@ class TXT(fw.File):
 
         Mainly used to close file in case something went wrong
         """
-        print(f"{self} deleted")
+        # print(f"{self} deleted")
 
     def __repr__(self):
         """Display the object of the file."""

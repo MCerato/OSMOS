@@ -104,7 +104,7 @@ class ControlBox:
             print(f"connected to {ip}")
             return True
         except gclib.GclibError:
-            print(f"couldn't connect to {ip})")
+            print(f"couldn't connect to {ip}")
             return False
 
     def Disconnect(self):
@@ -118,6 +118,7 @@ class ControlBox:
         .. note::
             displays the carriage return + line feed
         """
+        self.g.GCommand("IHT =>-3")
         self.g.GClose()
         if self.__IsConnected() is True:
             print("Disconnection failed")
