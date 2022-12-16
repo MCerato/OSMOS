@@ -61,21 +61,31 @@ class OSMOS:
     :type userPath:
         str
     """
+    # Get default Files
+    Project = "OSMOS"
+    ProjectDir = os.path.dirname(__file__)
 
-    def __init__(self,
-                 CBFile=os.path.dirname(__file__)+"\\OSM_LIST_CB.csv",
-                 CdeFile=os.path.dirname(__file__)+"\\OSM_LIST_CDE2.csv",
-                 bakFolder=os.path.dirname(__file__)+"\\.bak\\",
-                 logFolder=os.path.dirname(__file__)+"\\.log\\"):
+    while os.path.basename(ProjectDir) != Project:
+        ProjectDir = os.path.dirname(ProjectDir)
+
+    DefaultCBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
+    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE2.csv"
+    DefaultbakFolder = ProjectDir + "\\Sources"+"\\.bak\\"
+    DefaultlogFolder = ProjectDir + "\\Sources"+"\\.log\\"
+
+    def __init__(self, CBFile=DefaultCBFile, CdeFile=DefaultCdeFile, 
+                 bakFolder=DefaultbakFolder,logFolder=DefaultlogFolder):
 
         self.CBFile = CBFile
         self.CdeFile = CdeFile
         self.bakFolder = bakFolder
         self.logFolder = logFolder
         self.osmosf = OSMOSFiles.OSMOSFiles(self.CBFile, self.CdeFile)
+ 
         self.listOfCBToGet = []
 
-        srcDirectory = os.path.dirname(__file__)
+        
+        srcDirectory = os.path.dirname(__file__)        
         print(srcDirectory)
 
         # print(self.osmosf.CdeDatas)
@@ -83,6 +93,7 @@ class OSMOS:
 
         self.axis = ["A", "B", "C", "D", "E", "F", "G", "H"]
         self.vectors = ["S", "T"]
+        self.vectorSpeed = ["N", "M"]
 
     def OSMOSSeq(self, network="TEST", userIP=None):
         """Extract the IPs according to the network input.
@@ -99,14 +110,14 @@ class OSMOS:
 #         self.network = network
 #         self.userIP = userIP
 # =============================================================================
-        print(network)
-        print(userIP)
 
         if userIP:
+            print(userIP)
             self.listOfCBToGet.append(userIP)
             logName = self.__GenerateFileName(None, userIP)
         else:
             if network:
+                print(network)
                 self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(network)
                 logName = self.__GenerateFileName(network, None)
             else:
@@ -191,11 +202,12 @@ class OSMOS:
             else:
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"couldn't connect to {ip}\n\n")
-
+        
             # ----------------------- Format Files ----------------------------
-
+        print("End of work")
         self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
- 
+        time.sleep(0.2)
+
     def GetAllNetworks(self):
         """Extract the IPs according to the network input.
 
@@ -212,6 +224,19 @@ class OSMOS:
             if networksList.count(network)<1:
                 networksList.append(network)
         return networksList
+    
+    def GetAllParameters(self):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        return self.osmosf.CdeFileParamList()
            
     def __SystemInfo(self):
         """Extract the IPs according to the network input.
@@ -617,12 +642,19 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        answers = []
-        for axisValue in self.vectors:
-            cmd = self.osmosf.GetFormattedCmd(param, axisValue)
-            ans = self.CB.GetParameter(cmd)
-            answers.append(ans)
+        if param[-1] == "I":
+            answers = []
+            for axisValue in self.vectorSpeed:
+                cmd = self.osmosf.GetFormattedCmd(param, axisValue)
+                ans = self.CB.GetParameter(cmd)            
+                answers.append(ans)
 
+        else:
+            answers = []
+            for axisValue in self.vectors:
+                cmd = self.osmosf.GetFormattedCmd(param, axisValue)
+                ans = self.CB.GetParameter(cmd)
+                answers.append(ans)
         return answers
 
     def __VectorWrite(self, param, resultFromCB):
@@ -636,10 +668,20 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        output = self.osmosf.writeFormattedParam(param)
-        for index, axisValue in enumerate(self.vectors):
-            output = output.replace(param + axisValue + "=v",
-                                    param + axisValue + "=" + resultFromCB[index])
+
+        if param[-1] == "I":
+            output = self.osmosf.writeFormattedParam(param)
+            param = param[:2]
+            for index, axisValue in enumerate(self.vectorSpeed):
+                output = output.replace(param + axisValue + "=v",
+                                        param + axisValue + "=" + resultFromCB[index])
+
+        else:
+            output = self.osmosf.writeFormattedParam(param)
+
+            for index, axisValue in enumerate(self.vectors):
+                output = output.replace(param + axisValue + "=v",
+                                        param + axisValue + "=" + resultFromCB[index])
 
         return output
 
@@ -666,4 +708,5 @@ class OSMOS:
 if __name__ == '__main__':
     # osmos = OSMOS(network=None, ipAdress="172.16.3.65")
     osmos = OSMOS()
-    osmos.OSMOSSeq(network="TEST", userIP=None)
+    # osmos.OSMOSSeq(network="TEST", userIP=None)
+    osmos.OSMOSSeq(network=None, userIP="172.16.3.88")

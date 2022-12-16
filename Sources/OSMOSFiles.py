@@ -47,6 +47,7 @@ Members
 import os
 from File import CSVFile as csvf
 
+
 class OSMOSFiles:
     """Class representing the CSV file.
 
@@ -57,9 +58,19 @@ class OSMOSFiles:
     :type userPath:
         str
     """
+    # Get default Files
+    Project = "OSMOS"
+    ProjectDir = os.path.dirname(__file__)
 
-    def __init__(self, listCB=os.path.dirname(__file__)+"\\OSM_LIST_CB.csv",
-                 listCmd=os.path.dirname(__file__)+"\\OSM_LIST_CDE2.csv"):
+    while os.path.basename(ProjectDir) != Project:
+        ProjectDir = os.path.dirname(ProjectDir)
+
+    DefaultCBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
+    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE2.csv"
+
+    # ********************
+
+    def __init__(self, listCB=DefaultCBFile, listCmd=DefaultCdeFile):
 
         listCB = csvf.CSV(listCB)
         listCde = csvf.CSV(listCmd)
@@ -73,12 +84,14 @@ class OSMOSFiles:
 
         self.CdeDatas = listCde.GetColumnDatas()
         self.FWAvailable = self.FileCleanup(self.CdeDatas["Firmware"], '')
-        self.syntaxGetParam = self.FileCleanup(self.CdeDatas["type-getparam"], '')
+        self.syntaxGetParam = self.FileCleanup(self.CdeDatas["type-getparam"],
+                                               '')
         self.param = self.FileCleanup(self.CdeDatas["parameter"], '')
         self.getParamFormat = self.FileCleanup(self.CdeDatas["get"], '')
         self.setParamFormat = self.FileCleanup(self.CdeDatas["set"], '')
 
-        self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["type-wrtbak"], '')
+        self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["type-wrtbak"],
+                                               '')
         self.writeBakFormat = self.FileCleanup(self.CdeDatas["write"], '')
         # self.writeFormattedParam("MT")
         # example (uncomment line below)
@@ -238,12 +251,6 @@ class OSMOSFiles:
 
         elif self.syntaxGetParam[commandIndex] == "Message":
             command = self.getParamFormat[commandIndex]
-
-# =============================================================================
-#         elif self.syntaxGetParam[commandIndex] == "9":
-#             paramCommandFormat = self.getParamFormat[commandIndex]
-#             command = paramCommandFormat.replace("i", "0")
-# =============================================================================
 
         else:
             paramCommandFormat = self.getParamFormat[commandIndex]

@@ -383,3 +383,11 @@ class ControlBox:
             return True
         except gclib.GclibError:
             return False
+
+if __name__ == '__main__':
+    cb = ControlBox()
+    print(cb.Connect("172.16.3.65"))
+    print(cb.GetIp())
+    print(cb.Disconnect())
+    print(cb.Connect("172.16.3.88"))
+    

@@ -21,6 +21,7 @@ BL;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2
 CL;DMC4183s56f, DMC4183s56g, DMC2182s87j;Standard;Standard;Standard;CLx=?;CLx=v;CL='CLA=v\rCLB=v\rCLC=v\rCLD=v\rCLE=v\rCLF=v\rCLG=v\rCLH=v\r';CCLS activation;;;;;;;;;;;
 SI;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Standard;Special;Special;SIx=?;SIx=v;SI='SIA=a,b,c,d<e>f\rSIB=a,b,c,d<e>f\rSIC=a,b,c,d<e>f\rSID=a,b,c,d<e>f\rSIE=a,b,c,d<e>f\rSIF=a,b,c,d<e>f\rSIG=a,b,c,d<e>f\rSIH=a,b,c,d<e>f\r';SSI Encoder configuration;;;;;;;;;;;
 SS;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g;Standard;Special;Special;SSx=?;SSx=v;SS='SSA=a,b,c,d<e\rSSB=a,b,c,d<e\rSSC=a,b,c,d<e\rSSD=a,b,c,d<e\rSSE=a,b,c,d<e\rSSF=a,b,c,d<e\rSSG=a,b,c,d<e\rSSH=a,b,c,d<e\r';BISS Encoder configuration;;;;;;;;;;;
+SY;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g;Standard;Standard;Standard;Syx=?;SYx=v;SY='SYA=v\rDEB=v\rSYC=v\rSYD=v\rSYE=v\rSYF=v\rSYG=v\rSYH=v\r';Biss Active Level;;;;;;;;;;;
 DB;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Standard;Standard;Standard;DBx=?;DBx=v;DB='DBA=v\rDBB=v\rDBC=v\rDBD=v\rDBE=v\rDBF=v\rDBG=v\rDBH=v\r';Deadband ON Value;;;;;;;;;;;
 DS;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Standard;Standard;Standard;DSx=?;DSx=v;DS='DSA=v\rDSB=v\rDSC=v\rDSD=v\rDSE=v\rDSF=v\rDSG=v\rDSH=v\r';Deadband OFF Value;;;;;;;;;;;
 BW;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g;Standard;Standard;Standard;BWx=?;BWx=v;BW='BWA=v\rBWB=v\rBWC=v\rBWD=v\rBWE=v\rBWF=v\rBWG=v\rBWH=v\r';Brake Output Wait;;;;;;;;;;;
@@ -77,6 +78,9 @@ YC;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2
 VA;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;VAx=?;VAx=v;VA='VAS=v\rVAT=v\r';Vector Acceleration;;;;;;;;;;;
 VD;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;VDx=?;VDx=v;VD='VDS=v\rVDT=v\r';Vector Deceleration;;;;;;;;;;;
 VS;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;VSx=?;VSx=v;VS='VSS=v\rVST=v\r';Vector Speed;;;;;;;;;;;
+ACI;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;ACx=?;ACx=v;ACI='ACN=v\rACM=v\r';;;;;;;;;;;;
+DCI;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;DCx=?;DCx=v;DCI='DCN=v\rDCM=v\r';;;;;;;;;;;;
+SPI;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Vector;Vector;Vector;SPx=?;SPx=v;SPI='SPN=v\rSPM=v\r';;;;;;;;;;;;
 IA;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g, DMC2182s87e, DMC2182s87j;Unique;Unique;Unique;IA ?;IA v;IA='IA v\r';IP Adress;;;;;;;;;;;
 SM;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g;Unique;Unique;Unique;SM ?;SM v;SM='SM v\r';Subnet Mask;;;;;;;;;;;
 DH;DMC4183s56b-SER, DMC4183s56e-SER, DMC4183s56f, DMC4183s56g;Unique;Unique;Unique;DH ?;DH v;DH=DH v\r;DHCP Mode;;;;;;;;;;;
