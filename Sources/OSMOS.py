@@ -46,6 +46,7 @@ Members
 """
 import os
 import time
+import shutil
 from File import TXTFile as txtf
 from Controlbox import ControlBox
 import OSMOSFiles
@@ -61,6 +62,7 @@ class OSMOS:
     :type userPath:
         str
     """
+
     # Get default Files
     Project = "OSMOS"
     ProjectDir = os.path.dirname(__file__)
@@ -68,27 +70,28 @@ class OSMOS:
     while os.path.basename(ProjectDir) != Project:
         ProjectDir = os.path.dirname(ProjectDir)
 
-    DefaultCBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
-    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE.csv"
+    DefaultCBFile = ProjectDir + "\\Documentation\\Reference"
+    DefaultCBFile = DefaultCBFile + "\\OSM_LIST_CB.csv"
+
+    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference"
+    DefaultCdeFile = DefaultCdeFile + "\\OSM_LIST_CDE.csv"
+
     DefaultbakFolder = ProjectDir + "\\Sources"+"\\.bak\\"
     DefaultlogFolder = ProjectDir + "\\Sources"+"\\.log\\"
 
-    def __init__(self, CBFile=DefaultCBFile, CdeFile=DefaultCdeFile, 
-                 bakFolder=DefaultbakFolder,logFolder=DefaultlogFolder):
+    def __init__(self, CBFile=DefaultCBFile, CdeFile=DefaultCdeFile,
+                 bakFolder=DefaultbakFolder, logFolder=DefaultlogFolder):
 
         self.CBFile = CBFile
         self.CdeFile = CdeFile
         self.bakFolder = bakFolder
         self.logFolder = logFolder
         self.osmosf = OSMOSFiles.OSMOSFiles(self.CBFile, self.CdeFile)
- 
+
         self.listOfCBToGet = []
 
-        
-        srcDirectory = os.path.dirname(__file__)        
-        print(srcDirectory)
+        # srcDirectory = os.path.dirname(__file__)
 
-        # print(self.osmosf.CdeDatas)
         self.CB = ControlBox.ControlBox()
 
         self.axis = ["A", "B", "C", "D", "E", "F", "G", "H"]
@@ -106,11 +109,6 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-# =============================================================================
-#         self.network = network
-#         self.userIP = userIP
-# =============================================================================
-
         if userIP:
             print(userIP)
             self.listOfCBToGet.append(userIP)
@@ -120,6 +118,21 @@ class OSMOS:
                 print(network)
                 self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(network)
                 logName = self.__GenerateFileName(network, None)
+
+                # -------------- create network Directory------------------
+                for ntwrk in self.GetAllNetworks():
+                    if ntwrk == network:
+                        self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
+                        self.bakFolder = self.bakFolder + network + "\\"
+                        if not os.path.isdir(self.bakFolder):
+                            os.mkdir(self.bakFolder)
+
+                        else:
+                            shutil.rmtree(self.bakFolder,
+                                          ignore_errors=True,
+                                          onerror=None)
+                            os.mkdir(self.bakFolder)
+
             else:
                 print("nothing to work on!")
                 return None
@@ -129,23 +142,34 @@ class OSMOS:
         # ----------------- log File Preparation ----------------------
         self.logFolder = os.path.dirname(__file__) + "\\.log\\"
         logFullName = self.logFolder + logName
+
+        if os.path.exists(logFullName.replace(".txt", ".log")):
+            self.logFile = txtf.TXT(logFullName.replace(".txt", ".log"))
+            self.logFile.DeleteFile()
+
         self.logFile = txtf.TXT(logFullName)
         self.logFile.EraseContent()
-        
         self.logFile.AddContent(f" SOLEIL network : {network}")
         # sequence
         for ip in self.listOfCBToGet:
 
             # ----------------- bak File Preparation ----------------------
-            self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
+            # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
             bakName = self.__GenerateFileName(network, ip)
             bakFullName = self.bakFolder + bakName
 
             connected = self.CB.Connect(ip)
 
             if connected:
+
+                if os.path.exists(bakFullName.replace(".txt", ".bak")):
+                    oldFile = bakFullName.replace(".txt", ".bak")
+                    self.bakFile = txtf.TXT(oldFile)
+                    self.bakFile.DeleteFile()
+
                 bakFile = txtf.TXT(bakFullName)
                 bakFile.EraseContent()
+
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"connected to {ip}")
 
@@ -202,7 +226,7 @@ class OSMOS:
             else:
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"couldn't connect to {ip}\n\n")
-        
+
             # ----------------------- Format Files ----------------------------
         print("End of work")
         self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
@@ -220,11 +244,11 @@ class OSMOS:
             Works only on .CSV.
         """
         networksList = []
-        for network in self.osmosf.CBFileNtwrks():               
-            if networksList.count(network)<1:
+        for network in self.osmosf.CBFileNtwrks():
+            if networksList.count(network) < 1:
                 networksList.append(network)
         return networksList
-    
+
     def GetAllParameters(self):
         """Extract the IPs according to the network input.
 
@@ -237,7 +261,7 @@ class OSMOS:
             Works only on .CSV.
         """
         return self.osmosf.CdeFileParamList()
-           
+
     def __SystemInfo(self):
         """Extract the IPs according to the network input.
 
@@ -382,7 +406,7 @@ class OSMOS:
         return program
 
         # In[1]: internal function for Class OSMOSGui
-    def __GenerateFileName(self, network = None, ip = None):
+    def __GenerateFileName(self, network=None, ip=None):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -399,31 +423,28 @@ class OSMOS:
         year = str(fullTime.tm_year)
         month = str(fullTime.tm_mon)
         day = str(fullTime.tm_mday)
-        hour = str(fullTime.tm_hour)
-        minute = str(fullTime.tm_min)
-        second = str(fullTime.tm_sec)
+# =============================================================================
+#         hour = str(fullTime.tm_hour)
+#         minute = str(fullTime.tm_min)
+#         second = str(fullTime.tm_sec)
+# =============================================================================
 
         if ip is not None and network is not None:
-            name = "OSMOS_" + "_" + CVSName
-            name = name + "_" + year + month + day
-            name = name + "_" + hour + minute + second
-            name = name + ".txt"
+            name = "OSMOS_" + CVSName
 
         elif ip is not None and network is None:
-
             name = "OSMOS_" + ip
-            name = name + "_" + year + month + day
-            name = name + "_" + hour + minute + second
-            name = name + ".txt"
 
         elif ip is None and network is not None:
             name = "OSMOS_" + network
-            name = name + "_" + year + month + day
-            name = name + "_" + hour + minute + second
-            name = name + ".txt"
+
         else:
             print("nothing to work on!")
+            return name
 
+        name = name + "_" + year + month + day
+        # name = name + "_" + hour + minute + second
+        name = name + ".txt"
         return name
 
     def __ParamTrt(self, param):
@@ -500,8 +521,8 @@ class OSMOS:
         output = self.osmosf.writeFormattedParam(param)
 
         for index, axisValue in enumerate(self.axis):
-            output = output.replace(param + axisValue + "=v", 
-                                    param + axisValue + "=" + answerFromCB[index])
+            fullAns = param + axisValue + "=" + answerFromCB[index]
+            output = output.replace(param + axisValue + "=v", fullAns)
 
         return output
 
@@ -583,8 +604,11 @@ class OSMOS:
                 ans = resultFromCB[index]
                 if ans != "0":
                     nb += 1
-                    output = output.replace(param + "\\" + str(nb) + "\\Cmd=\"" + param + "x=v",
-                                            param + "\\" + str(nb) + "\\Cmd=\"" + param + axisValue + "=" + ans)
+                    searchSubStr = param + "\\" + str(nb) + "\\Cmd=\""
+                    searchSubStr = searchSubStr + param + "x=v"
+                    fullSubStr = param + "\\" + str(nb) + "\\Cmd=\"" + param
+                    fullSubStr = fullSubStr + axisValue + "=" + ans
+                    output = output.replace(searchSubStr, fullSubStr)
 
         return output
 
@@ -708,5 +732,5 @@ class OSMOS:
 if __name__ == '__main__':
     # osmos = OSMOS(network=None, ipAdress="172.16.3.65")
     osmos = OSMOS()
-    # osmos.OSMOSSeq(network="TEST", userIP=None)
-    osmos.OSMOSSeq(network=None, userIP="172.16.3.88")
+    osmos.OSMOSSeq(network="ISAC", userIP=None)
+    # osmos.OSMOSSeq(network=None, userIP="172.16.3.65")

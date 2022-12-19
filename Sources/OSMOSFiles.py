@@ -13,14 +13,11 @@ Sequence of tests for FileWrapper methods.
 
 Libraries/Modules
 -----------------
-- sys standard library (https://docs.python.org/3/library/sys.html)
-    - Access to functions interacting with interpreter.
 - os standard library (https://docs.python.org/3/library/os.html)
     - Access to files function.
-- time standard library (https://docs.python.org/2/library/time.html)
-    - Access to time-related functions.
-- PDFFile library (:file:FileWrapper.html)
-    - Access to files functions.
+- CSVFile Personal library
+    (https://github.com/MCerato/FileManagement/tree/main/Sources/Packages/File)
+    - Access to a personal CSV wrapper File management.
 
 Version
 -------
@@ -37,7 +34,7 @@ TODO
 Author(s)
 ---------
 - Created by M. Cerato on 10/05/2022.
-- Modified by xxx on xx/xx/xxxx.
+- Modified by M. Cerato on 10/12/2022.
 
 Copyright (c) 2022 Cerato Workshop.  All rights reserved.
 
@@ -49,15 +46,22 @@ from File import CSVFile as csvf
 
 
 class OSMOSFiles:
-    """Class representing the CSV file.
+    """Class managing OSMOS project configuration Files.
 
-    :param userPath:
-        where the CSV file is.
-        Path should be, preferably, absolute with format :
-        ``C:/file1/file2/sourcefile``
-    :type userPath:
+    :attr Project:
+        Should be the Project directory name (ex : OSMOS in this case)
+    :type Project:
+        str
+    :attr ProjectDir:
+        automatic detection of the path according to the name project
+    :type ProjectDir:
+        str
+    :attr ProjectDir:
+        automatic detection of the path according to the name project
+    :type ProjectDir:
         str
     """
+
     # Get default Files
     Project = "OSMOS"
     ProjectDir = os.path.dirname(__file__)
@@ -65,8 +69,11 @@ class OSMOSFiles:
     while os.path.basename(ProjectDir) != Project:
         ProjectDir = os.path.dirname(ProjectDir)
 
-    DefaultCBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
-    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE.csv"
+    DefaultCBFile = ProjectDir + "\\Documentation\\Reference"
+    DefaultCBFile = DefaultCBFile + "\\OSM_LIST_CB.csv"
+
+    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference"
+    DefaultCdeFile = DefaultCdeFile + "\\OSM_LIST_CDE.csv"
 
     # ********************
 
@@ -80,7 +87,7 @@ class OSMOSFiles:
         self.__Ips = self.FileCleanup(self.__CBDatas["Adresse-IP"], '')
         self.__Names = self.FileCleanup(self.__CBDatas["Racine-nom-CVS"], '')
         # example (uncomment line below)
-        # self.listOfCBToGet = self.CBFileNtwrkFilter("TEST")
+        # self.listOfCBToGet = self.CBFileNtwrkFilter("ISAC")
 
         self.CdeDatas = listCde.GetColumnDatas()
         self.FWAvailable = self.FileCleanup(self.CdeDatas["Firmware"], '')
@@ -160,7 +167,7 @@ class OSMOSFiles:
         for index, ip in enumerate(self.__Ips):
             if ip == IP:
                 CVSName = self.__Names[index]
-                CVSName = CVSName.replace("_parameters", "")
+                # CVSName = CVSName.replace("_parameters", "")
                 return CVSName
 
         return "NameNotFound"

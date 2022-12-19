@@ -71,7 +71,7 @@ class TXT(fw.File):
         self.CreateFile(userPath)  # link the file to the object
 
         if self.GetFileFormat() != ".txt":
-            print("wrong file format")
+            print("Warning : ")
             print(f"This is a {self.GetFileFormat()}")
             print("")
 
@@ -98,13 +98,19 @@ class TXT(fw.File):
         .. note::
             displays the carriage return + line feed
         """
-        if self.GetFileFormat() == ".txt":
-            with open(os.path.join(self.GetFilePath(), self.GetFileName()),
-                      mode='r', encoding="utf-8") as file:
+
+        with open(os.path.join(self.GetFilePath(), self.GetFileName()),
+                  mode='r', encoding="utf-8") as file:
+            try:
                 content = file.read()
-            return content
-        else:
-            return None
+
+            except Exception as ex:
+                print("content unreadable")
+                print("May be a wrong format")
+                return None
+            
+        return content
+
 
     def GetLinesContent(self):
         """Return the entire file.
@@ -117,14 +123,18 @@ class TXT(fw.File):
         .. note::
             displays the carriage return + line feed
         """
-        if self.GetFileFormat() == ".txt":
-            with open(os.path.join(self.GetFilePath(),
-                                   self.GetFileName()),
-                      mode='r', encoding="utf-8") as file:
+        with open(os.path.join(self.GetFilePath(),
+                               self.GetFileName()),
+                  mode='r', encoding="utf-8") as file:
+            try:
                 content = file.readlines()
-            return content
-        else:
-            return None
+            except Exception as ex:
+                print("content unreadable")
+                print("May be a wrong format")
+                return None
+                
+        return content
+
 
     def GetLineContent(self, line):
         """Give the specific line of the file.
@@ -144,19 +154,22 @@ class TXT(fw.File):
         .. note::
             return an empty string if the line is out of bound or empty.
         """
-        if self.GetFileFormat() == ".txt":
-            if line > 0 and line <= len(self.GetLinesContent()):
+        if line > 0 and line <= len(self.GetLinesContent()):
 
-                with open(os.path.join(self.GetFilePath(),
-                                       self.GetFileName()),
-                          mode='r', encoding="utf-8") as file:
-                    for i in range(line):
+            with open(os.path.join(self.GetFilePath(),
+                                   self.GetFileName()),
+                      mode='r', encoding="utf-8") as file:
+                for i in range(line):
+                    try:
                         content = file.readline()
+                    except Exception as ex:
+                        print("content unreadable")
+                        print("May be a wrong format")
+                        return None
+                    
                 return content
-            else:
-                print("line doesn't exist")
         else:
-            return None
+            print("line doesn't exist")
 
     def AddContent(self, contentToWrite):
         """Append content into a txt file.
@@ -166,14 +179,19 @@ class TXT(fw.File):
         :type contentToWrite:
             str, list
         """
-        if self.GetFileFormat() == ".txt":
-            with open(os.path.join(self.GetFilePath(),
-                                   self.GetFileName()),
-                      mode='a', encoding="utf-8") as file:
+        with open(os.path.join(self.GetFilePath(),
+                               self.GetFileName()),
+                  mode='a', encoding="utf-8") as file:
+            try:
                 if contentToWrite[len(contentToWrite)-1:] == "\n":
                     file.writelines(contentToWrite)
+
                 else:
                     file.writelines(contentToWrite + "\n")
+
+            except Exception as ex:
+                print("content nonwritable")
+                print("May be a wrong format")
 
     def ReplaceContent(self, contentToWrite):
         """Erase previous content and write new content into a txt file.
@@ -183,19 +201,26 @@ class TXT(fw.File):
         :type contentToWrite:
             str, list
         """
-        if self.GetFileFormat() == ".txt":
-            with open(os.path.join(self.GetFilePath(),
-                                   self.GetFileName()),
-                      mode='w', encoding="utf-8") as file:
+        with open(os.path.join(self.GetFilePath(),
+                               self.GetFileName()),
+                  mode='w', encoding="utf-8") as file:
+            try:
                 file.writelines(contentToWrite)
+
+            except Exception as ex:
+                print("content non writable")
+                print("May be a wrong format")
 
     def EraseContent(self):
         """Erase content of a txt file."""
-        if self.GetFileFormat() == ".txt":
-            with open(os.path.join(self.GetFilePath(),
-                                   self.GetFileName()),
-                      mode='w', encoding="utf-8") as file:
+        with open(os.path.join(self.GetFilePath(),
+                               self.GetFileName()),
+                  mode='w', encoding="utf-8") as file:
+            try:
                 file.writelines("")
+            except Exception as ex:
+                print("content can't be erased/ write")
+                print("May be a wrong format")
 
 # In[5]: internal functions for file content itself
     def __IsFileEmpty(self):

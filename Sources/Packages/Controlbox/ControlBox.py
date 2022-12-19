@@ -1,26 +1,20 @@
 # -*- coding: utf-8 -*-
-"""Test the class FileWrapper.
+"""Wrap the GALIL gclib library.
 
 Description
 -----------
-Sequence of tests for FileWrapper methods.
+Allow to connect and communicate with a specific GALIL board.
+The board is identified through its IP address.
 
 .. warning::
-    Test non exhaustive (WIP - learning on tests methods)
+    The IP address of the board has to be fixed previously.
+    (parameter DH should be 0)
 
-.. note::
-    add waiting time when files are created
 
 Libraries/Modules
 -----------------
-- sys standard library (https://docs.python.org/3/library/sys.html)
-    - Access to functions interacting with interpreter.
-- os standard library (https://docs.python.org/3/library/os.html)
-    - Access to files function.
-- time standard library (https://docs.python.org/2/library/time.html)
-    - Access to time-related functions.
-- PDFFile library (:file:FileWrapper.html)
-    - Access to files functions.
+- gclib library (https://www.galil.com/sw/pub/all/doc/gclib/html/python.html)
+    - provided by GALIL to communicate with ther product
 
 Version
 -------
@@ -37,67 +31,49 @@ TODO
 Author(s)
 ---------
 - Created by M. Cerato on 10/05/2022.
-- Modified by xxx on xx/xx/xxxx.
+- Modified by M. Cerato on 10/12/2022.
 
 Copyright (c) 2022 Cerato Workshop.  All rights reserved.
 
 Members
 -------
 """
-
 import gclib
 
 
 class ControlBox:
-    """Class representing the file.
+    """Class representing the device to connect or connected to.
 
-    :param path:
-        where the file is.
-        Path should be absolute with format ``C:/file1/file2/sourcefile``
-    :type path:
-        str
-    :param name:
-        Name of the file. For instance ``plop.txt``
-    :type name:
-        str
-    :param size:
-        size of the file in bytes
-    :type size:
-        int
-    :param fileFormat:
-        extention of the file. for Instance, ``.txt``
-    :type fileFormat:
-        int
+    :attr g:
+        g is the object wich represent a connection.
+    :type g:
+        gclib
     """
 
     def __init__(self):
         self.g = gclib.py()
 
     def __del__(self):
-        """Return the entire file.
-
-        :return:
-            Return the entire content of the file as one big string
-        :rtype:
-            str
+        """Close connection.
 
         .. note::
-            displays the carriage return + line feed
+            If previously connected, close connection before delete
         """
         if self.__IsConnected():
             print("disconnected")
             self.g.GClose()
 
     def Connect(self, ip):
-        """Return the entire file.
+        """Connect to a ControlBox.
 
-        :return:
-            Return the entire content of the file as one big string
-        :rtype:
+        :param ip:
+            should be a standard IP addresse (ex : 172.20.24.65)
+        :type ip:
             str
-
-        .. note::
-            displays the carriage return + line feed
+        :return:
+            Return the **connection** State.
+        :rtype:
+            Bool
         """
         try:
             self.g.GOpen(ip)
@@ -108,17 +84,14 @@ class ControlBox:
             return False
 
     def Disconnect(self):
-        """Return the entire file.
+        """Connect to a ControlBox.
 
         :return:
-            Return the entire content of the file as one big string
+            Return the **disconnection** State.
         :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
+            bool
         """
-        self.g.GCommand("IHT =>-3")
+        # self.g.GCommand("IHT =>-3")
         self.g.GClose()
         if self.__IsConnected() is True:
             print("Disconnection failed")
@@ -128,110 +101,71 @@ class ControlBox:
             return True
 
     def Reset(self):
-        """Return the entire file.
+        """Restart the Controller (ControlBox).
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
-        :return:
-            Return the entire content of the file as one big string
-        :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
+        .. warning::
+            This function is disabled for now (need to create a timeout)
         """
-        if self.__IsConnected() is True:
-            savedIP = self.GetIp()
-            self.g.GCommand("RS")
-            # try to connect until it does connect or timeout
-            # self.g.Connect(savedIP)
+# =============================================================================
+#         if self.__IsConnected() is True:
+#             savedIP = self.GetIp()
+#             self.g.GCommand("RS")
+#             # try to connect until it does connect or timeout
+#             self.g.Connect(savedIP)
+# =============================================================================
+        pass
 
     def GetMicrocode(self):
-        """Return the entire file.
+        r"""Return the microcode from the controller.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            Return the entire microcode with special characters
         :rtype:
             str
 
         .. note::
-            displays the carriage return + line feed
+            displays the carriage return + line feed as ``\n``
         """
         if self.__IsConnected() is True:
             return self.g.GProgramUpload()
 
     def SetMicrocode(self, code):
-        """Return the entire file.
-
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
-        :return:
-            Return the entire content of the file as one big string
-        :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
-        """
+        """Download the microcode into the controller."""
         if self.__IsConnected() is True:
-            return self.g.GProgramDownload(code)
+            self.g.GProgramDownload(code)
 
     def GetVariable(self, galilVar):
-        """Return the entire file.
+        """Get the value of a variable.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
+        :param galilVar:
+            should be an existing variable of galil script (ex : McRevSpe)
+        :type galilVar:
             str
         :return:
-            Return the entire content of the file as one big string
+            the value
         :rtype:
             str
 
-        .. note::
-            displays the carriage return + line feed
+        .. warning::
+            If the variable doesn't exist, the controller create the variable
+            and gives a zero value.
         """
         if self.__IsConnected() is True:
             return self.g.GCommand(galilVar + "=?")
 
     def GetAllVariables(self):
-        """Return the entire file.
+        """Get the value of all variables.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            a list of all variables name and their value
         :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
+            list
         """
         if self.__IsConnected() is True:
             rawVariables = self.g.GCommand("LV")
             variables = rawVariables.split("\r\n")
             return variables
-            
+
     def GetAllArrays(self):
         """Return the entire file.
 
@@ -245,31 +179,24 @@ class ControlBox:
             Return the entire content of the file as one big string
         :rtype:
             str
-
-        .. note::
-            displays the carriage return + line feed
         """
         if self.__IsConnected() is True:
             rawArrays = self.g.GCommand("LA")
             arrays = rawArrays.split("\r\n")
-            return arrays            
+            return arrays
 
     def GetParameter(self, command):
-        """Return the entire file.
+        """Return the value of a parameter.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
+        :param command:
+            should be an existing parameter coupled to his axis if necessary.
+            (ex : SPA=?, IA ? or MG_CN0)
+        :type command:
             str
         :return:
-            Return the entire content of the file as one big string
+            The result from the ControlBox
         :rtype:
             str
-
-        .. note::
-            displays the carriage return + line feed
         """
         if self.__IsConnected() is True:
             if command[-1:] == "?":
@@ -282,101 +209,64 @@ class ControlBox:
                 print(f"the command {command} is not a query")
 
     def SetParameter(self, command):
-        """Return the entire file.
+        """Return the value of a parameter.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
+        :param command:
+            should be an existing parameter coupled to his axis if necessary.
+            (ex : SPA=value, IA value)
+        :type command:
             str
-        :return:
-            Return the entire content of the file as one big string
-        :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
         """
         if self.__IsConnected() is True:
-            return self.g.GCommand(command)
+            self.g.GCommand(command)
 
     def GetIp(self):
-        """Return the entire file.
+        """Get the IP of the controller. If not connected, return None.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            Return the IP in GALIL format
         :rtype:
-            str
+            str, None
 
         .. note::
-            displays the carriage return + line feed
+            Separator at GALIL is ``,`` so it should return something like:
+            ``xxxx, xxxx, xxxx, xxxx``
         """
         if self.__IsConnected() is True:
             return self.g.GCommand("IA?")
+        else:
+            return None
 
     def GetFWVersion(self):
-        """Return the entire file.
+        """Return the Firmware of the product.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            Return the Firmware of the controller. (ex : DMC4183s56b-SER)
         :rtype:
             str
-
-        .. note::
-            displays the carriage return + line feed
         """
         if self.__IsConnected() is True:
             return self.g.GInfo().split(", ")[1]
 
     def GetSerial(self):
-        """Return the entire file.
+        """Get the serial number of the product.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            Return the S.N of the controller. (ex : 15953.0000)
         :rtype:
             str
-
-        .. note::
-            displays the carriage return + line feed
         """
         if self.__IsConnected() is True:
             return self.g.GInfo().split(", ")[2] + ".0000"
 
     def __IsConnected(self):
-        """Return the entire file.
+        """Control the connexion State.
 
-        :param userPath:
-            where the TXT file is.
-            Path should be, preferably, absolute with format :
-            ``C:/file1/file2/sourcefile``
-        :type userPath:
-            str
         :return:
-            Return the entire content of the file as one big string
+            ``True`` if the soft is connected to the controller
+            ``False`` otherwise
         :rtype:
-            str
-
-        .. note::
-            displays the carriage return + line feed
+            bool
         """
         try:
             self.g.GCommand("IA?")
@@ -384,10 +274,10 @@ class ControlBox:
         except gclib.GclibError:
             return False
 
+
 if __name__ == '__main__':
-    cb = ControlBox()
-    print(cb.Connect("172.16.3.65"))
-    print(cb.GetIp())
+    cb = ControlBox()  # instance of ControlBox
+    print(cb.Connect("172.16.3.65"))  # connect to an existing controlbox
+    print(cb.GetIp())  # ask for anything
     print(cb.Disconnect())
-    print(cb.Connect("172.16.3.88"))
-    
+    print(cb.Connect("172.16.3.88"))  # connect to an non existing controlbox
