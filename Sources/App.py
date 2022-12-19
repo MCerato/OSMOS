@@ -57,7 +57,6 @@ import tkinter.ttk as ttk
 # importing askopenfile function
 # from class filedialog
 from tkinter.filedialog import askopenfile
-# from tkinter.filedialog import askdirectory
 
 # importing some widgets functions
 # from class filedialog
@@ -86,7 +85,7 @@ class App:
             ProjectDir = os.path.dirname(ProjectDir)
     
         self.CBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
-        self.CdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE2.csv"
+        self.CdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE.csv"
 
         self.osmos=OSMOS(self.CBFile, self.CdeFile)
         self.seqRunning = False

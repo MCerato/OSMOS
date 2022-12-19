@@ -69,7 +69,7 @@ class OSMOS:
         ProjectDir = os.path.dirname(ProjectDir)
 
     DefaultCBFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CB.csv"
-    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE2.csv"
+    DefaultCdeFile = ProjectDir + "\\Documentation\\Reference" + "\\OSM_LIST_CDE.csv"
     DefaultbakFolder = ProjectDir + "\\Sources"+"\\.bak\\"
     DefaultlogFolder = ProjectDir + "\\Sources"+"\\.log\\"
 
