@@ -3,6 +3,7 @@ setup.py
 Controlbox/ControlBox.py
 File/CSVFile.py
 File/FileWrapper.py
+File/OSMOSFiles.py
 File/TXTFile.py
 local_Package.egg-info/PKG-INFO
 local_Package.egg-info/SOURCES.txt

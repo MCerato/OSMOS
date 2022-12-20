@@ -60,8 +60,7 @@ class ControlBox:
             If previously connected, close connection before delete
         """
         if self.__IsConnected():
-            print("disconnected")
-            self.g.GClose()
+            self.Disconnect()
 
     def Connect(self, ip):
         """Connect to a ControlBox.
@@ -84,19 +83,20 @@ class ControlBox:
             return False
 
     def Disconnect(self):
-        """Connect to a ControlBox.
+        """Disconnect from a ControlBox.
 
         :return:
             Return the **disconnection** State.
         :rtype:
             bool
         """
-        # self.g.GCommand("IHT =>-3")
-        self.g.GClose()
-        if self.__IsConnected() is True:
+        try:
+            self.g.GCommand("IHS =>-3")
             print("Disconnection failed")
             return False
-        else:
+
+        except gclib.GclibError:
+            self.g.GClose()
             print("Disconnected")
             return True
 

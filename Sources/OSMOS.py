@@ -670,7 +670,7 @@ class OSMOS:
             answers = []
             for axisValue in self.vectorSpeed:
                 cmd = self.osmosf.GetFormattedCmd(param, axisValue)
-                ans = self.CB.GetParameter(cmd)            
+                ans = self.CB.GetParameter(cmd)
                 answers.append(ans)
 
         else:
@@ -692,13 +692,14 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-
         if param[-1] == "I":
             output = self.osmosf.writeFormattedParam(param)
             param = param[:2]
+
             for index, axisValue in enumerate(self.vectorSpeed):
-                output = output.replace(param + axisValue + "=v",
-                                        param + axisValue + "=" + resultFromCB[index])
+                searchSubStr = param + axisValue + "=v"
+                fullSubStr = param + axisValue + "=" + resultFromCB[index]
+                output = output.replace(searchSubStr, fullSubStr)
 
         else:
             output = self.osmosf.writeFormattedParam(param)
