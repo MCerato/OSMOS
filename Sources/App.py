@@ -57,7 +57,7 @@ import tkinter.ttk as ttk
 # importing askopenfile function
 # from class filedialog
 from tkinter.filedialog import askopenfile
-
+from tkinter.filedialog import askdirectory
 # importing some widgets functions
 # from class filedialog
 from tkinter import scrolledtext
@@ -89,7 +89,10 @@ class App:
         self.CdeFile = ProjectDir + "\\Documentation\\Reference"
         self.CdeFile = self.CdeFile + "\\OSM_LIST_CDE.csv"
 
-        self.osmos = OSMOS(self.CBFile, self.CdeFile)
+        self.bakDir = ProjectDir + "\\Sources"+"\\.bak\\"
+        self.logDir = ProjectDir + "\\Sources"+"\\.log\\"
+
+        self.osmos = OSMOS()
         self.seqRunning = False
         self.newContent = ""
 
@@ -108,9 +111,9 @@ class App:
                                command=lambda:ttk.webbrowser.open(f"file://{self._FindLocalDocFiles()}" ))
 
 # In[1]: widget setup
-# ============= SELECT FILES FRAME ============
+# ============= SELECT CONFIG FILES FRAME ============
 # *************
-        selectFileFrame = ttk.LabelFrame(self.root, text='Infos')
+        selectFileFrame = ttk.LabelFrame(self.root, text='Select Config Files')
         selectFileFrame.grid(row=0, column=0, rowspan=2, pady=10, padx=10)
 
 # *************
@@ -132,10 +135,35 @@ class App:
                                       command=lambda: self.CdeOpenFile())
         self.openFileBtn.grid(row=1, column=1, pady=10, padx=10)
 
+# ============= SELECT .BAK .LOG DIRECTORIES FRAME ============
+# *************
+        selectDirFrame = ttk.LabelFrame(self.root, text='Select Directories')
+        selectDirFrame.grid(row=0, column=1, rowspan=2, pady=10, padx=10)
+
+# *************
+        self.bakDirPathLbl = ttk.Label(selectDirFrame, text=".bak Path")
+        self.bakDirPathLbl.grid(row=0, column=0, pady=10, padx=10, sticky="W")
+
+# *************
+        self.logDirLbl = ttk.Label(selectDirFrame, text=".log Path")
+        self.logDirLbl.grid(row=1, column=0, pady=10, padx=10, sticky="W")
+
+# *************
+        self.openBakBtn = ttk.Button(selectDirFrame,
+                                     text='import bak Directory',
+                                     command=lambda: self.BakOpenDir())
+        self.openBakBtn.grid(row=0, column=1, pady=10, padx=10)
+
+# *************
+        self.openLogBtn = ttk.Button(selectDirFrame,
+                                     text='import log Directory',
+                                     command=lambda: self.LogOpenDir())
+        self.openLogBtn.grid(row=1, column=1, pady=10, padx=10)
+
 # ============= CONFIGURATION FRAME ============
 # *************
         configFrame = ttk.LabelFrame(self.root, text='Configuration')
-        configFrame.grid(row=0, column=1, rowspan=2, pady=10, padx=10)
+        configFrame.grid(row=0, column=2, rowspan=2, pady=10, padx=10)
 
 # *************
         self.ntwrkLbl = ttk.Label(configFrame, text="SOLEIL Network :")
@@ -162,7 +190,7 @@ class App:
 # ============= COMMANDS FRAME ============
 # *************
         commandFrame = ttk.LabelFrame(self.root, text='Commands')
-        commandFrame.grid(row=0, column=2, rowspan=2, pady=10, padx=10)
+        commandFrame.grid(row=0, column=3, rowspan=2, pady=10, padx=10)
 
 # *************
         self.startBtn = ttk.Button(commandFrame, text='Start',
@@ -177,12 +205,12 @@ class App:
 # ============= OUTPUT FRAME ============
 # *************
         outputFrame = ttk.LabelFrame(self.root, text='Output')
-        outputFrame.grid(row=2, column=0, rowspan=2, columnspan=4, pady=10,
+        outputFrame.grid(row=2, column=0, rowspan=2, columnspan=10, pady=10,
                          padx=10)
 
 # *************
         self.outputTxt = scrolledtext.ScrolledText(outputFrame, height=10)
-        self.outputTxt.grid(row=0, column=0, columnspan=4, pady=10, padx=10)
+        self.outputTxt.grid(row=0, column=0, columnspan=10, pady=10, padx=10)
         self.outputTxt.configure(state='disabled')
         self.outputTxt.delete(0.0, tk.END)
 
@@ -244,6 +272,50 @@ class App:
         if self.CdeUserFile:
             self.CdeFile = self.CdeUserFile.name
             print(f"{self.CdeUserFile.name} loaded")
+
+
+# In[1]: Graphical File Manipulation (GUI Wrapper)
+    def BakOpenDir(self):
+        """Take the empty lines off the column in the the file.
+
+        :param contentToWrite:
+            Line to read.
+        :type contentToWrite:
+            str, list
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.bakUserDir = askdirectory(mode='r',
+                                       filetypes=[('CSV Files', '*.csv'),
+                                                  ('Text Files', '*.txt'),
+                                                  ('Python Files', '*.py'),
+                                                  ('PDF Files', '*.pdf')])
+        if self.bakUserDir:
+            self.bakDir = self.bakUserDir
+            print(f"{self.bakUserDir} loaded")
+
+
+# In[1]: Graphical File Manipulation (GUI Wrapper)
+    def LogOpenDir(self):
+        """Take the empty lines off the column in the the file.
+
+        :param contentToWrite:
+            Line to read.
+        :type contentToWrite:
+            str, list
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.logUserDir = askdirectory(mode='r',
+                                       filetypes=[('CSV Files', '*.csv'),
+                                                  ('Text Files', '*.txt'),
+                                                  ('Python Files', '*.py'),
+                                                  ('PDF Files', '*.pdf')])
+        if self.logUserDir:
+            self.logDir = self.logUserDir
+            print(f"{self.logUserDir} loaded")
 
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def StartSeq(self):
