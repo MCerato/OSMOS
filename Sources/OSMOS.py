@@ -149,7 +149,11 @@ class OSMOS:
 
         self.logFile = txtf.TXT(logFullName)
         self.logFile.EraseContent()
-        self.logFile.AddContent(f" SOLEIL network : {network}")
+        now = time.localtime()
+        self.logFile.AddContent(f"Extract Started at {now.tm_hour}:{now.tm_min}:{now.tm_sec}")
+        self.logFile.AddContent(f"on {now.tm_mday}/{now.tm_mon}/{now.tm_year}\n\n")
+        self.logFile.AddContent(f"SOLEIL network : {network}\n\n")
+
         # sequence
         for ip in self.listOfCBToGet:
 
@@ -183,6 +187,7 @@ class OSMOS:
                 except Exception as ex:
                     self.logFile.AddContent("Getting System Info Failed")
                     self.logFile.AddContent(f"due to : {ex}")
+                    break
 
                 # -------------------- Parameters Part ------------------------
                 try:
@@ -194,6 +199,7 @@ class OSMOS:
                 except Exception as ex:
                     self.logFile.AddContent("Getting configuration Failed")
                     self.logFile.AddContent(f"error : {ex}")
+                    break
 
                 # -------------------- Variables Part -------------------------
                 try:
@@ -206,6 +212,7 @@ class OSMOS:
                     self.logFile.AddContent("Getting Datas (variables) Failed")
                     self.logFile.AddContent(f"error : {ex}")
                     print("Variables : Done")
+                    break
 
                 # -------------------- Microcode Part -------------------------
                 try:
@@ -217,11 +224,13 @@ class OSMOS:
                 except Exception as ex:
                     self.logFile.AddContent("Getting Microcode Failed")
                     self.logFile.AddContent(f"error : {ex}")
+                    break
                 self.CB.Disconnect()
 
                 self.logFile.AddContent(f"disconnected from {ip}\n\n")
 
                 bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
+                print("New bak created\n")
             # end of sequence
             else:
                 self.logFile.AddContent("------------------------------------")
@@ -230,6 +239,7 @@ class OSMOS:
             # ----------------------- Format Files ----------------------------
         print("End of work")
         self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
+        print("New log created")
         time.sleep(0.2)
 
     def GetAllNetworks(self):
@@ -419,11 +429,11 @@ class OSMOS:
         """
         CVSName = self.osmosf.CBFileGetName(ip)
 
-        fullTime = time.gmtime()
-        year = str(fullTime.tm_year)
-        month = str(fullTime.tm_mon)
-        day = str(fullTime.tm_mday)
 # =============================================================================
+#         fullTime = time.gmtime()
+#         year = str(fullTime.tm_year)
+#         month = str(fullTime.tm_mon)
+#         day = str(fullTime.tm_mday)
 #         hour = str(fullTime.tm_hour)
 #         minute = str(fullTime.tm_min)
 #         second = str(fullTime.tm_sec)
@@ -442,9 +452,12 @@ class OSMOS:
             print("nothing to work on!")
             return name
 
-        name = name + "_" + year + month + day
-        # name = name + "_" + hour + minute + second
+# =============================================================================
+#         name = name + "_" + year + month + day
+#         name = name + "_" + hour + minute + second
+# =============================================================================
         name = name + ".txt"
+
         return name
 
     def __ParamTrt(self, param):
@@ -590,6 +603,7 @@ class OSMOS:
         """
         Size = 0
         output = self.osmosf.writeFormattedParam(param, "1")
+
         if param != "BA":
             for value in resultFromCB:
                 if value != "0":
@@ -652,7 +666,6 @@ class OSMOS:
                                         param +  axisValue + "=" + a + b + c + d + e)
 
         return output
-        # output = self.osmosf.writeFormattedParam(param, Size)
 
         # In[1]: internal function for Class OSMOSGui
     def __VectorRead(self, param):

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Test the class FileWrapper.
+"""Manage The OSMOS Files CB and Command (not .bak and .log).
 
 Description
 -----------
-Sequence of tests for FileWrapper methods.
-
-.. warning::
-    Test non exhaustive (WIP - learning on tests methods)
+Allow to treat and format the .csv files where are ControlBox informations and
+GALIL Command Informations
 
 .. note::
     add waiting time when files are created
@@ -18,6 +16,10 @@ Libraries/Modules
 - CSVFile Personal library
     (https://github.com/MCerato/FileManagement/tree/main/Sources/Packages/File)
     - Access to a personal CSV wrapper File management.
+
+.. note::
+    CSVFile has lightly been modified for the purpose of OSMOS.
+    Mainly indications and differents ``print``
 
 Version
 -------
@@ -56,9 +58,13 @@ class OSMOSFiles:
         automatic detection of the path according to the name project
     :type ProjectDir:
         str
-    :attr ProjectDir:
-        automatic detection of the path according to the name project
-    :type ProjectDir:
+    :attr DefaultCBFile:
+        Path where default ControlBox File is situated
+    :type DefaultCBFile:
+        str
+    :attr DefaultCdeFile:
+        Path where default GALIL commands File is situated
+    :type DefaultCdeFile:
         str
     """
 
@@ -104,35 +110,40 @@ class OSMOSFiles:
         # example (uncomment line below)
         # self.listOfCmdToGet = self.CdeFileCmdFilter("3")
 
-    def FileCleanup(self, listToClean, strToclean):
-        """Take the empty lines off the column in the the file.
+    def FileCleanup(self, listToClean, strToClean):
+        """Take ``strToClean`` from the ``listToClean``.
 
-        :param contentToWrite:
-            Line to read.
-        :type contentToWrite:
-            str, list
+        .. note::
+            Mainly used here to clean the empty lines from the files.
 
-        .. warning::
-            Works only on .CSV.
+        :param listToClean:
+            Can be any list
+        :type listToClean:
+            list
+        :param strToClean:
+            Any Character. Can be empty character too.
+        :type strToClean:
+            str
+        :return:
+            Return a list without ``strToClean``
+        :rtype:
+            list
         """
         listCleaned = listToClean.copy()
         for element in listToClean:
-            if element == strToclean:
+            if element == strToClean:
                 listCleaned.remove(element)
         return listCleaned
 
         # In[1]: internal function for Class OSMOSGui
 
     def CBFileNtwrks(self):
-        """Extract the IPs according to the network input.
+        """Give The list of network ("ssh-Ailes") column from the CB file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of networks
+        :rtype:
+            list
         """
         return self.__networks
 
@@ -140,12 +151,13 @@ class OSMOSFiles:
         """Extract the IPs according to the network input.
 
         :param network:
-            form "RCM", "TEMPO", etc...
+            SOLEIL network onto the form "RCM", "TEMPO", etc...
         :type network:
             str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of IP's
+        :rtype:
+            list
         """
         networkIPs = []
         for index, net in enumerate(self.__networks):
@@ -154,9 +166,12 @@ class OSMOSFiles:
         return networkIPs
 
     def CBFileGetName(self, IP):
-        """Extract the IPs according to the network input.
+        """Give the name of the ControlBox Associated to the given IP.
 
-        :param network:
+        .. note::
+            ``IP`` should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)
+
+        :param IP:
             form "RCM", "TEMPO", etc...
         :type network:
             str
@@ -167,70 +182,80 @@ class OSMOSFiles:
         for index, ip in enumerate(self.__Ips):
             if ip == IP:
                 CVSName = self.__Names[index]
-                # CVSName = CVSName.replace("_parameters", "")
                 return CVSName
 
         return "NameNotFound"
 
         # In[1]: internal function for Class OSMOSGui
 
-    def CdeFileCmdFilter(self, key):
-        """Extract the IPs according to the network input.
+    def CdeFileCmdFilter(self, FW):
+        """Return a list of GALIL parameters according to the firmware given.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        :param FW:
+            GALIL Firmware (ex: DMC4183s56f or DMC2182s87j)
+        :type FW:
             str
 
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of GALIL parameters
+        :rtype:
+            list
         """
         parameters = []
-        for index, keyValue in enumerate(self.FWAvailable):
-            if keyValue == key:
+        for index, FWValue in enumerate(self.FWAvailable):
+            if FWValue == FW:
                 parameters.append(self.param[index])
         return parameters
 
     def CdeFileParamList(self):
-        """Extract the IPs according to the network input.
+        """Return the entire list of paramters in the file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of GALIL parameters
+        :rtype:
+            list
         """
         return self.FileCleanup(self.CdeDatas["parameter"], '')
 
     def CdeFileReadWriteType(self, parameter):
-        """Extract the IPs according to the network input.
+        """Give the "How to read" and "How to Write" of a GALIL parameter.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This parameter has to be present in the Command file.
+        :param parameter:
+            GALIL parameter (ex: SP or AC or DC)
+        :type parameter:
             str
 
-        .. warning::
-            Works only on .CSV.
+        :return readType:
+            Return the way to read the parameter from the controller
+        :rtype:
+            list
+
+        :return readType:
+            Return the way to write the parameter into the .bak file
+        :rtype:
+            list
+
         """
         commandIndex = self.param.index(parameter)
         readType = self.syntaxGetParam[commandIndex]
-        Writetype = self.syntaxWriteBak[commandIndex]
+        writeType = self.syntaxWriteBak[commandIndex]
 
-        return readType, Writetype
+        return readType, writeType
 
     def CdeFileGetFWAvail(self, parameter):
-        """Extract the IPs according to the network input.
+        """Return the available GALIL firmwares for a GALIL parameter given.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        :param parameter:
+            GALIL parameter (ex: SP or AC or DC)
+        :type parameter:
             str
 
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return the list of available firmwares
+        :rtype:
+            list
+
         """
         commandIndex = self.param.index(parameter)
         WhichFW = self.FWAvailable[commandIndex].split(", ")
@@ -238,15 +263,28 @@ class OSMOSFiles:
         return WhichFW
 
     def GetFormattedCmd(self, commandToGet, axis="A"):
-        """Extract the IPs according to the network input.
+        """Return the formatted way to read a parameter.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        (ex: parameter is SP and axis is B then, it returns SPB=?)
+
+        .. note::
+            This is according to the way to read the parameter. i.e: IA doesn't
+            have any axis then it will return "IA ?"
+
+        :param commandToGet:
+            GALIL parameter (ex: SP or AC or DC)
+        :type commandToGet:
             str
 
-        .. warning::
-            Works only on .CSV.
+        :param axis:
+            GALIL axis from "A" to "H"
+        :type axis:
+            str
+
+        :return:
+            the formatted reading string
+        :rtype:
+            str
         """
         commandIndex = self.param.index(commandToGet)
         if self.syntaxGetParam[commandIndex] == "Standard":
@@ -265,16 +303,30 @@ class OSMOSFiles:
 
         return command
 
-    def writeFormattedParam(self, paramTolook, size = "0", ):
-        """Extract the IPs according to the network input.
+    def writeFormattedParam(self, paramTolook, size="0", ):
+        """Return the formatted way to write a parameter into .bak file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        .. note::
+            This is according to the command file ``OSM_LIST_CDE``.
+
+        sometimes, the number of parameters to write depends on his "size"
+        except for some size hardcoded by GALIL, this parameter is automaticaly
+        calculated
+
+        :param paramTolook:
+            GALIL parameter (ex: SP or AC or DC)
+        :type commandToGet:
             str
 
-        .. warning::
-            Works only on .CSV.
+        :param size:
+            the size tha should be writed into .bak, but only if necessary.
+        :type size:
+            str
+
+        :return:
+            the formatted writing string
+        :rtype:
+            str
         """
         commandIndex = self.param.index(paramTolook)
 
@@ -290,12 +342,13 @@ class OSMOSFiles:
                 else:
                     paramWriteFormat = paramWriteFormat + elt
             paramWriteFormat = paramWriteFormat.replace("'", '"')
-        
+
         else:
             paramWriteFormat = self.writeBakFormat[commandIndex]
-            paramWriteFormat = paramWriteFormat.replace("'", '"')            
+            paramWriteFormat = paramWriteFormat.replace("'", '"')
 
         return paramWriteFormat + "\n"
+
 
 if __name__ == '__main__':
     osmosf = OSMOSFiles()

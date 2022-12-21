@@ -91,6 +91,7 @@ class ControlBox:
             bool
         """
         try:
+            # close UDP and TCP if used of surrent connection (not others)
             self.g.GCommand("IHS =>-3")
             print("Disconnection failed")
             return False
