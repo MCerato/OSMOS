@@ -286,11 +286,7 @@ class App:
         .. warning::
             Works only on .CSV.
         """
-        self.bakUserDir = askdirectory(mode='r',
-                                       filetypes=[('CSV Files', '*.csv'),
-                                                  ('Text Files', '*.txt'),
-                                                  ('Python Files', '*.py'),
-                                                  ('PDF Files', '*.pdf')])
+        self.bakUserDir = askdirectory()
         if self.bakUserDir:
             self.bakDir = self.bakUserDir
             print(f"{self.bakUserDir} loaded")
@@ -308,11 +304,7 @@ class App:
         .. warning::
             Works only on .CSV.
         """
-        self.logUserDir = askdirectory(mode='r',
-                                       filetypes=[('CSV Files', '*.csv'),
-                                                  ('Text Files', '*.txt'),
-                                                  ('Python Files', '*.py'),
-                                                  ('PDF Files', '*.pdf')])
+        self.logUserDir = askdirectory()
         if self.logUserDir:
             self.logDir = self.logUserDir
             print(f"{self.logUserDir} loaded")
