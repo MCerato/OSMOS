@@ -38,7 +38,7 @@ Copyright (c) 2022 Cerato Workshop.  All rights reserved.
 Members
 -------
 """
-import gclib
+from Controlbox import gclib
 
 
 class ControlBox:
