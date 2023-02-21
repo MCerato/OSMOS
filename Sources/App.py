@@ -47,6 +47,7 @@ import os
 import contextlib
 import io
 import time
+import webbrowser
 from threading import Thread
 
 # importing tkinter and tkinter.ttk
@@ -78,10 +79,10 @@ class App:
 
     def __init__(self):
         # In[1]: General setup
-        Project = "OSMOS"
+        self.project = "OSMOS"
         ProjectDir = os.path.dirname(__file__)
 
-        while os.path.basename(ProjectDir) != Project:
+        while os.path.basename(ProjectDir) != self.project:
             ProjectDir = os.path.dirname(ProjectDir)
 
         self.CBFile = ProjectDir + "\\Documentation\\Reference"
@@ -108,8 +109,9 @@ class App:
         self.help_ = tk.Menu(self.menubar, tearoff=0)
         self.menubar.add_cascade(label='Help', menu=self.help_)
         self.help_.add_command(label="User Guide",
-                               command=lambda:ttk.webbrowser.open(f"file://{self._FindLocalDocFiles()}" ))
-
+                               command = lambda:webbrowser.open(f"file://{self.__FindUserGuideFiles()}" ))
+        self.help_.add_command(label="Developper Guide",
+                               command = lambda:webbrowser.open(f"file://{self.__FindDevGuideFiles()}" ))
 # In[1]: widget setup
 # ============= SELECT CONFIG FILES FRAME ============
 # *************
@@ -291,7 +293,6 @@ class App:
             self.bakDir = self.bakUserDir
             print(f"{self.bakUserDir} loaded")
 
-
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def LogOpenDir(self):
         """Take the empty lines off the column in the the file.
@@ -309,6 +310,28 @@ class App:
             self.logDir = self.logUserDir
             print(f"{self.logUserDir} loaded")
 
+# In[1]: Internal Methods
+    def __FindUserGuideFiles(self):
+        """Use to change the doc path according to the App run dir."""
+        self.pathDocFiles = __file__
+        self.pathDocFiles = self.pathDocFiles.replace("\\", "/")
+        while os.path.basename(self.pathDocFiles) != self.project:
+            self.pathDocFiles = os.path.dirname(self.pathDocFiles)
+
+        self.pathDocFiles = self.pathDocFiles + "/Documentation/build/html/GuidesPages/UserGuide.html"
+
+        return self.pathDocFiles
+
+    def __FindDevGuideFiles(self):
+        """Use to change the doc path according to the App run dir."""
+        self.pathDocFiles = __file__
+        self.pathDocFiles = self.pathDocFiles.replace("\\", "/")
+        while os.path.basename(self.pathDocFiles) != self.project:
+            self.pathDocFiles = os.path.dirname(self.pathDocFiles)
+
+        self.pathDocFiles = self.pathDocFiles + "/Documentation/build/html/GuidesPages/DevGuide.html"
+
+        return self.pathDocFiles
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def StartSeq(self):
         """Take the empty lines off the column in the the file.
@@ -412,11 +435,6 @@ class App:
         Thread(target=__OsmSeq, args=(self,)).start()
         Thread(target=__ProgressBar, args=(self,)).start()
 
-# =============================================================================
-#         Thread(target=__DisplayPrint, args=(self,)).join()
-#         Thread(target=__OsmSeq, args=(self,)).join()
-#         Thread(target=__ProgressBar, args=(self,)).join()
-# =============================================================================
 # In[1]: Graphical File Manipulation (GUI Wrapper)
 
 

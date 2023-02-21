@@ -1,0 +1,481 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Guides" href="../GuidesPages/modules.html" /><link rel="prev" title="ControlBox module" href="ControlBox.html" />
+
+    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+        <title>gclib module - OSMOS documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OSMOS  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OSMOS  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../FilePages/modules.html">File</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/CSVFile.html">CSVFile module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/FileWrapper.html">FileWrapper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/TXTFile.html">TXTFile module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Controlbox</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ControlBox.html">ControlBox module</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">gclib module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../GuidesPages/modules.html">Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../GuidesPages/UserGuide.html">OSMOS UserGuide (WIP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../GuidesPages/DevGuide.html">OSMOS DevGuide (WIP)</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-gclib">
+<span id="gclib-module"></span><h1>gclib module<a class="headerlink" href="#module-gclib" title="Permalink to this heading">#</a></h1>
+<p>Python wrapper for Galil gclib.
+Contact <a class="reference external" href="mailto:softwaresupport&#37;&#52;&#48;galil&#46;com">softwaresupport<span>&#64;</span>galil<span>&#46;</span>com</a> with questions, comments, and suggestions.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="gclib.GclibError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gclib.</span></span><span class="sig-name descname"><span class="pre">GclibError</span></span><a class="headerlink" href="#gclib.GclibError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error class for non-zero gclib return codes.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gclib.py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gclib.</span></span><span class="sig-name descname"><span class="pre">py</span></span><a class="headerlink" href="#gclib.py" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a single Python connection to a Galil Controller or PLC.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GAddresses">
+<span class="sig-name descname"><span class="pre">GAddresses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GAddresses" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides a dictionary of all available connection addresses.</p>
+<p>Returns a dictionary mapping ‘address’ -&gt; ‘revision reports’, where possible
+e.g. {}</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GArrayDownload">
+<span class="sig-name descname"><span class="pre">GArrayDownload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GArrayDownload" title="Permalink to this definition">#</a></dt>
+<dd><p>Downloads array data to a pre-dimensioned array in the controller’s array table. 
+array_data should be a list of values (e.g. int or float)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GArrayDownloadFile">
+<span class="sig-name descname"><span class="pre">GArrayDownloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GArrayDownloadFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Downloads a csv file containing array data at file_path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GArrayUpload">
+<span class="sig-name descname"><span class="pre">GArrayUpload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GArrayUpload" title="Permalink to this definition">#</a></dt>
+<dd><p>Uploads array data from the controller’s array table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GArrayUploadFile">
+<span class="sig-name descname"><span class="pre">GArrayUploadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GArrayUploadFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Uploads the entire controller array table or a subset and saves the data as a csv file specified by file_path.
+names is optional and should be a list of array names on the controller.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GAssign">
+<span class="sig-name descname"><span class="pre">GAssign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GAssign" title="Permalink to this definition">#</a></dt>
+<dd><p>Assigns IP address over the Ethernet to a controller at a given MAC address.
+Linux/OS X users must be root to use GAssign() and have UDP access to send on port 68.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GClose">
+<span class="sig-name descname"><span class="pre">GClose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GClose" title="Permalink to this definition">#</a></dt>
+<dd><p>Closes a connection to a Galil Controller.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GCommand">
+<span class="sig-name descname"><span class="pre">GCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GCommand" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs a command-and-response transaction on the connection. 
+Trims the response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GFirmwareDownload">
+<span class="sig-name descname"><span class="pre">GFirmwareDownload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GFirmwareDownload" title="Permalink to this definition">#</a></dt>
+<dd><p>Upgrade firmware.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GInfo">
+<span class="sig-name descname"><span class="pre">GInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GInfo" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides a useful connection string. Please include the output of this function on all support cases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GInterrupt">
+<span class="sig-name descname"><span class="pre">GInterrupt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GInterrupt" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides access to PCI and UDP interrupts from the controller.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GIpRequests">
+<span class="sig-name descname"><span class="pre">GIpRequests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GIpRequests" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides a dictionary of all Galil controllers requesting IP addresses via BOOT-P or DHCP.</p>
+<p>Returns a dictionary mapping ‘model-serial’ –&gt; ‘mac address’
+e.g. {‘DMC4000-783’: ‘00:50:4c:20:03:0f’, ‘DMC4103-9998’: ‘00:50:4c:38:27:0e’}</p>
+<p>Linux/OS X users must be root to use GIpRequests() and have UDP access to bind and listen on port 67.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GListServers">
+<span class="sig-name descname"><span class="pre">GListServers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GListServers" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GMessage">
+<span class="sig-name descname"><span class="pre">GMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GMessage" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides access to unsolicited messages from the controller.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GMotionComplete">
+<span class="sig-name descname"><span class="pre">GMotionComplete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GMotionComplete" title="Permalink to this definition">#</a></dt>
+<dd><p>Blocking call that returns once all axes specified have completed their motion.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GOpen">
+<span class="sig-name descname"><span class="pre">GOpen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GOpen" title="Permalink to this definition">#</a></dt>
+<dd><p>Opens a connection a galil controller.
+See the gclib docs for address string formatting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GProgramDownload">
+<span class="sig-name descname"><span class="pre">GProgramDownload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GProgramDownload" title="Permalink to this definition">#</a></dt>
+<dd><p>Downloads a program to the controller’s program buffer.
+See the gclib docs for preprocessor options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GProgramDownloadFile">
+<span class="sig-name descname"><span class="pre">GProgramDownloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GProgramDownloadFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Program download from file. 
+See the gclib docs for preprocessor options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GProgramUpload">
+<span class="sig-name descname"><span class="pre">GProgramUpload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GProgramUpload" title="Permalink to this definition">#</a></dt>
+<dd><p>Uploads a program from the controller’s program buffer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GProgramUploadFile">
+<span class="sig-name descname"><span class="pre">GProgramUploadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GProgramUploadFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Program upload to file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GPublishServer">
+<span class="sig-name descname"><span class="pre">GPublishServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publish</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GPublishServer" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GRemoteConnections">
+<span class="sig-name descname"><span class="pre">GRemoteConnections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GRemoteConnections" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GServerStatus">
+<span class="sig-name descname"><span class="pre">GServerStatus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GServerStatus" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GSetServer">
+<span class="sig-name descname"><span class="pre">GSetServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GSetServer" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GSetupDownloadFile">
+<span class="sig-name descname"><span class="pre">GSetupDownloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GSetupDownloadFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Downloads specified sectors from a Galil compressed backup (gcb) file to a controller.</p>
+<p>Returns a dictionary with the controller information stored in the gcb file.
+If options is specified as 0, an additional “options” key will be in the dictionary indicating the info sectors available in the gcb</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GSleep">
+<span class="sig-name descname"><span class="pre">GSleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GSleep" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides a blocking sleep call which can be useful for timing-based chores.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GTimeout">
+<span class="sig-name descname"><span class="pre">GTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GTimeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the library timeout. Set to -1 to use the intitial library timeout, as specified in GOpen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.GVersion">
+<span class="sig-name descname"><span class="pre">GVersion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.GVersion" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides the gclib version number. Please include the output of this function on all support cases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.__del__">
+<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.__del__" title="Permalink to this definition">#</a></dt>
+<dd><p>Destructor for the Connection class. Ensures close gets called to release Galil resource (Sockets, Kernel Driver, Com Port, etc).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gclib.py.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gclib.py.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor for the Connection class. Initializes gclib’s handle and read buffer.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gclib.py.timeout">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timeout</span></span><a class="headerlink" href="#gclib.py.timeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Convenience property read access to timeout value. If -1, gclib uses the initial library timeout, as specified in GOpen.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../GuidesPages/modules.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Guides</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="ControlBox.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">ControlBox module</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, M.Cerato
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>

@@ -1,7 +1,7 @@
-PDFFile module
+CSVFile module
 ==============
 
-.. automodule:: PDFFile
+.. automodule:: CSVFile
    :members:
    :undoc-members:
    :show-inheritance:

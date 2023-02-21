@@ -1,4 +1,4 @@
-# Configuration file for the Sphinx documentation builder.
+ # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
@@ -10,10 +10,31 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+# --- insert python file to documentation project -----------------------------
+Project = "OSMOS"
+ProjectDir = os.path.dirname(__file__)
+
+while os.path.basename(ProjectDir) != Project:
+    ProjectDir = os.path.dirname(ProjectDir)
+
+# ======== Sources files =================
+sourcesPath = ProjectDir + "\\Sources"
+sys.path.insert(0, sourcesPath)  # chemin absolu des fichiers source
+sys.setrecursionlimit(1500)
+
+# ======== File management package =================
+sourcesPath = ProjectDir + "\\Sources\\Packages\\File"
+sys.path.insert(0, sourcesPath)  # chemin absolu des fichiers source
+sys.setrecursionlimit(1500)
+
+# ======== ControlBox package =================
+sourcesPath = ProjectDir + "\\Sources\\Packages\\ControlBox"
+sys.path.insert(0, sourcesPath)  # chemin absolu des fichiers source
+sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
@@ -22,8 +43,6 @@ copyright = '2022, M.Cerato'
 author = 'M.Cerato'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.0.1'
-
 
 # -- General configuration ---------------------------------------------------
 
