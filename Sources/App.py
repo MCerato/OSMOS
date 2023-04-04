@@ -289,8 +289,8 @@ class App:
         """
         self.bakUserDir = askdirectory()
         if self.bakUserDir:
-            self.bakDir = self.bakUserDir
-            print(f"{self.bakUserDir} loaded")
+            self.bakDir = self.bakUserDir + "/"
+            print(f"new path : {self.bakUserDir} loaded")
 
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def LogOpenDir(self):
@@ -306,8 +306,8 @@ class App:
         """
         self.logUserDir = askdirectory()
         if self.logUserDir:
-            self.logDir = self.logUserDir
-            print(f"{self.logUserDir} loaded")
+            self.logDir = self.logUserDir + "/"
+            print(f"new path : {self.logUserDir} loaded")
 
 # In[1]: Internal Methods
     def __FindUserGuideFiles(self):
@@ -356,8 +356,10 @@ class App:
             """
             self.startBtn['state'] = tk.DISABLED
             self.seqRunning = True
-            self.osmos = OSMOS(self.CBFile, self.CdeFile,
-                               self.bakDir, self.logDir)
+            self.osmos.UpdateBakDir(self.bakDir)
+            self.osmos.UpdateLogDir(self.logDir)
+            # self.osmos = OSMOS(self.CBFile, self.CdeFile,
+                               # self.bakDir, self.logDir)
 
             if self.IPEntry.get():
                 self.osmos.OSMOSSeq(None, self.IPEntry.get())

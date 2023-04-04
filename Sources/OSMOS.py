@@ -77,6 +77,7 @@ class OSMOS:
     DefaultCdeFile = DefaultCdeFile + "\\OSM_LIST_CDE.csv"
 
     DefaultbakFolder = ProjectDir + "\\Sources"+"\\.bak\\"
+
     DefaultlogFolder = ProjectDir + "\\Sources"+"\\.log\\"
 
     def __init__(self, CBFile=DefaultCBFile, CdeFile=DefaultCdeFile,
@@ -146,7 +147,25 @@ class OSMOS:
         parametersList = self.osmosf.CdeFileParamList()
 
         # ----------------- log File Preparation ----------------------
-        self.logFolder = os.path.dirname(__file__) + "\\.log\\"
+        # self.logFolder = os.path.dirname(__file__) + "\\.log\\"
+
+        self.logFolder = self.logFolder
+
+        # -------------- create network Directory------------------
+        for ntwrk in self.GetAllNetworks():
+            if ntwrk == network:
+                # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
+                self.logFolder = self.logFolder + network + "\\"
+                print(f".log directory path is: {self.logFolder}")
+                if not os.path.isdir(self.logFolder):
+                    os.mkdir(self.logFolder)
+
+                else:
+                    shutil.rmtree(self.logFolder,
+                                  ignore_errors=True,
+                                  onerror=None)
+                    os.mkdir(self.logFolder)
+
         logFullName = self.logFolder + logName
 
         if os.path.exists(logFullName.replace(".txt", ".log")):
@@ -277,6 +296,34 @@ class OSMOS:
             Works only on .CSV.
         """
         return self.osmosf.CdeFileParamList()
+
+    def UpdateBakDir(self, newDir):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.bakFolder = newDir
+        return self.bakFolder
+
+    def UpdateLogDir(self, newDir):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.logFolder = newDir
+        return self.logFolder
 
     def __SystemInfo(self):
         """Extract the IPs according to the network input.
@@ -750,7 +797,17 @@ class OSMOS:
 
 
 if __name__ == '__main__':
-    # osmos = OSMOS(network=None, ipAdress="172.16.3.65")
+    # Default directories
     osmos = OSMOS()
     osmos.OSMOSSeq(network="ISAC", userIP=None)
+    
+    # Same directory,but non-default
+    osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
+    osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
+    osmos.OSMOSSeq(network="ISAC", userIP=None)
+
+    # different directories, but non-default
+    osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir1\\")
+    osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir2\\")
+    osmos.OSMOSSeq(network="ISAC", userIP=None) 
     # osmos.OSMOSSeq(network=None, userIP="172.16.3.65")
