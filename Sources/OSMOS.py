@@ -325,6 +325,34 @@ class OSMOS:
         self.logFolder = newDir
         return self.logFolder
 
+    def UpdateCBFile(self, newPath):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.CBFile = newPath
+        self.osmosf.UpdateCBFile(newPath)
+
+    def UpdateCdeFile(self, newPath):
+        """Extract the IPs according to the network input.
+
+        :param network:
+            form "RCM", "TEMPO", etc...
+        :type network:
+            str
+
+        .. warning::
+            Works only on .CSV.
+        """
+        self.CdeFile = newPath
+        self.osmosf.UpdateCdeFile(newPath)
+
     def __SystemInfo(self):
         """Extract the IPs according to the network input.
 
@@ -809,5 +837,13 @@ if __name__ == '__main__':
     # different directories, but non-default
     osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir1\\")
     osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir2\\")
-    osmos.OSMOSSeq(network="ISAC", userIP=None) 
-    # osmos.OSMOSSeq(network=None, userIP="172.16.3.65")
+    osmos.OSMOSSeq(network="ISAC", userIP=None)
+
+    # Alternative CB and Cde file
+    print(osmos.osmosf.CBFileNtwrks())
+    print(osmos.osmosf.CdeFileParamList())
+    print("")
+    osmos.UpdateCBFile("D:/Temp_pro/OSMOS/Test/altern_CB_Path/OSM_LIST_CB.csv")
+    osmos.UpdateCdeFile("D:/Temp_pro/OSMOS/Test/altern_Cde_Path/OSM_LIST_CDE.csv")
+    print(osmos.osmosf.CBFileNtwrks())
+    print(osmos.osmosf.CdeFileParamList())

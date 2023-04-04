@@ -358,6 +358,8 @@ class App:
             self.seqRunning = True
             self.osmos.UpdateBakDir(self.bakDir)
             self.osmos.UpdateLogDir(self.logDir)
+            self.osmos.UpdateCBFile(self.CBFile)
+            self.osmos.UpdateCdeFile(self.CdeFile)
             # self.osmos = OSMOS(self.CBFile, self.CdeFile,
                                # self.bakDir, self.logDir)
 

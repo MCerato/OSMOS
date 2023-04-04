@@ -68,7 +68,7 @@ class CSV(fw.File):
     def __init__(self, userPath):
         fw.File.__init__(self)
 
-        self.CreateFile(userPath)  # link the PDF to the object
+        self.CreateFile(userPath)
 
         if self.GetFileFormat() != ".csv":
             print("wrong file format")

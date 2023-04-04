@@ -83,19 +83,17 @@ class OSMOSFiles:
 
     # ********************
 
-    def __init__(self, listCB=DefaultCBFile, listCmd=DefaultCdeFile):
+    def __init__(self, pathCB=DefaultCBFile, pathCmd=DefaultCdeFile):
 
-        listCB = csvf.CSV(listCB)
-        listCde = csvf.CSV(listCmd)
+        self.listCB = csvf.CSV(pathCB)
+        self.listCde = csvf.CSV(pathCmd)
 
-        self.__CBDatas = listCB.GetColumnDatas()
-        self.__networks = self.FileCleanup(self.__CBDatas["ssh aile"], '')
-        self.__Ips = self.FileCleanup(self.__CBDatas["Adresse-IP"], '')
-        self.__Names = self.FileCleanup(self.__CBDatas["Racine-nom-CVS"], '')
-        # example (uncomment line below)
-        # self.listOfCBToGet = self.CBFileNtwrkFilter("ISAC")
+        self.CBDatas = self.listCB.GetColumnDatas()
+        self.networks = self.FileCleanup(self.CBDatas["network"], '')
+        self.Ips = self.FileCleanup(self.CBDatas["Adresse-IP"], '')
+        self.Names = self.FileCleanup(self.CBDatas["Racine-nom-CVS"], '')
 
-        self.CdeDatas = listCde.GetColumnDatas()
+        self.CdeDatas = self.listCde.GetColumnDatas()
         self.FWAvailable = self.FileCleanup(self.CdeDatas["Firmware"], '')
         self.syntaxGetParam = self.FileCleanup(self.CdeDatas["type-getparam"],
                                                '')
@@ -106,9 +104,6 @@ class OSMOSFiles:
         self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["type-wrtbak"],
                                                '')
         self.writeBakFormat = self.FileCleanup(self.CdeDatas["write"], '')
-        # self.writeFormattedParam("MT")
-        # example (uncomment line below)
-        # self.listOfCmdToGet = self.CdeFileCmdFilter("3")
 
     def FileCleanup(self, listToClean, strToClean):
         """Take ``strToClean`` from the ``listToClean``.
@@ -135,17 +130,75 @@ class OSMOSFiles:
                 listCleaned.remove(element)
         return listCleaned
 
+    def UpdateCBFile(self, newPath):
+        """Take ``strToClean`` from the ``listToClean``.
+
+        .. note::
+            Mainly used here to clean the empty lines from the files.
+
+        :param listToClean:
+            Can be any list
+        :type listToClean:
+            list
+        :param strToClean:
+            Any Character. Can be empty character too.
+        :type strToClean:
+            str
+        :return:
+            Return a list without ``strToClean``
+        :rtype:
+            list
+        """
+        self.listCB = csvf.CSV(newPath)
+        self.CBDatas = self.listCB.GetColumnDatas()
+        self.networks = self.FileCleanup(self.CBDatas["network"], '')
+        self.Ips = self.FileCleanup(self.CBDatas["Adresse-IP"], '')
+        self.Names = self.FileCleanup(self.CBDatas["Racine-nom-CVS"], '')
+        print(f"new file : {newPath}")
+
+    def UpdateCdeFile(self, newPath):
+        """Take ``strToClean`` from the ``listToClean``.
+
+        .. note::
+            Mainly used here to clean the empty lines from the files.
+
+        :param listToClean:
+            Can be any list
+        :type listToClean:
+            list
+        :param strToClean:
+            Any Character. Can be empty character too.
+        :type strToClean:
+            str
+        :return:
+            Return a list without ``strToClean``
+        :rtype:
+            list
+        """
+        self.listCde = csvf.CSV(newPath)
+        self.CdeDatas = self.listCde.GetColumnDatas()
+        self.FWAvailable = self.FileCleanup(self.CdeDatas["Firmware"], '')
+        self.syntaxGetParam = self.FileCleanup(self.CdeDatas["type-getparam"],
+                                               '')
+        self.param = self.FileCleanup(self.CdeDatas["parameter"], '')
+        self.getParamFormat = self.FileCleanup(self.CdeDatas["get"], '')
+        self.setParamFormat = self.FileCleanup(self.CdeDatas["set"], '')
+
+        self.syntaxWriteBak = self.FileCleanup(self.CdeDatas["type-wrtbak"],
+                                               '')
+        self.writeBakFormat = self.FileCleanup(self.CdeDatas["write"], '')
+        print(f"new file : {newPath}")
         # In[1]: internal function for Class OSMOSGui
 
     def CBFileNtwrks(self):
-        """Give The list of network ("ssh-Ailes") column from the CB file.
+        """Give The list of network ("network") column from the CB file.
 
         :return:
             Return a list of networks
         :rtype:
             list
         """
-        return self.__networks
+        return self.networks
 
     def CBFileNtwrkFilter(self, network):
         """Extract the IPs according to the network input.
@@ -160,9 +213,9 @@ class OSMOSFiles:
             list
         """
         networkIPs = []
-        for index, net in enumerate(self.__networks):
+        for index, net in enumerate(self.networks):
             if net == network:
-                networkIPs.append(self.__Ips[index])
+                networkIPs.append(self.Ips[index])
         return networkIPs
 
     def CBFileGetName(self, IP):
@@ -179,9 +232,9 @@ class OSMOSFiles:
         .. warning::
             Works only on .CSV.
         """
-        for index, ip in enumerate(self.__Ips):
+        for index, ip in enumerate(self.Ips):
             if ip == IP:
-                CVSName = self.__Names[index]
+                CVSName = self.Names[index]
                 return CVSName
 
         return "NameNotFound"
@@ -352,3 +405,14 @@ class OSMOSFiles:
 
 if __name__ == '__main__':
     osmosf = OSMOSFiles()
+    
+    # Default CB and Cde file
+    print(osmosf.CBFileNtwrks())
+    print(osmosf.CdeFileParamList())
+    print("")
+    
+    # Alternative CB and Cde file
+    osmosf.UpdateCBFile("D:/Temp_pro/OSMOS/Test/altern_CB_Path/OSM_LIST_CB.csv")
+    osmosf.UpdateCdeFile("D:/Temp_pro/OSMOS/Test/altern_Cde_Path/OSM_LIST_CDE.csv")
+    print(osmosf.CBFileNtwrks())
+    print(osmosf.CdeFileParamList())
