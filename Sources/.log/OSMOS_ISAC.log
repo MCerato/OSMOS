@@ -1,0 +1,21 @@
+Extract Started at 10:27:29
+on 4/4/2023
+
+SOLEIL network : ISAC
+
+------------------------------------
+connected to 172.16.3.65
+firmware : Firmware=DMC4183s56g
+serial : Serial=15953.0000
+System ok
+parameters ok
+Variables ok
+Microcode ok
+disconnected from 172.16.3.65
+
+------------------------------------
+couldn't connect to 172.16.3.66
+
+------------------------------------
+couldn't connect to 172.16.3.266
+

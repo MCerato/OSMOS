@@ -48,7 +48,7 @@ import os
 import time
 import shutil
 from File import TXTFile as txtf
-from Controlbox import ControlBox
+from Packages.Controlbox import ControlBox
 import OSMOSFiles
 
 
@@ -87,7 +87,12 @@ class OSMOS:
         self.bakFolder = bakFolder
         self.logFolder = logFolder
         self.osmosf = OSMOSFiles.OSMOSFiles(self.CBFile, self.CdeFile)
-
+# =============================================================================
+#         print(f"CB File path:{self.CBFile}")
+#         print(f"Cde File path:{self.CdeFile}")
+        print(f".bak directory path:{self.bakFolder}")
+#         print(f".log directory path:{self.logFolder}")
+# =============================================================================
         self.listOfCBToGet = []
 
         # srcDirectory = os.path.dirname(__file__)
@@ -98,7 +103,7 @@ class OSMOS:
         self.vectors = ["S", "T"]
         self.vectorSpeed = ["N", "M"]
 
-    def OSMOSSeq(self, network="TEST", userIP=None):
+    def OSMOSSeq(self, network="ISAC", userIP=None):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -122,8 +127,9 @@ class OSMOS:
                 # -------------- create network Directory------------------
                 for ntwrk in self.GetAllNetworks():
                     if ntwrk == network:
-                        self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
+                        # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
                         self.bakFolder = self.bakFolder + network + "\\"
+                        print(f".bak directory path is:{self.bakFolder}")
                         if not os.path.isdir(self.bakFolder):
                             os.mkdir(self.bakFolder)
 

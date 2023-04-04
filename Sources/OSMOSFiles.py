@@ -44,7 +44,7 @@ Members
 -------
 """
 import os
-from File import CSVFile as csvf
+from Packages.File import CSVFile as csvf
 
 
 class OSMOSFiles:

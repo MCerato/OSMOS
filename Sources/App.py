@@ -275,7 +275,6 @@ class App:
             self.CdeFile = self.CdeUserFile.name
             print(f"{self.CdeUserFile.name} loaded")
 
-
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def BakOpenDir(self):
         """Take the empty lines off the column in the the file.
@@ -319,7 +318,6 @@ class App:
             self.pathDocFiles = os.path.dirname(self.pathDocFiles)
 
         self.pathDocFiles = self.pathDocFiles + "/Documentation/build/html/GuidesPages/UserGuide.html"
-
         return self.pathDocFiles
 
     def __FindDevGuideFiles(self):
@@ -330,8 +328,8 @@ class App:
             self.pathDocFiles = os.path.dirname(self.pathDocFiles)
 
         self.pathDocFiles = self.pathDocFiles + "/Documentation/build/html/GuidesPages/DevGuide.html"
-
         return self.pathDocFiles
+
 # In[1]: Graphical File Manipulation (GUI Wrapper)
     def StartSeq(self):
         """Take the empty lines off the column in the the file.
@@ -358,7 +356,8 @@ class App:
             """
             self.startBtn['state'] = tk.DISABLED
             self.seqRunning = True
-            self.osmos = OSMOS(self.CBFile, self.CdeFile)
+            self.osmos = OSMOS(self.CBFile, self.CdeFile,
+                               self.bakDir, self.logDir)
 
             if self.IPEntry.get():
                 self.osmos.OSMOSSeq(None, self.IPEntry.get())

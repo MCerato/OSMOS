@@ -50,7 +50,7 @@ Members
 
 # In[1]: imports
 import os
-from File import FileWrapper as fw
+from Packages.File import FileWrapper as fw
 
 
 class TXT(fw.File):
