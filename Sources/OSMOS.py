@@ -88,12 +88,7 @@ class OSMOS:
         self.bakFolder = bakFolder
         self.logFolder = logFolder
         self.osmosf = OSMOSFiles.OSMOSFiles(self.CBFile, self.CdeFile)
-# =============================================================================
-#         print(f"CB File path:{self.CBFile}")
-#         print(f"Cde File path:{self.CdeFile}")
-        print(f".bak directory path:{self.bakFolder}")
-#         print(f".log directory path:{self.logFolder}")
-# =============================================================================
+
         self.listOfCBToGet = []
 
         # srcDirectory = os.path.dirname(__file__)
@@ -104,7 +99,7 @@ class OSMOS:
         self.vectors = ["S", "T"]
         self.vectorSpeed = ["N", "M"]
 
-    def OSMOSSeq(self, network="ISAC", userIP=None):
+    def OSMOSSeq(self, network=None, userIP=None):
         """Extract the IPs according to the network input.
 
         :param network:
@@ -115,69 +110,76 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
+        self.listOfCBToGet = []
+        parametersList = self.osmosf.CdeFileParamList()
+
         if userIP:
-            print(userIP)
+            print(f"IP in OSMOS File\n")
             self.listOfCBToGet.append(userIP)
+
             logName = self.__GenerateFileName(None, userIP)
+
         else:
             if network:
-                print(network)
+                print(f"network in OSMOS File\n")
                 self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(network)
-                logName = self.__GenerateFileName(network, None)
 
                 # -------------- create network Directory------------------
                 for ntwrk in self.GetAllNetworks():
                     if ntwrk == network:
                         # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
                         self.bakFolder = self.bakFolder + network + "\\"
-                        print(f".bak directory path is:{self.bakFolder}")
+                        # print(f".bak directory path is:{self.bakFolder}")
+
+                        self.logFolder = self.logFolder + network + "\\"
+                        # print(f".log directory path is: {self.logFolder}")
+
+                        # if .bak directory doesn't exist
                         if not os.path.isdir(self.bakFolder):
-                            os.mkdir(self.bakFolder)
+                            os.mkdir(self.bakFolder)  # create one
 
                         else:
                             shutil.rmtree(self.bakFolder,
                                           ignore_errors=True,
-                                          onerror=None)
-                            os.mkdir(self.bakFolder)
+                                          onerror=None)  # delete directory
+                            os.mkdir(self.bakFolder)  # create a new one
+                            
+                        # if .log directory doesn't exist
+                        if not os.path.isdir(self.logFolder):
+                            os.mkdir(self.logFolder)
+
+                        else:
+                            shutil.rmtree(self.logFolder,
+                                          ignore_errors=True,
+                                          onerror=None)  # delete directory
+                            os.mkdir(self.logFolder)  # create a new one
 
             else:
                 print("nothing to work on!")
                 return None
 
-        parametersList = self.osmosf.CdeFileParamList()
+            logName = self.__GenerateFileName(network, None)
 
         # ----------------- log File Preparation ----------------------
-        # self.logFolder = os.path.dirname(__file__) + "\\.log\\"
-
-        self.logFolder = self.logFolder
-
-        # -------------- create network Directory------------------
-        for ntwrk in self.GetAllNetworks():
-            if ntwrk == network:
-                # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
-                self.logFolder = self.logFolder + network + "\\"
-                print(f".log directory path is: {self.logFolder}")
-                if not os.path.isdir(self.logFolder):
-                    os.mkdir(self.logFolder)
-
-                else:
-                    shutil.rmtree(self.logFolder,
-                                  ignore_errors=True,
-                                  onerror=None)
-                    os.mkdir(self.logFolder)
-
         logFullName = self.logFolder + logName
-
+        print(f"test log path : {logFullName}")
+        # if log file already exists
         if os.path.exists(logFullName.replace(".txt", ".log")):
+            # associate a new object to this file
             self.logFile = txtf.TXT(logFullName.replace(".txt", ".log"))
+            # delete this file
             self.logFile.DeleteFile()
 
+        # then create a new one
         self.logFile = txtf.TXT(logFullName)
         self.logFile.EraseContent()
+        self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
+
         now = time.localtime()
         self.logFile.AddContent(f"Extract Started at {now.tm_hour}:{now.tm_min}:{now.tm_sec}")
         self.logFile.AddContent(f"on {now.tm_mday}/{now.tm_mon}/{now.tm_year}\n\n")
         self.logFile.AddContent(f"SOLEIL network : {network}\n\n")
+        # ------------------------------------------------------------
 
         # sequence
         for ip in self.listOfCBToGet:
@@ -190,7 +192,6 @@ class OSMOS:
             connected = self.CB.Connect(ip)
 
             if connected:
-
                 if os.path.exists(bakFullName.replace(".txt", ".bak")):
                     oldFile = bakFullName.replace(".txt", ".bak")
                     self.bakFile = txtf.TXT(oldFile)
@@ -198,7 +199,8 @@ class OSMOS:
 
                 bakFile = txtf.TXT(bakFullName)
                 bakFile.EraseContent()
-
+                bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
+                
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"connected to {ip}")
 
@@ -254,7 +256,7 @@ class OSMOS:
 
                 self.logFile.AddContent(f"disconnected from {ip}\n\n")
 
-                bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
+                # bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
                 print("New bak created\n")
             # end of sequence
             else:
@@ -263,7 +265,7 @@ class OSMOS:
 
             # ----------------------- Format Files ----------------------------
         print("End of work")
-        self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
+        # self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
         print("New log created")
         time.sleep(0.2)
 
@@ -280,8 +282,10 @@ class OSMOS:
         """
         networksList = []
         for network in self.osmosf.CBFileNtwrks():
+            # add network to the output only once
             if networksList.count(network) < 1:
                 networksList.append(network)
+
         return networksList
 
     def GetAllParameters(self):
@@ -508,7 +512,7 @@ class OSMOS:
         .. warning::
             Works only on .CSV.
         """
-        CVSName = self.osmosf.CBFileGetName(ip)
+
 
 # =============================================================================
 #         fullTime = time.gmtime()
@@ -521,6 +525,7 @@ class OSMOS:
 # =============================================================================
 
         if ip is not None and network is not None:
+            CVSName = self.osmosf.CBFileGetName(ip)
             name = "OSMOS_" + CVSName
 
         elif ip is not None and network is None:
@@ -828,22 +833,27 @@ if __name__ == '__main__':
     # Default directories
     osmos = OSMOS()
     osmos.OSMOSSeq(network="ISAC", userIP=None)
-    
-    # Same directory,but non-default
-    osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
-    osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
-    osmos.OSMOSSeq(network="ISAC", userIP=None)
 
-    # different directories, but non-default
-    osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir1\\")
-    osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir2\\")
-    osmos.OSMOSSeq(network="ISAC", userIP=None)
+    # IP Test
+    osmos.OSMOSSeq(network=None, userIP="172.16.3.65")
 
-    # Alternative CB and Cde file
-    print(osmos.osmosf.CBFileNtwrks())
-    print(osmos.osmosf.CdeFileParamList())
-    print("")
-    osmos.UpdateCBFile("D:/Temp_pro/OSMOS/Test/altern_CB_Path/OSM_LIST_CB.csv")
-    osmos.UpdateCdeFile("D:/Temp_pro/OSMOS/Test/altern_Cde_Path/OSM_LIST_CDE.csv")
-    print(osmos.osmosf.CBFileNtwrks())
-    print(osmos.osmosf.CdeFileParamList())
+# =============================================================================
+#     # Same directory,but non-default
+#     osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
+#     osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
+#     osmos.OSMOSSeq(network="ISAC", userIP=None)
+# 
+#     # different directories, but non-default
+#     osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir1\\")
+#     osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir2\\")
+#     osmos.OSMOSSeq(network="ISAC", userIP=None)
+# 
+#     # Alternative CB and Cde file
+#     print(osmos.osmosf.CBFileNtwrks())
+#     print(osmos.osmosf.CdeFileParamList())
+#     print("")
+#     osmos.UpdateCBFile("D:/Temp_pro/OSMOS/Test/altern_CB_Path/OSM_LIST_CB.csv")
+#     osmos.UpdateCdeFile("D:/Temp_pro/OSMOS/Test/altern_Cde_Path/OSM_LIST_CDE.csv")
+#     print(osmos.osmosf.CBFileNtwrks())
+#     print(osmos.osmosf.CdeFileParamList())
+# =============================================================================

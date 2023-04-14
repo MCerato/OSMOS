@@ -356,17 +356,18 @@ class App:
             """
             self.startBtn['state'] = tk.DISABLED
             self.seqRunning = True
+
             self.osmos.UpdateBakDir(self.bakDir)
             self.osmos.UpdateLogDir(self.logDir)
             self.osmos.UpdateCBFile(self.CBFile)
             self.osmos.UpdateCdeFile(self.CdeFile)
-            # self.osmos = OSMOS(self.CBFile, self.CdeFile,
-                               # self.bakDir, self.logDir)
 
             if self.IPEntry.get():
+                print("check if IP in App")
                 self.osmos.OSMOSSeq(None, self.IPEntry.get())
 
             else:
+                print("check if network in App")
                 self.osmos.OSMOSSeq(self.ntworksCbBx.get(), None)
 
             self.seqRunning = False

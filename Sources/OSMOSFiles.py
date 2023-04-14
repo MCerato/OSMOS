@@ -231,13 +231,16 @@ class OSMOSFiles:
 
         .. warning::
             Works only on .CSV.
+
+        .. warning::
+            IP can be ``None``! It will just be ignored in the .csv list
         """
         for index, ip in enumerate(self.Ips):
             if ip == IP:
                 CVSName = self.Names[index]
                 return CVSName
 
-        return "NameNotFound"
+        return None  # "NameNotFound"
 
         # In[1]: internal function for Class OSMOSGui
 
