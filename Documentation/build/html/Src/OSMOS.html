@@ -279,8 +279,10 @@ request paramters values to the controlbox and saves <code class="docutils liter
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>OSMOS python file is too big and should be splitted. For example, the parsing of files
-should be in a different python file.</p></li>
+<li><p>OSMOS python file is too big and should be splitted.
+For example, the parsing of files should be in a different python file.</p></li>
+<li><p>__ParamTrt is too complex. This should be reworked. Categories are too
+specifics. This should be re-thought and changed.</p></li>
 </ul>
 </section>
 <section id="todo">
@@ -348,37 +350,35 @@ Those default locations might vary when used on your machine</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.GetAllNetworks">
 <span class="sig-name descname"><span class="pre">GetAllNetworks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.GetAllNetworks" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<dd><p>Return All networks available in CB <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return a list of All networks. i.e. [RCM, AILES, …]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.GetAllParameters">
 <span class="sig-name descname"><span class="pre">GetAllParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.GetAllParameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<dd><p>Return All parameters listed in the Cde <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return a list of All parameters. i.e. [SP, AC, …]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.OSMOSSeq">
 <span class="sig-name descname"><span class="pre">OSMOSSeq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userIP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.OSMOSSeq" title="Permalink to this definition">#</a></dt>
-<dd><p>Launch the sequence of retreiving datas from CB and write in files</p>
+<dd><p>Launch the sequence of retreiving datas from CB and write in files.</p>
 <dl class="simple">
 <dt>The sequence is disposed as such :</dt><dd><ul class="simple">
 <li><p>control if User entered an IP in the field or if there is a
@@ -401,7 +401,7 @@ network only</p></li>
 </dl>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><code class="docutils literal notranslate"><span class="pre">IP</span></code> should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)</p>
+<p><code class="docutils literal notranslate"><span class="pre">UserIP</span></code> should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -422,61 +422,49 @@ network only</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.UpdateBakDir">
 <span class="sig-name descname"><span class="pre">UpdateBakDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newDir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateBakDir" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<dd><p>Update the location (directory) to save the <code class="docutils literal notranslate"><span class="pre">.bak</span></code> file.</p>
+<p>This function is important when the user doesn’t want to use the
+default directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dd class="field-odd"><p><strong>newDir</strong> (<em>str</em>) – example format : <em>“D:/Temp_pro/OSMOS/Test/newDir”</em></p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.UpdateCBFile">
-<span class="sig-name descname"><span class="pre">UpdateCBFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateCBFile" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<span class="sig-name descname"><span class="pre">UpdateCBFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateCBFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the location (file) the CB configuration is taken from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dd class="field-odd"><p><strong>newFile</strong> (<em>str</em>) – example format : <em>“D:/Temp_pro/OSMOS/Test/newFile.csv”</em></p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.UpdateCdeFile">
-<span class="sig-name descname"><span class="pre">UpdateCdeFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateCdeFile" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<span class="sig-name descname"><span class="pre">UpdateCdeFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateCdeFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the location (file) the Cde configuration is taken from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dd class="field-odd"><p><strong>newFile</strong> (<em>str</em>) – example format : <em>“D:/Temp_pro/OSMOS/Test/newFile.csv”</em></p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OSMOS.OSMOS.UpdateLogDir">
 <span class="sig-name descname"><span class="pre">UpdateLogDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newDir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OSMOS.OSMOS.UpdateLogDir" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract the IPs according to the network input.</p>
+<dd><p>Update the location (directory) to save the <code class="docutils literal notranslate"><span class="pre">.log</span></code> file.</p>
+<p>This function is important when the user doesn’t want to use the
+default directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>str</em>) – form “RCM”, “TEMPO”, etc…</p>
+<dd class="field-odd"><p><strong>newDir</strong> (<em>str</em>) – example format : <em>“D:/Temp_pro/OSMOS/Test/newDir”</em></p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Works only on .CSV.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">

@@ -363,11 +363,9 @@ class App:
             self.osmos.UpdateCdeFile(self.CdeFile)
 
             if self.IPEntry.get():
-                print("check if IP in App")
                 self.osmos.OSMOSSeq(None, self.IPEntry.get())
 
             else:
-                print("check if network in App")
                 self.osmos.OSMOSSeq(self.ntworksCbBx.get(), None)
 
             self.seqRunning = False

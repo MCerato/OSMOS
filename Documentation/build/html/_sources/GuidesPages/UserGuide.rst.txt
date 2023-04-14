@@ -7,7 +7,7 @@ Description
 -----------
 
 OSMOS is a tool wich can communicate with the GALIL controllers of SOLEIL, 
-extract the parameters/variables/microcode and write the into a file ``.bak``
+extract the parameters/variables/microcode and write the into a ``.bak`` file
 
 This file is parsed according to GALIL format allowing to upload those settings
 into the controller
@@ -63,7 +63,34 @@ How To Upload
 
 .. Finally, press on the button "Upload" and look at log on your request in the display below.  
 
-.. note::There is always a message in a pop up that shows you what is required to perform each task in PBR_OSMOS GUI.
+.. note:: example in line 1 
 
-.. caution:: Because of a bug, the dynamic update of the GUI does'nt work. So you need to press on buttons
-	to get the entry fields (ip address Entry) enabled.
+    in line 2
+
+.. caution:: example in line 1
+    
+    in line 2
+
+.. warning:: example in line 1
+    
+    in line 2
+
+.. important:: example in line 1
+    
+    in line 2
+
+.. important:: example in line 1
+    
+    in line 2
+
+.. attention:: example in line 1
+    
+    in line 2
+
+.. tip:: example in line 1
+    
+    in line 2
+
+..  code-block:: python
+
+    plop = 1

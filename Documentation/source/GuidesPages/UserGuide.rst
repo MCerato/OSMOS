@@ -7,7 +7,7 @@ Description
 -----------
 
 OSMOS is a tool wich can communicate with the GALIL controllers of SOLEIL, 
-extract the parameters/variables/microcode and write the into a file ``.bak``
+extract the parameters/variables/microcode and write the into a ``.bak`` file
 
 This file is parsed according to GALIL format allowing to upload those settings
 into the controller
@@ -23,8 +23,8 @@ How FileManagement has been designed is represented by the software architecture
 
 .. image:: ./software_architecture.PNG
 
-How To select the PBR
----------------------
+Select the configuration Files
+------------------------------
 
 It exists 2 type of connections to a Powerbrick. You can connect through the "maintenance port".
 This ethernet port exists on every PowerBrick and always has the same adress.
@@ -41,8 +41,8 @@ Default IP Adress           Maintenance Adress 172.168.0.200
 Custom IP adress            any Standard PBR adress
 =========================== ================================
 
-How To Download
----------------
+Select where the files will be saved
+------------------------------------
 
 The Download feature allows you to extract setups (in folders form or in files form) of a Power Birck. 
 You'll have to select what setup you want to download. It goes from "usrflash" for the most recent parameters
@@ -51,6 +51,12 @@ to "usrflash.5" for the oldest.
 .. note:: Choosing a path to download is not implemented yet. The files downloaded are put where the script is run.
 
 You can then, press on the green button *"Download"*.
+
+Network and/or IP adress
+------------------------
+
+How to get help
+---------------
 
 How To Upload
 ---------------
@@ -63,7 +69,34 @@ How To Upload
 
 .. Finally, press on the button "Upload" and look at log on your request in the display below.  
 
-.. note::There is always a message in a pop up that shows you what is required to perform each task in PBR_OSMOS GUI.
+.. note:: example in line 1 
 
-.. caution:: Because of a bug, the dynamic update of the GUI does'nt work. So you need to press on buttons
-	to get the entry fields (ip address Entry) enabled.
+    in line 2
+
+.. caution:: example in line 1
+    
+    in line 2
+
+.. warning:: example in line 1
+    
+    in line 2
+
+.. important:: example in line 1
+    
+    in line 2
+
+.. important:: example in line 1
+    
+    in line 2
+
+.. attention:: example in line 1
+    
+    in line 2
+
+.. tip:: example in line 1
+    
+    in line 2
+
+..  code-block:: python
+
+    plop = 1

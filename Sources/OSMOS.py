@@ -35,8 +35,10 @@ Version
 
 Notes
 -----
-- OSMOS python file is too big and should be splitted. For example, the parsing of files
-  should be in a different python file.
+- OSMOS python file is too big and should be splitted.
+  For example, the parsing of files should be in a different python file.
+- __ParamTrt is too complex. This should be reworked. Categories are too
+  specifics. This should be re-thought and changed.
 
 TODO
 ----
@@ -116,7 +118,7 @@ class OSMOS:
         self.vectorSpeed = ["N", "M"]
 
     def OSMOSSeq(self, network=None, userIP=None):
-        """Launch the sequence of retreiving datas from CB and write in files
+        """Launch the sequence of retreiving datas from CB and write in files.
 
         The sequence is disposed as such :
             - control if User entered an IP in the field or if there is a
@@ -146,25 +148,19 @@ class OSMOS:
         parametersList = self.osmosf.CdeFileParamList()
 
         if userIP:
-            print(f"IP in OSMOS File\n")
             self.listOfCBToGet.append(userIP)
 
             logName = self.__GenerateFileName(None, userIP)
 
         else:
             if network:
-                print(f"network in OSMOS File\n")
                 self.listOfCBToGet = self.osmosf.CBFileNtwrkFilter(network)
 
                 # -------------- create network Directory------------------
                 for ntwrk in self.GetAllNetworks():
                     if ntwrk == network:
-                        # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
                         self.bakFolder = self.bakFolder + network + "\\"
-                        # print(f".bak directory path is:{self.bakFolder}")
-
                         self.logFolder = self.logFolder + network + "\\"
-                        # print(f".log directory path is: {self.logFolder}")
 
                         # if .bak directory doesn't exist
                         if not os.path.isdir(self.bakFolder):
@@ -175,7 +171,7 @@ class OSMOS:
                                           ignore_errors=True,
                                           onerror=None)  # delete directory
                             os.mkdir(self.bakFolder)  # create a new one
-                            
+
                         # if .log directory doesn't exist
                         if not os.path.isdir(self.logFolder):
                             os.mkdir(self.logFolder)
@@ -194,7 +190,8 @@ class OSMOS:
 
         # ----------------- log File Preparation ----------------------
         logFullName = self.logFolder + logName
-        print(f"test log path : {logFullName}")
+        print("")
+
         # if log file already exists
         if os.path.exists(logFullName.replace(".txt", ".log")):
             # associate a new object to this file
@@ -217,7 +214,6 @@ class OSMOS:
         for ip in self.listOfCBToGet:
 
             # ----------------- bak File Preparation ----------------------
-            # self.bakFolder = os.path.dirname(__file__) + "\\.bak\\"
             bakName = self.__GenerateFileName(network, ip)
             bakFullName = self.bakFolder + bakName
 
@@ -232,7 +228,7 @@ class OSMOS:
                 bakFile = txtf.TXT(bakFullName)
                 bakFile.EraseContent()
                 bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
-                
+
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"connected to {ip}")
 
@@ -293,13 +289,12 @@ class OSMOS:
                 self.logFile.AddContent("------------------------------------")
                 self.logFile.AddContent(f"couldn't connect to {ip}\n\n")
 
-            # ----------------------- Format Files ----------------------------
         print("End of work")
         print("New log created")
-        time.sleep(0.2)
+        time.sleep(0.1)  # /!\ wait for every thread to finish /!\
 
     def GetAllNetworks(self):
-        """return All networks available in CB ``.csv`` file
+        """Return All networks available in CB ``.csv`` file.
 
         :return:
             Return a list of All networks. i.e. [RCM, AILES, ...]
@@ -315,7 +310,7 @@ class OSMOS:
         return networksList
 
     def GetAllParameters(self):
-        """Return All parameters listed in the Cde ``.csv`` file
+        """Return All parameters listed in the Cde ``.csv`` file.
 
         :return:
             Return a list of All parameters. i.e. [SP, AC, ...]
@@ -328,7 +323,7 @@ class OSMOS:
         """Update the location (directory) to save the ``.bak`` file.
 
         This function is important when the user doesn't want to use the
-        default directory 
+        default directory
 
         :param newDir:
             example format : *"D:/Temp_pro/OSMOS/Test/newDir"*
@@ -342,7 +337,7 @@ class OSMOS:
         """Update the location (directory) to save the ``.log`` file.
 
         This function is important when the user doesn't want to use the
-        default directory 
+        default directory
 
         :param newDir:
             example format : *"D:/Temp_pro/OSMOS/Test/newDir"*
@@ -376,26 +371,21 @@ class OSMOS:
 
     def __SystemInfo(self):
         """Parser of the "System Info" part of the .bak file.
-        
+
         This internal method prepare and return a string to write in the file.
-        
+        System Inof contains, for example:
+            - The Firmware of the contained in the controlBox
+            - Serial Number of the controlBox
+            - ...
+
         .. critical::
-        The format is Highly codified and imposed by GALIL. Notrespect
-        
-
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
+        The format is Highly codified and imposed by GALIL. Not respecting it
+        can compromise the ability to upload the parameters into a ControlBox
 
         :return:
             Return a string composed of system informations
         :rtype:
             str
-
         """
         firmware = "Firmware=" + self.CB.GetFWVersion() + "\n"
         serial = "Serial=" + self.CB.GetSerial() + "\n"
@@ -412,15 +402,24 @@ class OSMOS:
         return systemInfo
 
     def __Configuration(self, parametersList):
-        """Extract the IPs according to the network input.
+        """Parser of the "configuration" part of the .bak file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This internal method prepare and return a string to write in the file.
+        Configuration contains the GALIL parameters values for each axis of a
+        controlBox.
+
+        .. note::
+        Configuration contains an *"init"* subsection wich is mainly for GALIL
+        purpose. It is, anyway, mandatory for the ``.bak`` to be functional.
+
+        .. critical::
+        The format is Highly codified and imposed by GALIL. Not respecting it
+        can compromise the ability to upload the parameters into a ControlBox
+
+        :return:
+            Return a string composed of init and parameters
+        :rtype:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
 # ******************************** init ***************************************
         echo = "EO=false" + "\n"
@@ -435,23 +434,26 @@ class OSMOS:
 
         for param in parametersList:
             if self.__DoesFWExists(param):
-                # print(param)
                 config = config + self.__ParamTrt(param)
 
         config = config + motOFF + "\n"
-        # print(config)
         return config
+# *****************************************************************************
 
     def __Data(self):
-        """Extract the IPs according to the network input.
+        """Parser of the "Data" part of the .bak file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This internal method prepare and return a string to write in the file.
+        Datas contains all variables and arrays used in the microcode.
+
+        .. critical::
+        The format is Highly codified and imposed by GALIL. Not respecting it
+        can compromise the ability to upload the parameters into a ControlBox
+
+        :return:
+            Return a string composed of variables and array
+        :rtype:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
 # ***************************** Variables *************************************
         variables = self.CB.GetAllVariables()
@@ -513,15 +515,23 @@ class OSMOS:
         return data
 
     def __Program(self):
-        """Extract the IPs according to the network input.
+        """Parser of the "Program" part of the .bak file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This internal method prepare and return a string to write in the file.
+        Program contains the microcode.
+
+        .. note::
+        The microcode is written on a unique line in the ``.bak``. This has to
+        been done to be fully understood by GalilSuite.
+
+        .. critical::
+        The format is Highly codified and imposed by GALIL. Not respecting it
+        can compromise the ability to upload the parameters into a ControlBox
+
+        :return:
+            Return a unique string composed of the program
+        :rtype:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
         programInit = "Program=\""
         program = "[Program]\n"
@@ -531,28 +541,28 @@ class OSMOS:
 
         # In[1]: internal function for Class OSMOSGui
     def __GenerateFileName(self, network=None, ip=None):
-        """Extract the IPs according to the network input.
+        """Generate a name for the OSMOS files ``.bak`` and ``.log``.
+
+        The name is generated is automatic and is definedaccording to the
+        network, the CVS name and the IP
 
         :param network:
             form "RCM", "TEMPO", etc...
         :type network:
             str
+        :param ip:
+            IP of the controlbox
+        :type ip:
+            str
 
-        .. warning::
-            Works only on .CSV.
+        .. important::
+            ``UserIP`` should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)
+
+        :return:
+            Return a string composed of system informations
+        :rtype:
+            str
         """
-
-
-# =============================================================================
-#         fullTime = time.gmtime()
-#         year = str(fullTime.tm_year)
-#         month = str(fullTime.tm_mon)
-#         day = str(fullTime.tm_mday)
-#         hour = str(fullTime.tm_hour)
-#         minute = str(fullTime.tm_min)
-#         second = str(fullTime.tm_sec)
-# =============================================================================
-
         if ip is not None and network is not None:
             CVSName = self.osmosf.CBFileGetName(ip)
             name = "OSMOS_" + CVSName
@@ -566,25 +576,44 @@ class OSMOS:
         else:
             print("nothing to work on!")
             return name
-
-# =============================================================================
-#         name = name + "_" + year + month + day
-#         name = name + "_" + hour + minute + second
-# =============================================================================
         name = name + ".txt"
 
         return name
 
     def __ParamTrt(self, param):
-        """Extract the IPs according to the network input.
+        """Look "how to treat" the parameter given inside the Cde ``.csv``.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        Parameters are given a category in the ``.csv`` document. According
+        to his category, the the way to requast a valul of the parameter is
+        different.
+
+        For example :
+            - ``SP`` is a``standard`` parameter. According to the category,
+            The way to ask the controlbox for is value is : ``SP<axis>=?``.
+            ``<axis>`` should have the value ``A``, ``B``, etc... until ``H``
+            - ``IA`` is a ``unique`` parameter. According to the category,
+            The way to ask the controlbox for is value is : ``IA ?``.
+
+        .. important::
+        The way to write the parameters in the ``.bak`` file has been
+        categorized as well. Unfortunately, there is a lot more way to write
+        than to read a parameter. Some of them have a unique way to be written,
+        which make them to be hard coded!
+        It is necessary to rethink the treatment of parameters to be as
+        independant as possible of the parameter.
+
+        :param param:
+            form "SP", "AC", etc...
+        :type param:
             str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return 2 strings:
+                - 1 is the formatted string "How To read" the
+                  parameter.
+                - 2 is the formatted string "How To write" the
+                  parameter.
+        :rtype:
+            str
         """
         howToRead, howToWrite = self.osmosf.CdeFileReadWriteType(param)
 
@@ -871,12 +900,12 @@ if __name__ == '__main__':
 #     osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
 #     osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\same_dir\\")
 #     osmos.OSMOSSeq(network="ISAC", userIP=None)
-# 
+#
 #     # different directories, but non-default
 #     osmos.UpdateBakDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir1\\")
 #     osmos.UpdateLogDir("D:\\Temp_pro\\OSMOS\\Test\\diff_dir2\\")
 #     osmos.OSMOSSeq(network="ISAC", userIP=None)
-# 
+#
 #     # Alternative CB and Cde file
 #     print(osmos.osmosf.CBFileNtwrks())
 #     print(osmos.osmosf.CdeFileParamList())
