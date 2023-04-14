@@ -223,7 +223,7 @@ The board is identified through its IP address.</p>
 <ul class="simple">
 <li><dl class="simple">
 <dt>gclib library (<a class="reference external" href="https://www.galil.com/sw/pub/all/doc/gclib/html/python.html">https://www.galil.com/sw/pub/all/doc/gclib/html/python.html</a>)</dt><dd><ul>
-<li><p>provided by GALIL to communicate with ther product</p></li>
+<li><p>provided by GALIL to communicate with their product</p></li>
 </ul>
 </dd>
 </dl>
@@ -245,7 +245,7 @@ The board is identified through its IP address.</p>
 <section id="todo">
 <h2>TODO<a class="headerlink" href="#todo" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Implement Tests according to Official tests protocol</p></li>
+<li><p>Implement Tests according to Official tests protocol (TDD)</p></li>
 </ul>
 </section>
 <section id="author-s">
@@ -289,9 +289,12 @@ The board is identified through its IP address.</p>
 <dt class="sig sig-object py" id="ControlBox.ControlBox.Disconnect">
 <span class="sig-name descname"><span class="pre">Disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ControlBox.ControlBox.Disconnect" title="Permalink to this definition">#</a></dt>
 <dd><p>Disconnect from a ControlBox.</p>
+<p>before just closing a connection from application side, it sends a
+command to the controller which closes actual connection from his
+side too.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Return the <strong>disconnection</strong> State.</p>
+<dd class="field-odd"><p>Return the <strong>disconnection</strong> State. <code class="docutils literal notranslate"><span class="pre">True</span></code> if disconnected</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
@@ -468,10 +471,10 @@ and gives a zero value.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ControlBox.ControlBox.__del__">
 <span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ControlBox.ControlBox.__del__" title="Permalink to this definition">#</a></dt>
-<dd><p>Close connection.</p>
+<dd><p>Close connection when deleted.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If previously connected, close connection before delete</p>
+<p>If previously connected, close connection before deletion</p>
 </div>
 </dd></dl>
 

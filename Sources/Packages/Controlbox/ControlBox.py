@@ -14,7 +14,7 @@ The board is identified through its IP address.
 Libraries/Modules
 -----------------
 - gclib library (https://www.galil.com/sw/pub/all/doc/gclib/html/python.html)
-    - provided by GALIL to communicate with ther product
+    - provided by GALIL to communicate with their product
 
 Version
 -------
@@ -26,7 +26,7 @@ Notes
 
 TODO
 ----
-- Implement Tests according to Official tests protocol
+- Implement Tests according to Official tests protocol (TDD)
 
 Author(s)
 ---------
@@ -54,10 +54,10 @@ class ControlBox:
         self.g = gclib.py()
 
     def __del__(self):
-        """Close connection.
+        """Close connection when deleted.
 
         .. note::
-            If previously connected, close connection before delete
+            If previously connected, close connection before deletion
         """
         if self.__IsConnected():
             self.Disconnect()
@@ -85,8 +85,12 @@ class ControlBox:
     def Disconnect(self):
         """Disconnect from a ControlBox.
 
+        before just closing a connection from application side, it sends a
+        command to the controller which closes actual connection from his
+        side too.
+
         :return:
-            Return the **disconnection** State.
+            Return the **disconnection** State. ``True`` if disconnected
         :rtype:
             bool
         """

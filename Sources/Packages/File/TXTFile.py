@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-"""Manage the PDF file.
+"""Manage the TXT file.
 
 Description
 -----------
 Object inherited from FileWrapper class and containing specific method
-to extract Data.
+to extract Datas.
 
 unlike FileWrapper, this Class has to be associated with a file wich has
-``.txt`` format
+``.txt`` format.
 
 You can also get (read) the content and write, erase or replace a content.
 
 .. warning::
     It is not recommended to manipulate datas directly from/to the file.
     It is recommended to import the content of the file for treatment as
-    a list of strings wich is easier to manipulate in python and then
+    a list of strings wich is easier to manipulate in python, and then
     write it back to the file.
 
 Libraries/Modules
@@ -39,7 +39,7 @@ TODO
 Author(s)
 ---------
 - Created by M. Cerato on 10/04/2022.
-- Modified by xxx on xx/xx/xxxx.
+- Modified by M. Cerato on 12/04/2023.
 
 Copyright (c) 2020 Cerato Workshop.  All rights reserved.
 
@@ -73,6 +73,7 @@ class TXT(fw.File):
         if self.GetFileFormat() != ".txt":
             print("Warning : ")
             print(f"This is a {self.GetFileFormat()}")
+            print(f"Can generate default if non-writable file")           
             print("")
 
     def __del__(self):
@@ -80,8 +81,6 @@ class TXT(fw.File):
 
         Mainly used to close file in case something went wrong
         """
-        # print(f"{self} deleted")
-
     def __repr__(self):
         """Display the object of the file."""
         return f"txt file : {self.GetFileName()}"
