@@ -22,12 +22,13 @@ Modules
 -------
  
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    :caption: Contents:
 
    FilePages/modules.rst
    CBPages/modules.rst
-   GuidesPages/modules.rst 
+   GuidesPages/modules.rst
+   Src/modules.rst 
 
 ..    modules
 .. si non fonctionnel, le faire revenir derrière "content:" puis refaire entréex2 (+ tab si nécessaire)

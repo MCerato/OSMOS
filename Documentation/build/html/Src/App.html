@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Controlbox" href="../CBPages/modules.html" /><link rel="prev" title="FileWrapper module" href="FileWrapper.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="OSMOS module" href="OSMOS.html" /><link rel="prev" title="Sources" href="modules.html" />
 
     <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
-        <title>TXTFile module - OSMOS documentation</title>
+        <title>App module - OSMOS documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -156,10 +156,10 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">File</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="CSVFile.html">CSVFile module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FileWrapper.html">FileWrapper module</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">TXTFile module</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../FilePages/modules.html">File</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/CSVFile.html">CSVFile module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/FileWrapper.html">FileWrapper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FilePages/TXTFile.html">TXTFile module</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../CBPages/modules.html">Controlbox</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -172,10 +172,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../GuidesPages/DevGuide.html">OSMOS DevGuide (WIP)</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../Src/modules.html">Sources</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../Src/App.html">App module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Src/OSMOS.html">OSMOS module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Src/OSMOSFiles.html">OSMOSFiles module</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Sources</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">App module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OSMOS.html">OSMOS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OSMOSFiles.html">OSMOSFiles module</a></li>
 </ul>
 </li>
 </ul>
@@ -211,22 +211,19 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-TXTFile">
-<span id="txtfile-module"></span><h1>TXTFile module<a class="headerlink" href="#module-TXTFile" title="Permalink to this heading">#</a></h1>
-<p>Manage the TXT file.</p>
+          <section id="module-App">
+<span id="app-module"></span><h1>App module<a class="headerlink" href="#module-App" title="Permalink to this heading">#</a></h1>
+<p>Manage the bank file.</p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>Object inherited from FileWrapper class and containing specific method
-to extract Datas.</p>
-<p>unlike FileWrapper, this Class has to be associated with a file wich has
-<code class="docutils literal notranslate"><span class="pre">.txt</span></code> format.</p>
-<p>You can also get (read) the content and write, erase or replace a content.</p>
+<p>Object from wich you can manage the file you’re using in your BankApp.
+For instance, create a file, rename it etc…</p>
+<p>You can also get (read) the content and save a new content into it.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>It is not recommended to manipulate datas directly from/to the file.
-It is recommended to import the content of the file for treatment as
-a list of strings wich is easier to manipulate in python, and then
-write it back to the file.</p>
+<p>You can’t manipulate datas directly from/to the file.
+It is recommended to export the content of the file for treatment as
+a list of strings wich is easier to manipulate in python.</p>
 </div>
 </section>
 <section id="libraries-modules">
@@ -234,13 +231,6 @@ write it back to the file.</p>
 <ul class="simple">
 <li><dl class="simple">
 <dt>os standard library (<a class="reference external" href="https://docs.python.org/3/library/os.html">https://docs.python.org/3/library/os.html</a>)</dt><dd><ul>
-<li><p>Access to files function.</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>FileWrapper library (:<a class="reference external" href="file:FileWrapper.html">file:FileWrapper.html</a>)</dt><dd><ul>
 <li><p>Access to files function.</p></li>
 </ul>
 </dd>
@@ -257,7 +247,7 @@ write it back to the file.</p>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>None</p></li>
+<li><p>None.</p></li>
 </ul>
 </section>
 <section id="todo">
@@ -269,138 +259,104 @@ write it back to the file.</p>
 <section id="author-s">
 <h2>Author(s)<a class="headerlink" href="#author-s" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Created by M. Cerato on 10/04/2022.</p></li>
-<li><p>Modified by M. Cerato on 12/04/2023.</p></li>
+<li><p>Created by M. Cerato on 06/17/2022.</p></li>
+<li><p>Modified by xxx on xx/xx/xxxx.</p></li>
 </ul>
 <p>Copyright (c) 2020 Cerato Workshop.  All rights reserved.</p>
 </section>
 <section id="members">
 <h2>Members<a class="headerlink" href="#members" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><ol class="upperalpha simple" start="13">
-<li><p>Cerato</p></li>
-</ol>
-</li>
-</ul>
 <dl class="py class">
-<dt class="sig sig-object py" id="TXTFile.TXT">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TXTFile.</span></span><span class="sig-name descname"><span class="pre">TXT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code></p>
-<p>Class representing the TXT file.</p>
+<dt class="sig sig-object py" id="App.App">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">App.</span></span><span class="sig-name descname"><span class="pre">App</span></span><a class="headerlink" href="#App.App" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>userPath</strong> (<em>str</em>) – where the TXT file is.
+<dd class="field-odd"><p><strong>userPath</strong> (<em>str</em>) – where the CSV file is.
 Path should be, preferably, absolute with format :
 <code class="docutils literal notranslate"><span class="pre">C:/file1/file2/sourcefile</span></code></p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.AddContent">
-<span class="sig-name descname"><span class="pre">AddContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contentToWrite</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.AddContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Append content into a txt file.</p>
+<dt class="sig sig-object py" id="App.App.BakOpenDir">
+<span class="sig-name descname"><span class="pre">BakOpenDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.BakOpenDir" title="Permalink to this definition">#</a></dt>
+<dd><p>Take the empty lines off the column in the the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>contentToWrite</strong> (<em>str</em><em>, </em><em>list</em>) – Line to read.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.EraseContent">
-<span class="sig-name descname"><span class="pre">EraseContent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.EraseContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Erase content of a txt file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.GetAllContent">
-<span class="sig-name descname"><span class="pre">GetAllContent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.GetAllContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the entire file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Return the entire content of the file as one big string</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>displays the carriage return + line feed</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only on .CSV.</p>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.GetLineContent">
-<span class="sig-name descname"><span class="pre">GetLineContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.GetLineContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Give the specific line of the file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>line</strong> (<em>int</em>) – Line to read.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Return the line as a string</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>displays the carriage return + line feed</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>return an empty string if the line is out of bound or empty.</p>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.GetLinesContent">
-<span class="sig-name descname"><span class="pre">GetLinesContent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.GetLinesContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the entire file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Return the entire content of the file as one big string</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>displays the carriage return + line feed</p>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.ReplaceContent">
-<span class="sig-name descname"><span class="pre">ReplaceContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contentToWrite</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.ReplaceContent" title="Permalink to this definition">#</a></dt>
-<dd><p>Erase previous content and write new content into a txt file.</p>
+<dt class="sig sig-object py" id="App.App.CBOpenFile">
+<span class="sig-name descname"><span class="pre">CBOpenFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.CBOpenFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Take the empty lines off the column in the the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>contentToWrite</strong> (<em>str</em><em>, </em><em>list</em>) – Line to read.</p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only on .CSV.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.__del__">
-<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.__del__" title="Permalink to this definition">#</a></dt>
-<dd><p>Destroying object.</p>
-<p>Mainly used to close file in case something went wrong</p>
+<dt class="sig sig-object py" id="App.App.CdeOpenFile">
+<span class="sig-name descname"><span class="pre">CdeOpenFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.CdeOpenFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Take the empty lines off the column in the the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>contentToWrite</strong> (<em>str</em><em>, </em><em>list</em>) – Line to read.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only on .CSV.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Instanciate class onto object.</p>
+<dt class="sig sig-object py" id="App.App.LogOpenDir">
+<span class="sig-name descname"><span class="pre">LogOpenDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.LogOpenDir" title="Permalink to this definition">#</a></dt>
+<dd><p>Take the empty lines off the column in the the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>contentToWrite</strong> (<em>str</em><em>, </em><em>list</em>) – Line to read.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only on .CSV.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="TXTFile.TXT.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TXTFile.TXT.__repr__" title="Permalink to this definition">#</a></dt>
-<dd><p>Display the object of the file.</p>
+<dt class="sig sig-object py" id="App.App.StartSeq">
+<span class="sig-name descname"><span class="pre">StartSeq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.StartSeq" title="Permalink to this definition">#</a></dt>
+<dd><p>Take the empty lines off the column in the the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>contentToWrite</strong> (<em>str</em><em>, </em><em>list</em>) – Line to read.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only on .CSV.</p>
+</div>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="App.App.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#App.App.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -412,23 +368,23 @@ Path should be, preferably, absolute with format :
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../CBPages/modules.html">
+          <a class="next-page" href="OSMOS.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Controlbox</div>
+                <div class="title">OSMOS module</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="FileWrapper.html">
+          <a class="prev-page" href="modules.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">FileWrapper module</div>
+                <div class="title">Sources</div>
                 
               </div>
             </a>
@@ -464,7 +420,7 @@ Path should be, preferably, absolute with format :
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">TXTFile module</a><ul>
+<li><a class="reference internal" href="#">App module</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#libraries-modules">Libraries/Modules</a></li>
 <li><a class="reference internal" href="#version">Version</a></li>

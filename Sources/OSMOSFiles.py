@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Manage The OSMOS Files CB and Command (not .bak and .log).
+"""Manage The OSMOS Files CB and Command (.csv).
 
 Description
 -----------
@@ -13,9 +13,8 @@ Libraries/Modules
 -----------------
 - os standard library (https://docs.python.org/3/library/os.html)
     - Access to files function.
-- CSVFile Personal library
-    (https://github.com/MCerato/FileManagement/tree/main/Sources/Packages/File)
-    - Access to a personal CSV wrapper File management.
+- CSVFile library (:file:../FilePages/CSVFile.html)
+    - Access to a CSV wrapper File management.
 
 .. note::
     CSVFile has lightly been modified for the purpose of OSMOS.
@@ -31,7 +30,7 @@ Notes
 
 TODO
 ----
-- Implement Tests according to Official tests protocol
+- Implement Tests according to Official tests protocol (TDD)
 
 Author(s)
 ---------
@@ -60,10 +59,12 @@ class OSMOSFiles:
         str
     :attr DefaultCBFile:
         Path where default ControlBox File is situated
+        Should be : ``OSMOS/Sources/.bak``
     :type DefaultCBFile:
         str
     :attr DefaultCdeFile:
         Path where default GALIL commands File is situated
+        Should be : ``OSMOS/Sources/.log``
     :type DefaultCdeFile:
         str
     """
@@ -106,7 +107,7 @@ class OSMOSFiles:
         self.writeBakFormat = self.FileCleanup(self.CdeDatas["write"], '')
 
     def FileCleanup(self, listToClean, strToClean):
-        """Take ``strToClean`` from the ``listToClean``.
+        """Take ``strToClean`` off the ``listToClean``.
 
         .. note::
             Mainly used here to clean the empty lines from the files.
@@ -131,23 +132,14 @@ class OSMOSFiles:
         return listCleaned
 
     def UpdateCBFile(self, newPath):
-        """Take ``strToClean`` from the ``listToClean``.
+        """link OSMOSFile objet to an other csv file.
 
-        .. note::
-            Mainly used here to clean the empty lines from the files.
+        It updates all of his attributes too.
 
-        :param listToClean:
-            Can be any list
-        :type listToClean:
-            list
-        :param strToClean:
-            Any Character. Can be empty character too.
-        :type strToClean:
+        :param newPath:
+            path of the new file to be associated with
+        :type newPath:
             str
-        :return:
-            Return a list without ``strToClean``
-        :rtype:
-            list
         """
         self.listCB = csvf.CSV(newPath)
         self.CBDatas = self.listCB.GetColumnDatas()
@@ -157,23 +149,14 @@ class OSMOSFiles:
         print(f"new file : {newPath}")
 
     def UpdateCdeFile(self, newPath):
-        """Take ``strToClean`` from the ``listToClean``.
+        """link this Object to an other csv file.
 
-        .. note::
-            Mainly used here to clean the empty lines from the files.
+        It updates all of his attributes too.
 
-        :param listToClean:
-            Can be any list
-        :type listToClean:
-            list
-        :param strToClean:
-            Any Character. Can be empty character too.
-        :type strToClean:
+        :param newPath:
+            path of the new file to be associated with
+        :type newPath:
             str
-        :return:
-            Return a list without ``strToClean``
-        :rtype:
-            list
         """
         self.listCde = csvf.CSV(newPath)
         self.CdeDatas = self.listCde.GetColumnDatas()
@@ -191,7 +174,9 @@ class OSMOSFiles:
         # In[1]: internal function for Class OSMOSGui
 
     def CBFileNtwrks(self):
-        """Give The list of network ("network") column from the CB file.
+        """Give The list of network ("network" column from the CB file).
+
+        example : ``rcm`` or ``ISAC``
 
         :return:
             Return a list of networks
@@ -221,7 +206,7 @@ class OSMOSFiles:
     def CBFileGetName(self, IP):
         """Give the name of the ControlBox Associated to the given IP.
 
-        .. note::
+        .. important::
             ``IP`` should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)
 
         :param IP:
@@ -265,6 +250,9 @@ class OSMOSFiles:
 
     def CdeFileParamList(self):
         """Return the entire list of paramters in the file.
+        
+        .. note::
+            empty lines are automatically removed.        
 
         :return:
             Return a list of GALIL parameters
@@ -274,9 +262,10 @@ class OSMOSFiles:
         return self.FileCleanup(self.CdeDatas["parameter"], '')
 
     def CdeFileReadWriteType(self, parameter):
-        """Give the "How to read" and "How to Write" of a GALIL parameter.
+        """Give the *""How to read"* and *"How to Write"* of a GALIL parameter.
 
         This parameter has to be present in the Command file.
+
         :param parameter:
             GALIL parameter (ex: SP or AC or DC)
         :type parameter:
@@ -375,7 +364,7 @@ class OSMOSFiles:
             str
 
         :param size:
-            the size tha should be writed into .bak, but only if necessary.
+            the size that should be writed into .bak, but only if necessary.
         :type size:
             str
 

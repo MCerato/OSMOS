@@ -1,26 +1,33 @@
 # -*- coding: utf-8 -*-
-"""Test the class FileWrapper.
+"""Core of the OSMOS project.
 
 Description
 -----------
-Sequence of tests for FileWrapper methods.
+OSMOS python file is the interface between the controlbox, the ``.csv``
+configuration files and the ``.bak`` and ``.log`` generated.
 
-.. warning::
-    Test non exhaustive (WIP - learning on tests methods)
+According to User commands through GUI and configuration files, OSMOS
+request paramters values to the controlbox and saves ``.bak`` file and
+``.log`` file.
 
-.. note::
-    add waiting time when files are created
+the saving location is either the default directories:
+    - *OSMOS/Sources/.bak*
+    - *OSMOS/Sources/.log*
+
+Or a specified directory through the GUI
 
 Libraries/Modules
 -----------------
-- sys standard library (https://docs.python.org/3/library/sys.html)
-    - Access to functions interacting with interpreter.
 - os standard library (https://docs.python.org/3/library/os.html)
     - Access to files function.
 - time standard library (https://docs.python.org/2/library/time.html)
     - Access to time-related functions.
-- PDFFile library (:file:FileWrapper.html)
-    - Access to files functions.
+- shutil standard library (https://docs.python.org/3/library/shutil.html)
+    - High-level operations on files and directories.
+- TXTFile library (:file:../FilePages/TXTFile.html)
+    - Access to writable files functions.
+- ControlBox library (:file:../CBPages/ControlBox.html)
+    - Access communications functions with a ControlBox.
 
 Version
 -------
@@ -28,21 +35,24 @@ Version
 
 Notes
 -----
-- None
+- OSMOS python file is too big and should be splitted. For example, the parsing of files
+  should be in a different python file.
 
 TODO
 ----
-- Implement Tests according to Official tests protocol
+- Implement Tests according to Official tests protocol (TDD)
 
 Author(s)
 ---------
 - Created by M. Cerato on 10/05/2022.
-- Modified by xxx on xx/xx/xxxx.
+- Modified by M. Cerato on 14/04/2023.
 
 Copyright (c) 2022 Cerato Workshop.  All rights reserved.
 
 Members
 -------
+- M. Cerato
+
 """
 import os
 import time
@@ -59,6 +69,12 @@ class OSMOS:
         where the CSV file is.
         Path should be, preferably, absolute with format :
         ``C:/file1/file2/sourcefile``
+
+    .. warning::
+        The parameters (``CBFile``, ``bakFolder``, etc..) shown are just
+        momentary values automatically detected on my machine.
+        Those default locations might vary when used on your machine
+
     :type userPath:
         str
     """
@@ -100,12 +116,28 @@ class OSMOS:
         self.vectorSpeed = ["N", "M"]
 
     def OSMOSSeq(self, network=None, userIP=None):
-        """Extract the IPs according to the network input.
+        """Launch the sequence of retreiving datas from CB and write in files
+
+        The sequence is disposed as such :
+            - control if User entered an IP in the field or if there is a
+              network only
+            - create a directory if needed with the name of the network
+            - create and name a ``.log`` file
+            - create and name a ``.bak`` file
+            - request the CB for elements and write in ``.bak`` file
+            - for each element done, write status in ``.log`` file
 
         :param network:
             form "RCM", "TEMPO", etc...
         :type network:
             str
+        :param userIP:
+            IP of the controlbox
+        :type userIP:
+            str
+
+        .. important::
+            ``UserIP`` should be xxxx.xxxx.xxxx.xxxx format (not GALIL format)
 
         .. warning::
             Works only on .CSV.
@@ -255,8 +287,6 @@ class OSMOS:
                 self.CB.Disconnect()
 
                 self.logFile.AddContent(f"disconnected from {ip}\n\n")
-
-                # bakFile.RenameFile(bakFullName.replace(".txt", ".bak"))
                 print("New bak created\n")
             # end of sequence
             else:
@@ -265,20 +295,16 @@ class OSMOS:
 
             # ----------------------- Format Files ----------------------------
         print("End of work")
-        # self.logFile.RenameFile(logFullName.replace(".txt", ".log"))
         print("New log created")
         time.sleep(0.2)
 
     def GetAllNetworks(self):
-        """Extract the IPs according to the network input.
+        """return All networks available in CB ``.csv`` file
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of All networks. i.e. [RCM, AILES, ...]
+        :rtype:
+            list
         """
         networksList = []
         for network in self.osmosf.CBFileNtwrks():
@@ -289,76 +315,73 @@ class OSMOS:
         return networksList
 
     def GetAllParameters(self):
-        """Extract the IPs according to the network input.
+        """Return All parameters listed in the Cde ``.csv`` file
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
-            str
-
-        .. warning::
-            Works only on .CSV.
+        :return:
+            Return a list of All parameters. i.e. [SP, AC, ...]
+        :rtype:
+            list
         """
         return self.osmosf.CdeFileParamList()
 
     def UpdateBakDir(self, newDir):
-        """Extract the IPs according to the network input.
+        """Update the location (directory) to save the ``.bak`` file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This function is important when the user doesn't want to use the
+        default directory 
+
+        :param newDir:
+            example format : *"D:/Temp_pro/OSMOS/Test/newDir"*
+        :type newDir:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
         self.bakFolder = newDir
         return self.bakFolder
 
     def UpdateLogDir(self, newDir):
-        """Extract the IPs according to the network input.
+        """Update the location (directory) to save the ``.log`` file.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        This function is important when the user doesn't want to use the
+        default directory 
+
+        :param newDir:
+            example format : *"D:/Temp_pro/OSMOS/Test/newDir"*
+        :type newDir:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
         self.logFolder = newDir
         return self.logFolder
 
-    def UpdateCBFile(self, newPath):
-        """Extract the IPs according to the network input.
+    def UpdateCBFile(self, newFile):
+        """Update the location (file) the CB configuration is taken from.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        :param newFile:
+            example format : *"D:/Temp_pro/OSMOS/Test/newFile.csv"*
+        :type newFile:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
-        self.CBFile = newPath
-        self.osmosf.UpdateCBFile(newPath)
+        self.CBFile = newFile
+        self.osmosf.UpdateCBFile(newFile)
 
-    def UpdateCdeFile(self, newPath):
-        """Extract the IPs according to the network input.
+    def UpdateCdeFile(self, newFile):
+        """Update the location (file) the Cde configuration is taken from.
 
-        :param network:
-            form "RCM", "TEMPO", etc...
-        :type network:
+        :param newFile:
+            example format : *"D:/Temp_pro/OSMOS/Test/newFile.csv"*
+        :type newFile:
             str
-
-        .. warning::
-            Works only on .CSV.
         """
-        self.CdeFile = newPath
-        self.osmosf.UpdateCdeFile(newPath)
+        self.CdeFile = newFile
+        self.osmosf.UpdateCdeFile(newFile)
 
     def __SystemInfo(self):
-        """Extract the IPs according to the network input.
+        """Parser of the "System Info" part of the .bak file.
+        
+        This internal method prepare and return a string to write in the file.
+        
+        .. critical::
+        The format is Highly codified and imposed by GALIL. Notrespect
+        
 
         :param network:
             form "RCM", "TEMPO", etc...
@@ -367,6 +390,12 @@ class OSMOS:
 
         .. warning::
             Works only on .CSV.
+
+        :return:
+            Return a string composed of system informations
+        :rtype:
+            str
+
         """
         firmware = "Firmware=" + self.CB.GetFWVersion() + "\n"
         serial = "Serial=" + self.CB.GetSerial() + "\n"

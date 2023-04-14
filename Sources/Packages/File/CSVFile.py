@@ -178,7 +178,7 @@ class CSV(fw.File):
                     file.writelines(contentToWrite + "\n")
 
     def ReplaceContent(self, contentToWrite):
-        """Erase previous content and write new content into a txt file.
+        """Erase previous content and write new content into a csv file.
 
         :param contentToWrite:
             Line to read.
@@ -192,7 +192,7 @@ class CSV(fw.File):
                 file.writelines(contentToWrite)
 
     def EraseContent(self):
-        """Erase content of a txt file."""
+        """Erase content of a csv file."""
         if self.GetFileFormat() == ".csv":
             with open(os.path.join(self.GetFilePath(),
                                    self.GetFileName()),
