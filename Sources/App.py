@@ -372,15 +372,9 @@ class App:
             self.startBtn['state'] = tk.NORMAL
 
         def __DisplayPrint(self):
-            """Take the empty lines off the column in the the file.
+            """Redirect  the standard output and print the sequence.
 
-            :param contentToWrite:
-                Line to read.
-            :type contentToWrite:
-                str, list
-
-            .. warning::
-                Works only on .CSV.
+            It is redirected on the "output" text field on GUI
             """
             # os.system('cls' if os.name == 'nt' else 'clear\n')
             self.outputTxt.configure(state='normal')
