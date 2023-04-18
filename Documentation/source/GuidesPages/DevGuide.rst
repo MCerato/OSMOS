@@ -21,7 +21,7 @@ Software Architecture
 
 How OSMOS has been designed is represented by the software architecture below:
 
-.. image:: ./software_architecture.PNG
+.. image:: ./_img/software_architecture.PNG
 
 The main objective of the software is to generate the ``.bak`` file as long as the ``.log`` file.
 
@@ -37,7 +37,7 @@ parameters back in a GALIL controller.
 
 here is an example of a part of a backup file:
 
-.. image:: ./backup_format_example.PNG
+.. image:: ./_img/backup_format_example.PNG
 
 .. note:: It will be considered that you know the specifications of all the forms of this file.
 	As much as you know the priciple functionning of GALIL motion systems.
@@ -56,7 +56,7 @@ Its only purpose is to indicate either something went wrong or not during the ba
 
 here is an example of a log file:
 
-.. image:: log_format_example.PNG
+.. image:: ./_img/log_format_example.PNG
 
 It exists 2 type of connections to a Powerbrick. You can connect through the "maintenance port".
 This ethernet port exists on every PowerBrick and always has the same adress.

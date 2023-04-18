@@ -78,6 +78,10 @@ def setup(app):
 # a list of builtin themes.
 #
 html_theme = 'furo'
+html_static_path = ['_static']
+html_logo = './_static/logo_150px_no_bg.png'
+html_title = ""
+html_favicon = './_static/logo_150px_no_bg.png'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

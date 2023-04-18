@@ -3,20 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
  
-Welcome to My Sphinx Example Project's documentation!
-=====================================================
+Welcome to OSMOS Documentation!
+===============================
  
 Description
 -----------
  
-An example Python program demonstrating how to use Sphinx style
-(reStructuredText) comments for generating source code documentation with
-Sphinx.
+This documentation describe everything related to the software product : OSMOS.
+
+OSMOS is a software designed to upload and save parameters, code and variables from
+GALIL motion controllers referenced on synchrotron SOLEIL network.
  
 Notes
 -----
  
-- Add special project notes here that you want to communicate to the user.
+- This documentation has been redacted by people still learning how to use SPHINX framework. Be nice reading it!
+- If information is missing or too much information is present... Keep quiet!
+- You can contact ISAC Service at any moment if you don't understand how it works.
  
 Modules
 -------

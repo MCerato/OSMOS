@@ -432,3 +432,4 @@ ISAC;plop;172.16.3.65;Labo_ISAC_CB1_parameters;;
 ISAC;plop;172.16.3.66;Labo_ISAC_CB2_parameters;;
 ISAC;plop;172.16.3.266;Labo_ISAC_CBError;;
 ;;;;;
+GMI;NameOfTheDevice;172.12.12.12;CB_Labo_GMI_THAT_NO_EXIST;;

@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="OSMOS DevGuide (WIP)" href="DevGuide.html" /><link rel="prev" title="Guides" href="modules.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
-        <title>OSMOS UserGuide (WIP) - OSMOS documentation</title>
+    <link rel="shortcut icon" href="../_static/logo_150px_no_bg.png"/><meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+        <title>OSMOS UserGuide (WIP)</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">OSMOS  documentation</div></a>
+      <a href="../index.html"><div class="brand">OSMOS</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,10 +143,13 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo_150px_no_bg.png" alt="Logo"/>
+  </div>
   
-  <span class="sidebar-brand-text">OSMOS  documentation</span>
+  <span class="sidebar-brand-text">OSMOS</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -331,18 +334,156 @@ the requiered format is <code class="docutils literal notranslate"><span class="
 <a class="reference internal image-reference" href="../_images/OSMOS_window_choose_network.PNG"><img alt="../_images/OSMOS_window_choose_network.PNG" class="align-center" src="../_images/OSMOS_window_choose_network.PNG" style="width: 600px;" /></a>
 </section>
 <section id="how-to-use-osmos">
-<h2>6. How to use OSMOS<a class="headerlink" href="#how-to-use-osmos" title="Permalink to this heading">#</a></h2>
+<span id="id6"></span><h2>6. How to use OSMOS<a class="headerlink" href="#how-to-use-osmos" title="Permalink to this heading">#</a></h2>
+<section id="abstract">
+<h3>1. Abstract<a class="headerlink" href="#abstract" title="Permalink to this heading">#</a></h3>
+<p>Using OSMOS is pretty simple. If you want to use all default parameters and directories,
+do not change anything in “Select config Files” part, neither in “Select directories” part.</p>
+<p>From here, you may want to save a specific controlbox parameter so you enter an IP adress
+or you want to upload paramters from controlboxes placed in a specific network.</p>
+<section id="using-a-soleil-network">
+<h4>using a SOLEIL network:<a class="headerlink" href="#using-a-soleil-network" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Connect to one of the SOLEIL networks following <a class="reference internal" href="#connect-to-soleil-network"><span class="std std-ref">2. Connect to SOLEIL network</span></a>.</p></li>
+<li><p>Choose the network in the drop-down menu.</p></li>
+<li><p>Press the “start” button in “Commands” field.</p></li>
+<li><p>Wait for the “End of work” in the <code class="docutils literal notranslate"><span class="pre">output</span></code></p></li>
+</ul>
+<p>You now, should have a directory having the name of your network in <code class="docutils literal notranslate"><span class="pre">OSMOS/Sources/.bak</span></code> and <code class="docutils literal notranslate"><span class="pre">OSMOS/Sources/.log</span></code>.</p>
+</section>
+<section id="using-an-ip-address">
+<h4>using an IP address:<a class="headerlink" href="#using-an-ip-address" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Connect to one Controlbox following <a class="reference internal" href="#connect-to-soleil-network"><span class="std std-ref">2. Connect to SOLEIL network</span></a>.</p></li>
+<li><p>enter th IP address of the controlbox you are connected to in IP address</p></li>
+<li><p>Press the “start” button in “Commands” field.</p></li>
+<li><p>Wait for the “End of work” in the <code class="docutils literal notranslate"><span class="pre">output</span></code>. See</p></li>
+</ul>
+<p>In this case, you should have a <code class="docutils literal notranslate"><span class="pre">.bak</span></code> file in <code class="docutils literal notranslate"><span class="pre">OSMOS/Sources/.bak</span></code> wich
+include the IP address in the name.</p>
+<p>same thing for the <code class="docutils literal notranslate"><span class="pre">.log</span></code> file in <code class="docutils literal notranslate"><span class="pre">OSMOS/Sources/.bak</span></code>.</p>
+</section>
+</section>
+<section id="connect-to-soleil-network">
+<span id="id7"></span><h3>2. Connect to SOLEIL network<a class="headerlink" href="#connect-to-soleil-network" title="Permalink to this heading">#</a></h3>
+<p>There is 2 ways to connect to a SOLEIL controlbox through OSMOS:</p>
+<ul class="simple">
+<li><p>You can connect directly to a controlbox using an ethernet câble</p></li>
+<li><p>OSMOS is installed on a windows equipement wich has an access to a control network of SOLEIL</p></li>
+</ul>
+<section id="connecting-directly-to-a-controlbox">
+<h4>connecting directly to a Controlbox<a class="headerlink" href="#connecting-directly-to-a-controlbox" title="Permalink to this heading">#</a></h4>
+<p>Connect directly to a Controlbox requires to know the IP address.
+Controlboxes at SOLEIL are configured with fix IP address.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you don’t know the IP address, you can use GalilSuite software.
+This software uses a detection function. It is not entirely reliable but
+it can help.</p>
+</div>
+</section>
+<section id="connect-to-controlboxes-in-networks">
+<h4>connect to Controlboxes in networks<a class="headerlink" href="#connect-to-controlboxes-in-networks" title="Permalink to this heading">#</a></h4>
+<p>Being able to informations from controlboxes from a SOLEIL network require OSMOS to be installed
+on a machine wich has access to these networks.</p>
+<p>For example, if OSMOS is installed on CPCI Crate based on a beamline then, you can generates
+the docs for this specific beamline.</p>
+</section>
+</section>
 <section id="how-to-configure-the-cb-file">
-<h3>1. How to configure the CB File<a class="headerlink" href="#how-to-configure-the-cb-file" title="Permalink to this heading">#</a></h3>
+<h3>3. How to configure the CB File<a class="headerlink" href="#how-to-configure-the-cb-file" title="Permalink to this heading">#</a></h3>
+<p>The CB file contains all controlboxes placed in any SOLEIL control network.</p>
+<a class="reference internal image-reference" href="../_images/CBfile_xmpl.png"><img alt="../_images/CBfile_xmpl.png" class="align-center" src="../_images/CBfile_xmpl.png" style="width: 600px;" /></a>
+<p>This file is splitted in 4 main columns:</p>
+<ul class="simple">
+<li><p>“network” represent the name of the control network the controlboxes are in.</p></li>
+<li><p>“device” is the tango device name of the controlboxes</p></li>
+<li><p>“Addresse-IP” is pretty clear</p></li>
+<li><p>“racine-nom-cvs” represent the name of the backup file archived in CVS repository</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is highly recommended to NOT change “racine-nom-cvs” for the reason
+that this name is the reference for the versionning of the file.
+If you have any doubt, contact the coordination Pole of ISAC service.</p>
+</div>
+<p>You can add a new network by adding every informations wherever you want in the file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The down-drop menu will automatically take the last network of the file by default.
+If you want to keep “ISAC” as default network, I recommend to let it at the end of the file.</p>
+</div>
+<a class="reference internal image-reference" href="../_images/CBfile_add_ntwrk.png"><img alt="../_images/CBfile_add_ntwrk.png" class="align-center" src="../_images/CBfile_add_ntwrk.png" style="width: 600px;" /></a>
+<p>To add a Controlbox in a specific network, just add it at the end of any network.
+For readability, try to keep the empty lines in between of each network.</p>
+<a class="reference internal image-reference" href="../_images/CBfile_add_CB.png"><img alt="../_images/CBfile_add_CB.png" class="align-center" src="../_images/CBfile_add_CB.png" style="width: 600px;" /></a>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Do not let any field empty in your lines as OSMOS will crash.
+If you don’t know the name of the device, write “unknown” for example.</p>
+<p>A full line can be let empty though (i.e the lines in between networks)</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Do not let the file open while using OSMOS.
+It will be protected in a futur update.</p>
+</div>
 </section>
 <section id="how-to-configure-the-cde-file">
-<h3>2. How to configure the Cde File<a class="headerlink" href="#how-to-configure-the-cde-file" title="Permalink to this heading">#</a></h3>
+<h3>4. How to configure the Cde File<a class="headerlink" href="#how-to-configure-the-cde-file" title="Permalink to this heading">#</a></h3>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This part has to be refactored as it is too complex and not robust enough.
+It is mainly caused by the fact some of GALIL parameters are “exceptional”
+and need to be “read”, “set” and write in <code class="docutils literal notranslate"><span class="pre">.bak</span></code> in a unique way.</p>
+</div>
+<p>The Command file contains the Galil parameters you want to save in the <code class="docutils literal notranslate"><span class="pre">.bak</span></code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not all parameters are put in the file only the one that are necessary for GALIL systems to run
+and those specific to SOLEIL.</p>
+</div>
+<p>The command file is composed of 9 main columns :</p>
+<ul class="simple">
+<li><p>“parameter” wich is the name of GALIL parameters</p></li>
+<li><p>“Firmware” describes on wich Galil firmwares these firmware are availables.</p></li>
+<li><p>“type-getparam” category to get the parameter from the controlbox /!\</p></li>
+<li><p>“type-setparam” category to set the parameter to the controlbox /!\</p></li>
+<li><p>“type-wrtbak” category to write the parameter in the <code class="docutils literal notranslate"><span class="pre">.bak</span></code> file /!\</p></li>
+<li><p>“get” The actual way to get the parameter from the controlbox /!\</p></li>
+<li><p>“set” The actual way to set the parameter to the controlbox /!\</p></li>
+<li><p>“write” The actual way to write the paramter in the <code class="docutils literal notranslate"><span class="pre">.bak</span></code> /!\</p></li>
+<li><p>“function” description of the parameter</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/Cdefile_xmpl.png"><img alt="../_images/Cdefile_xmpl.png" class="align-center" src="../_images/Cdefile_xmpl.png" style="width: 600px;" /></a>
+<p>Before adding a parameter, you need to know all the informations related to it.
+To know the “get” and “set” part, you can find the information directly from GALIL.
+You can find wich firmware is available with that parameter as well.</p>
+<p><a class="reference external" href="https://www.galil.com/downloads/manuals-and-data-sheets">https://www.galil.com/downloads/manuals-and-data-sheets</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will need a GALIL account though</p>
+</div>
+<p>For the “write” column, you will need to test it generating a <code class="docutils literal notranslate"><span class="pre">.bak</span></code> from GALILSuite.
+If the parameter is not generated using GALILSuite, you will need to modify the xml file from GALILSuite
+wich is a complex procedure and not the point of this documentation.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Do not let any field empty in your lines as OSMOS will crash.
+If you don’t know the name of the device, write “unknown” for example.</p>
+<p>A full line can be let empty though</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Do not let the file open while using OSMOS.
+It will be protected in a futur update.</p>
+</div>
 </section>
 <section id="network-and-ip">
-<h3>3. Network and IP<a class="headerlink" href="#network-and-ip" title="Permalink to this heading">#</a></h3>
+<h3>5. Network and IP<a class="headerlink" href="#network-and-ip" title="Permalink to this heading">#</a></h3>
 </section>
 <section id="when-everything-goes-right">
-<h3>4. When everything goes right<a class="headerlink" href="#when-everything-goes-right" title="Permalink to this heading">#</a></h3>
+<h3>6. When everything goes right<a class="headerlink" href="#when-everything-goes-right" title="Permalink to this heading">#</a></h3>
 <section id="bak-content">
 <h4>.bak content<a class="headerlink" href="#bak-content" title="Permalink to this heading">#</a></h4>
 </section>
@@ -352,7 +493,7 @@ the requiered format is <code class="docutils literal notranslate"><span class="
 </section>
 </section>
 <section id="troubleshooting-and-help">
-<h2>5. Troubleshooting and help<a class="headerlink" href="#troubleshooting-and-help" title="Permalink to this heading">#</a></h2>
+<h2>7. Troubleshooting and help<a class="headerlink" href="#troubleshooting-and-help" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -420,17 +561,27 @@ the requiered format is <code class="docutils literal notranslate"><span class="
 <li><a class="reference internal" href="#select-where-the-files-will-be-saved">4. Select where the files will be saved</a></li>
 <li><a class="reference internal" href="#network-and-or-ip-address">5. Network and/or IP address</a></li>
 <li><a class="reference internal" href="#how-to-use-osmos">6. How to use OSMOS</a><ul>
-<li><a class="reference internal" href="#how-to-configure-the-cb-file">1. How to configure the CB File</a></li>
-<li><a class="reference internal" href="#how-to-configure-the-cde-file">2. How to configure the Cde File</a></li>
-<li><a class="reference internal" href="#network-and-ip">3. Network and IP</a></li>
-<li><a class="reference internal" href="#when-everything-goes-right">4. When everything goes right</a><ul>
+<li><a class="reference internal" href="#abstract">1. Abstract</a><ul>
+<li><a class="reference internal" href="#using-a-soleil-network">using a SOLEIL network:</a></li>
+<li><a class="reference internal" href="#using-an-ip-address">using an IP address:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connect-to-soleil-network">2. Connect to SOLEIL network</a><ul>
+<li><a class="reference internal" href="#connecting-directly-to-a-controlbox">connecting directly to a Controlbox</a></li>
+<li><a class="reference internal" href="#connect-to-controlboxes-in-networks">connect to Controlboxes in networks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-configure-the-cb-file">3. How to configure the CB File</a></li>
+<li><a class="reference internal" href="#how-to-configure-the-cde-file">4. How to configure the Cde File</a></li>
+<li><a class="reference internal" href="#network-and-ip">5. Network and IP</a></li>
+<li><a class="reference internal" href="#when-everything-goes-right">6. When everything goes right</a><ul>
 <li><a class="reference internal" href="#bak-content">.bak content</a></li>
 <li><a class="reference internal" href="#log-content">.log content</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#troubleshooting-and-help">5. Troubleshooting and help</a></li>
+<li><a class="reference internal" href="#troubleshooting-and-help">7. Troubleshooting and help</a></li>
 </ul>
 </li>
 </ul>

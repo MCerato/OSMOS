@@ -28,7 +28,7 @@ The user can configure the software through 2 ``.csv`` files wich are described 
 
 How FileManagement has been designed is represented by the software architecture below:
 
-.. image:: ./OSMOS_window.PNG
+.. image:: ./_img/OSMOS_window.PNG
    :width: 600
    :align: center
 
@@ -57,7 +57,7 @@ If you want, you can select the configurations files. These files consist on
 - *OSM_LIST_CB.csv* wich represent roughly the parameters available in a ControlBox
 - *OSM_LIST_CDE.csv* wich list all controlbox in SOLEIL according to their network and physical locations
 
-.. image:: ./OSMOS_window_config.PNG
+.. image:: ./_img/OSMOS_window_config.PNG
    :width: 600
    :align: center
 
@@ -74,7 +74,7 @@ or *"import Command file"* button and choose your new file
     ``OSMOS/Test/altern_CB_Path``
     ``OSMOS/Test/altern_Cde_Path``
 
-.. image:: ./change_csv_file.PNG
+.. image:: ./_img/change_csv_file.PNG
    :width: 600
    :align: center
 
@@ -111,14 +111,14 @@ You can, if you want, change the directory in wich directories the ``.bak`` and 
 To select new directories you may just click on *"import .bak directory"* button 
 or *"import .log directory"* button and choose your new directories
 
-.. image:: ./OSMOS_window_save_dir.PNG
+.. image:: ./_img/OSMOS_window_save_dir.PNG
    :width: 600
    :align: center
 
 .. note:: These files can be put in the same directory or not. 
     Directory management is automatic.
 
-.. image:: ./change_directory.PNG
+.. image:: ./_img/change_directory.PNG
    :width: 600
    :align: center
    
@@ -140,7 +140,7 @@ it is disabled in this case (see :ref:`5. Network and/or IP address` )
 By default, ad with the current "CB file", the default network is "ISAC".
 If a network is added in the file after ISAC then, this network will be the default one.
 
-.. image:: ./OSMOS_window_IP_network.PNG
+.. image:: ./_img/OSMOS_window_IP_network.PNG
    :width: 600
    :align: center
 
@@ -153,38 +153,203 @@ then, OSMOS will get the informations of this specific Controlbox and will ignor
 .. warning:: IP address text field is not yet protected if a wrong format is written.
     the requiered format is ``xxx.xxx.xxx.xxx``. I.e : ``172.16.3.65``.
 
-.. image:: ./OSMOS_window_choose_network.PNG
+.. image:: ./_img/OSMOS_window_choose_network.PNG
    :width: 600
    :align: center
+
+.. _6. How to use OSMOS:
 
 ===================
 6. How to use OSMOS
 ===================
 
+-----------
+1. Abstract
+-----------
+
+Using OSMOS is pretty simple. If you want to use all default parameters and directories,
+do not change anything in "Select config Files" part, neither in "Select directories" part.
+
+From here, you may want to save a specific controlbox parameter so you enter an IP adress
+or you want to upload paramters from controlboxes placed in a specific network.
+
+***********************
+using a SOLEIL network:
+***********************
+
+- Connect to one of the SOLEIL networks following :ref:`1. Connect to SOLEIL network`.
+- Choose the network in the drop-down menu.
+- Press the "start" button in "Commands" field.
+- Wait for the "End of work" in the ``output``
+
+You now, should have a directory having the name of your network in ``OSMOS/Sources/.bak`` and ``OSMOS/Sources/.log``.
+
+********************
+using an IP address:
+********************
+
+- Connect to one Controlbox following :ref:`1. Connect to SOLEIL network`.
+- enter th IP address of the controlbox you are connected to in IP address
+- Press the "start" button in "Commands" field.
+- Wait for the "End of work" in the ``output``. See 
+
+In this case, you should have a ``.bak`` file in ``OSMOS/Sources/.bak`` wich
+include the IP address in the name.
+
+same thing for the ``.log`` file in ``OSMOS/Sources/.bak``.
+
+.. _1. Connect to SOLEIL network:
+
+-----------------------------
+2. Connect to SOLEIL network
+-----------------------------
+
+There is 2 ways to connect to a SOLEIL controlbox through OSMOS:
+
+- You can connect directly to a controlbox using an ethernet câble
+- OSMOS is installed on a windows equipement wich has an access to a control network of SOLEIL
+
+***********************************
+connecting directly to a Controlbox
+***********************************
+
+Connect directly to a Controlbox requires to know the IP address.
+Controlboxes at SOLEIL are configured with fix IP address. 
+
+.. hint:: If you don't know the IP address, you can use GalilSuite software.
+    This software uses a detection function. It is not entirely reliable but
+    it can help.
+
+***********************************
+connect to Controlboxes in networks
+***********************************
+
+Being able to informations from controlboxes from a SOLEIL network require OSMOS to be installed
+on a machine wich has access to these networks.
+
+For example, if OSMOS is installed on CPCI Crate based on a beamline then, you can generates
+the docs for this specific beamline.
+
+.. hint::It exists an ISAC server wich has access to all SOLEIL control networks but for safety reasons,
+    it will not be named here.
+    If you need access to the OSMOS installed on this server, I recommend to contact the ISAC service.
+
 -------------------------------
-1. How to configure the CB File
+3. How to configure the CB File
 -------------------------------
 
+The CB file contains all controlboxes placed in any SOLEIL control network.
+
+.. image:: ./_img/CBfile_xmpl.png
+   :width: 600
+   :align: center
+
+This file is splitted in 4 main columns:
+
+- "network" represent the name of the control network the controlboxes are in.
+- "device" is the tango device name of the controlboxes
+- "Addresse-IP" is pretty clear
+- "racine-nom-cvs" represent the name of the backup file archived in CVS repository
+
+.. warning:: It is highly recommended to NOT change "racine-nom-cvs" for the reason
+    that this name is the reference for the versionning of the file.
+    If you have any doubt, contact the coordination Pole of ISAC service.
+
+You can add a new network by adding every informations wherever you want in the file.
+
+.. note:: The down-drop menu will automatically take the last network of the file by default.
+    If you want to keep "ISAC" as default network, I recommend to let it at the end of the file.
+
+.. image:: ./_img/CBfile_add_ntwrk.png
+   :width: 600
+   :align: center
+
+To add a Controlbox in a specific network, just add it at the end of any network.
+For readability, try to keep the empty lines in between of each network.
+
+.. image:: ./_img/CBfile_add_CB.png
+   :width: 600
+   :align: center
+
+.. important:: Do not let any field empty in your lines as OSMOS will crash.
+    If you don't know the name of the device, write "unknown" for example.
+    
+    A full line can be let empty though (i.e the lines in between networks)    
+
+.. attention:: Do not let the file open while using OSMOS.
+    It will be protected in a futur update.
+
 --------------------------------
-2. How to configure the Cde File
+4. How to configure the Cde File
 --------------------------------
+
+.. attention:: This part has to be refactored as it is too complex and not robust enough.
+    It is mainly caused by the fact some of GALIL parameters are "exceptional"
+    and need to be "read", "set" and write in ``.bak`` in a unique way.
+
+
+The Command file contains the Galil parameters you want to save in the ``.bak``
+
+.. note:: Not all parameters are put in the file only the one that are necessary for GALIL systems to run
+    and those specific to SOLEIL.
+    
+The command file is composed of 9 main columns :
+
+- "parameter" wich is the name of GALIL parameters
+- "Firmware" describes on wich Galil firmwares these firmware are availables.
+- "type-getparam" category to get the parameter from the controlbox /!\\
+- "type-setparam" category to set the parameter to the controlbox /!\\
+- "type-wrtbak" category to write the parameter in the ``.bak`` file /!\\
+- "get" The actual way to get the parameter from the controlbox /!\\
+- "set" The actual way to set the parameter to the controlbox /!\\
+- "write" The actual way to write the paramter in the ``.bak`` /!\\
+- "function" description of the parameter
+
+.. image:: ./_img/Cdefile_xmpl.png
+   :width: 600
+   :align: center
+
+Before adding a parameter, you need to know all the informations related to it.
+To know the "get" and "set" part, you can find the information directly from GALIL.
+You can find wich firmware is available with that parameter as well. 
+
+https://www.galil.com/downloads/manuals-and-data-sheets
+
+.. note:: You will need a GALIL account though
+
+For the "write" column, you will need to test it generating a ``.bak`` from GALILSuite.
+If the parameter is not generated using GALILSuite, you will need to modify the xml file from GALILSuite
+wich is a complex procedure and not the point of this documentation.
+
+.. admonition:: Info
+   :class: info
+
+.. important:: Do not let any field empty in your lines as OSMOS will crash.
+    If you don't know the name of the device, write "unknown" for example.
+    
+    A full line can be let empty though
+
+.. attention:: Do not let the file open while using OSMOS.
+    It will be protected in a futur update.
 
 -----------------
-3. Network and IP
+5. Network and IP
 -----------------
 
 -----------------------------
-4. When everything goes right
+6. When everything goes right
 -----------------------------
 
+************
 .bak content
-------------
+************
 
+************
 .log content
-------------
+************
 
 ===========================
-5. Troubleshooting and help
+7. Troubleshooting and help
 ===========================
 
 
