@@ -132,7 +132,7 @@ class OSMOSFiles:
         return listCleaned
 
     def UpdateCBFile(self, newPath):
-        """link OSMOSFile objet to an other csv file.
+        """Link this  objet to an other csv file.
 
         It updates all of his attributes too.
 
@@ -149,7 +149,7 @@ class OSMOSFiles:
         print(f"new file : {newPath}")
 
     def UpdateCdeFile(self, newPath):
-        """link this Object to an other csv file.
+        """Link this object to an other csv file.
 
         It updates all of his attributes too.
 
@@ -250,9 +250,9 @@ class OSMOSFiles:
 
     def CdeFileParamList(self):
         """Return the entire list of paramters in the file.
-        
+
         .. note::
-            empty lines are automatically removed.        
+            empty lines are automatically removed.
 
         :return:
             Return a list of GALIL parameters
@@ -397,12 +397,12 @@ class OSMOSFiles:
 
 if __name__ == '__main__':
     osmosf = OSMOSFiles()
-    
+
     # Default CB and Cde file
     print(osmosf.CBFileNtwrks())
     print(osmosf.CdeFileParamList())
     print("")
-    
+
     # Alternative CB and Cde file
     osmosf.UpdateCBFile("D:/Temp_pro/OSMOS/Test/altern_CB_Path/OSM_LIST_CB.csv")
     osmosf.UpdateCdeFile("D:/Temp_pro/OSMOS/Test/altern_Cde_Path/OSM_LIST_CDE.csv")

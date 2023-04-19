@@ -457,25 +457,143 @@ and those specific to SOLEIL.</p>
 </ul>
 <a class="reference internal image-reference" href="../_images/Cdefile_xmpl.png"><img alt="../_images/Cdefile_xmpl.png" class="align-center" src="../_images/Cdefile_xmpl.png" style="width: 600px;" /></a>
 <p>Before adding a parameter, you need to know all the informations related to it.
-To know the “get” and “set” part, you can find the information directly from GALIL.
-You can find wich firmware is available with that parameter as well.</p>
+To know the “get” and “set” part, you can find the information directly from GALIL.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The order of parameters list can have an impact. This is determined by GALIL
+and is not entirely clear.</p>
+</div>
+<p>You can find wich firmware is available with that parameter as well.
+When the list of firmware is written, each of them should be separated by a <code class="docutils literal notranslate"><span class="pre">,</span></code>.</p>
 <p><a class="reference external" href="https://www.galil.com/downloads/manuals-and-data-sheets">https://www.galil.com/downloads/manuals-and-data-sheets</a></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You will need a GALIL account though</p>
 </div>
 <p>For the “write” column, you will need to test it generating a <code class="docutils literal notranslate"><span class="pre">.bak</span></code> from GALILSuite.
-If the parameter is not generated using GALILSuite, you will need to modify the xml file from GALILSuite
+If the parameter is not generated using GALILSuite, you will need to modify the <code class="docutils literal notranslate"><span class="pre">.xml</span></code> files from GALILSuite
 wich is a complex procedure and not the point of this documentation.</p>
+<p>It exists 4 main way to get a parameter from a controlbox. They have been categorized following the table below:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Signification</p></th>
+<th class="head"><p>example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard</p></td>
+<td><p>parameter need a standard axis and a “?”</p></td>
+<td><p>SPA=?</p></td>
+</tr>
+<tr class="row-odd"><td><p>Message</p></td>
+<td><p>parameter need an MG but no axis</p></td>
+<td><p>MG_CN0</p></td>
+</tr>
+<tr class="row-even"><td><p>Unique</p></td>
+<td><p>Parameter configure all controlbox and have a “?”</p></td>
+<td><p>IA ?</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vector</p></td>
+<td><p>parameter need a virtual axis and a “?”</p></td>
+<td><p>SPT=?</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>It exists 4 main way to set a parameter into a controlbox. They have been categorized following the table below:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Signification</p></th>
+<th class="head"><p>example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard</p></td>
+<td><p>parameter need a standard axis and a value</p></td>
+<td><p>SPA=2000</p></td>
+</tr>
+<tr class="row-odd"><td><p>Special</p></td>
+<td><p>parameter standard but the value is special</p></td>
+<td><p>SI=1,25,13,0&lt;0&gt;-1</p></td>
+</tr>
+<tr class="row-even"><td><p>Unique</p></td>
+<td><p>Parameter configure all controlbox and have a “?”</p></td>
+<td><p>DH 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vector</p></td>
+<td><p>parameter need a virtual axis and a “?”</p></td>
+<td><p>SPT=2000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>a parameter (BA) has been categorized as “None” because it doesn’t fit any
+corresponding. It is one of the reason this part has to be refactored.
+This parameter is hard coded and trteated as an exception.</p>
+</div>
+<p>It exists 5 main way to set a parameter into a controlbox. They have been categorized following the table below:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Signification</p></th>
+<th class="head"><p>example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard</p></td>
+<td><p>gives the value of all axis on 1 line</p></td>
+<td><p>SP=’SPA=value\rSPB=value\r…</p></td>
+</tr>
+<tr class="row-odd"><td><p>Special</p></td>
+<td><p>standard writing but value is complex</p></td>
+<td><p>SI=’SIA=a,b,c,d&lt;e&gt;f\rSIB=a,b,c,d&lt;e&gt;f\r…</p></td>
+</tr>
+<tr class="row-even"><td><p>Unique</p></td>
+<td><p>only 1 value is written</p></td>
+<td><p>DH=DH v\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vector</p></td>
+<td><p>write the value of virtual axis corresponding</p></td>
+<td><p>SPI=’SPN=v\rSPM=v\r’</p></td>
+</tr>
+<tr class="row-even"><td><p>Sized</p></td>
+<td><p>indicates somewhere the numbre of value different than 0</p></td>
+<td><p>MT\size=v\nMT\1\Cmd=’MTx=v\r’\nMT\2\Cmd=’MTx=v\r…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In the documentation you have to reimplace any <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> you want to write
+with a <code class="docutils literal notranslate"><span class="pre">'</span></code>. GALIL write <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> in their <code class="docutils literal notranslate"><span class="pre">.bak</span></code> file wich is an escape character in <code class="docutils literal notranslate"><span class="pre">.csv</span></code> files.
+This is the reason OSMOS need to change it.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Keep in mind that parameters from the <strong>same</strong> category can be written
+differently. Some will have <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>, and some won’t. This an uncommunicated GALIL requirement.
+This is one of the reason the main treatment of OSMOS should be rework</p>
+</div>
+<p>Here is an example on how a parameter can be added in the documentation:</p>
+<a class="reference internal image-reference" href="../_images/Cdefile_add_SY.png"><img alt="../_images/Cdefile_add_SY.png" class="align-center" src="../_images/Cdefile_add_SY.png" style="width: 600px;" /></a>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Do not let any field empty in your lines as OSMOS will crash.
 If you don’t know the name of the device, write “unknown” for example.</p>
-<p>A full line can be let empty though</p>
+<p>A full line can be let empty though.</p>
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Do not let the file open while using OSMOS.
+Access is restricted once it is open so OSMOS can’t have access
 It will be protected in a futur update.</p>
 </div>
 </section>

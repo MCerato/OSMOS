@@ -311,30 +311,99 @@ The command file is composed of 9 main columns :
 
 Before adding a parameter, you need to know all the informations related to it.
 To know the "get" and "set" part, you can find the information directly from GALIL.
-You can find wich firmware is available with that parameter as well. 
+
+.. warning:: The order of parameters list can have an impact. This is determined by GALIL
+    and is not entirely clear.
+
+
+You can find wich firmware is available with that parameter as well.
+When the list of firmware is written, each of them should be separated by a ``,``.
 
 https://www.galil.com/downloads/manuals-and-data-sheets
 
 .. note:: You will need a GALIL account though
 
 For the "write" column, you will need to test it generating a ``.bak`` from GALILSuite.
-If the parameter is not generated using GALILSuite, you will need to modify the xml file from GALILSuite
+If the parameter is not generated using GALILSuite, you will need to modify the ``.xml`` files from GALILSuite
 wich is a complex procedure and not the point of this documentation.
 
-.. admonition:: Info
-   :class: info
+It exists 4 main way to get a parameter from a controlbox. They have been categorized following the table below:
+
++----------+---------------------------------------------------+---------+
+| Category | Signification                                     | example |
++==========+===================================================+=========+
+| Standard | parameter need a standard axis and a "?"          | SPA=?   |
++----------+---------------------------------------------------+---------+
+| Message  | parameter need an MG but no axis                  | MG_CN0  |
++----------+---------------------------------------------------+---------+
+| Unique   | Parameter configure all controlbox and have a "?" | IA ?    |
++----------+---------------------------------------------------+---------+
+| Vector   | parameter need a virtual axis and a "?"           | SPT=?   |
++----------+---------------------------------------------------+---------+
+
+It exists 4 main way to set a parameter into a controlbox. They have been categorized following the table below:
+
++----------+---------------------------------------------------+-------------------+
+| Category | Signification                                     | example           |
++==========+===================================================+===================+
+| Standard | parameter need a standard axis and a value        | SPA=2000          |
++----------+---------------------------------------------------+-------------------+
+| Special  | parameter standard but the value is special       | SI=1,25,13,0<0>-1 |
++----------+---------------------------------------------------+-------------------+
+| Unique   | Parameter configure all controlbox and have a "?" | DH 0              |
++----------+---------------------------------------------------+-------------------+
+| Vector   | parameter need a virtual axis and a "?"           | SPT=2000          |
++----------+---------------------------------------------------+-------------------+
+
+.. note:: a parameter (BA) has been categorized as "None" because it doesn't fit any
+    corresponding. It is one of the reason this part has to be refactored.
+    This parameter is hard coded and trteated as an exception.
+
+It exists 5 main way to write a parameter into a ``.bak`` file. They have been categorized following the table below:
+
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+| Category | Signification                                            | example                                                      |
++==========+==========================================================+==============================================================+
+| Standard | gives the value of all axis on 1 line                    | SP='SPA=value\\rSPB=value\\r...                              |
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+| Special  | standard writing but value is complex                    | SI='SIA=a,b,c,d<e>f\\rSIB=a,b,c,d<e>f\\r...                  |
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+| Unique   | only 1 value is written                                  | DH=DH v\\r                                                   |
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+| Vector   | write the value of virtual axis corresponding            | SPI='SPN=v\\rSPM=v\\r'                                       |
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+| Sized    | indicates somewhere the number of value different than 0 | MT\\size=v\\nMT\\1\\Cmd='MTx=v\\r'\\nMT\\2\\Cmd='MTx=v\\r... |
++----------+----------------------------------------------------------+--------------------------------------------------------------+
+
+.. important:: In the documentation you have to reimplace any ``"`` you want to write
+    with a ``'``. GALIL write ``"`` in their ``.bak`` file wich is an escape character in ``.csv`` files.
+    This is the reason OSMOS need to change it.
+    
+    
+.. important:: Keep in mind that parameters from the **same** category can be written 
+    differently. Some will have ``"``, and some won't. This an uncommunicated GALIL requirement.
+    This is one of the reason the main treatment of OSMOS should be rework
+
+Here is an example on how a parameter can be added in the documentation:
+
+.. image:: ./_img/Cdefile_add_SY.png
+   :width: 600
+   :align: center
 
 .. important:: Do not let any field empty in your lines as OSMOS will crash.
     If you don't know the name of the device, write "unknown" for example.
     
-    A full line can be let empty though
+    A full line can be let empty though.
 
 .. attention:: Do not let the file open while using OSMOS.
+    Access is restricted once it is open so OSMOS can't have access
     It will be protected in a futur update.
 
 -----------------
 5. Network and IP
 -----------------
+
+
 
 -----------------------------
 6. When everything goes right

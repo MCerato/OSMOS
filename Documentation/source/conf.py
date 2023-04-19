@@ -68,7 +68,7 @@ def skip(app, what, name, obj, would_skip, options):
     if name in ("__init__", "__repr__", "__str__", "__del__"):
         return False
     return would_skip
- 
+
 def setup(app):
     app.connect("autodoc-skip-member", skip)
 
@@ -76,14 +76,13 @@ def setup(app):
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-html_theme = 'furo'
+
+html_theme = 'furo'  # Sphinx theme. Has to be installed in python environment
 html_static_path = ['_static']
-html_logo = './_static/logo_150px_no_bg.png'
-html_title = ""
-html_favicon = './_static/logo_150px_no_bg.png'
+html_logo = './_static/logo_150px_no_bg.png'  # logo top-left corner of the page
+html_title = ""  # name of the Project is written by default
+html_favicon = './_static/logo_150px_no_bg.png'  # icon of the browser tab
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']

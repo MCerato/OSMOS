@@ -103,6 +103,7 @@ class App:
         self.root.title("OSMOS")
         # self.root.geometry('1024x768')
         self.root.resizable(height=None, width=None)
+        self.root.iconbitmap('logo_150px_no_bg.ico')
 
     # In[1]: Menu bar setup
         self.menubar = tk.Menu(self.root)
