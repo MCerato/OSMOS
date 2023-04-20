@@ -28,7 +28,6 @@ Notes
 
 TODO
 ----
-- None.
 
 Author(s)
 ---------

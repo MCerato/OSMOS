@@ -359,7 +359,7 @@ It exists 4 main way to set a parameter into a controlbox. They have been catego
     corresponding. It is one of the reason this part has to be refactored.
     This parameter is hard coded and trteated as an exception.
 
-It exists 5 main way to set a parameter into a controlbox. They have been categorized following the table below:
+It exists 5 main way to write a parameter into a ``.bak`` file. They have been categorized following the table below:
 
 +----------+----------------------------------------------------------+--------------------------------------------------------------+
 | Category | Signification                                            | example                                                      |
@@ -372,7 +372,7 @@ It exists 5 main way to set a parameter into a controlbox. They have been catego
 +----------+----------------------------------------------------------+--------------------------------------------------------------+
 | Vector   | write the value of virtual axis corresponding            | SPI='SPN=v\\rSPM=v\\r'                                       |
 +----------+----------------------------------------------------------+--------------------------------------------------------------+
-| Sized    | indicates somewhere the numbre of value different than 0 | MT\\size=v\\nMT\\1\\Cmd='MTx=v\\r'\\nMT\\2\\Cmd='MTx=v\\r... |
+| Sized    | indicates somewhere the number of value different than 0 | MT\\size=v\\nMT\\1\\Cmd='MTx=v\\r'\\nMT\\2\\Cmd='MTx=v\\r... |
 +----------+----------------------------------------------------------+--------------------------------------------------------------+
 
 .. important:: In the documentation you have to reimplace any ``"`` you want to write
@@ -402,6 +402,8 @@ Here is an example on how a parameter can be added in the documentation:
 -----------------
 5. Network and IP
 -----------------
+
+
 
 -----------------------------
 6. When everything goes right
