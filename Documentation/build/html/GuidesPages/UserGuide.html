@@ -599,19 +599,61 @@ It will be protected in a futur update.</p>
 </section>
 <section id="network-and-ip">
 <h3>5. Network and IP<a class="headerlink" href="#network-and-ip" title="Permalink to this heading">#</a></h3>
+<p>The Networks prensent in the down-drop menu are the same as the CB <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file.
+If a new network is added, the menu update automatically.</p>
+<p>As said in the part <a class="reference internal" href="#network-and-or-ip-address"><span class="std std-ref">5. Network and/or IP address</span></a>, if the IP adress fiel is
+not empty, then OSMOS gives priority to the IP. Otherwise, the network is present.</p>
 </section>
 <section id="when-everything-goes-right">
 <h3>6. When everything goes right<a class="headerlink" href="#when-everything-goes-right" title="Permalink to this heading">#</a></h3>
+<p>When OSMOS reach the end of his process correctly, you should see 2 files appearing
+either in the directories you chose, either in the default directories.
+You can find below examples of files correctly generated.</p>
 <section id="bak-content">
 <h4>.bak content<a class="headerlink" href="#bak-content" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../_images/.bak_xmpl.png"><img alt="../_images/.bak_xmpl.png" class="align-center" src="../_images/.bak_xmpl.png" style="width: 600px;" /></a>
 </section>
 <section id="log-content">
 <h4>.log content<a class="headerlink" href="#log-content" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../_images/.log_xmpl.png"><img alt="../_images/.log_xmpl.png" class="align-center" src="../_images/.log_xmpl.png" style="width: 600px;" /></a>
 </section>
 </section>
 </section>
 <section id="troubleshooting-and-help">
 <h2>7. Troubleshooting and help<a class="headerlink" href="#troubleshooting-and-help" title="Permalink to this heading">#</a></h2>
+<section id="known-bugs-on-2023-04">
+<h3>1. Known bugs on 2023/04<a class="headerlink" href="#known-bugs-on-2023-04" title="Permalink to this heading">#</a></h3>
+<p>Knowned bugs are presents in README.md as well</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">.csv</span></code> files are open in excel, OSMOS crashes</p></li>
+<li><p>protect wrong format of IP adress in “IP address” field in GUI</p></li>
+<li><p>If a field in <code class="docutils literal notranslate"><span class="pre">.csv</span></code> files is unreadable, OSMOS crashes</p></li>
+<li><p>The first connection to a ControlBox never works anymore.</p></li>
+</ul>
+</section>
+<section id="enhancements-necessary">
+<h3>2. enhancements necessary<a class="headerlink" href="#enhancements-necessary" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Implementing a stop button : Currently, it is not possible to stop an upload process, wich is problematic.</p></li>
+</ul>
+</section>
+<section id="necessary-refactoring">
+<h3>3. necessary refactoring<a class="headerlink" href="#necessary-refactoring" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>create a “download into controlbox” function: As for today, it is only possible to get informations from</dt><dd><p>a controlbox a save it in a specified file format.
+It would be useful to be able to load parameter in controlbox using <code class="docutils literal notranslate"><span class="pre">.bak</span></code> format previously saved.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>entire rework of the parsing of <code class="docutils literal notranslate"><span class="pre">.bak</span></code> file: The today’s parsing is based on GalilSuite reverse engineered parsing.</dt><dd><p>Once the “download into controlbox” function is written, a new <code class="docutils literal notranslate"><span class="pre">.bak</span></code> parsing could be internaly designed wich will simplify
+the design off <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file as well.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -699,7 +741,12 @@ It will be protected in a futur update.</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#troubleshooting-and-help">7. Troubleshooting and help</a></li>
+<li><a class="reference internal" href="#troubleshooting-and-help">7. Troubleshooting and help</a><ul>
+<li><a class="reference internal" href="#known-bugs-on-2023-04">1. Known bugs on 2023/04</a></li>
+<li><a class="reference internal" href="#enhancements-necessary">2. enhancements necessary</a></li>
+<li><a class="reference internal" href="#necessary-refactoring">3. necessary refactoring</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

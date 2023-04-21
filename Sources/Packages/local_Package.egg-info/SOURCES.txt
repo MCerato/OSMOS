@@ -1,6 +1,5 @@
 setup.cfg
 setup.py
-Controlbox/CBConnection.py
 Controlbox/ControlBox.py
 Controlbox/gclib.py
 File/CSVFile.py

@@ -403,25 +403,68 @@ Here is an example on how a parameter can be added in the documentation:
 5. Network and IP
 -----------------
 
+The Networks prensent in the down-drop menu are the same as the CB ``.csv`` file.
+If a new network is added, the menu update automatically.
 
+As said in the part :ref:`5. Network and/or IP address`, if the IP adress fiel is
+not empty, then OSMOS gives priority to the IP. Otherwise, the network is present.
 
 -----------------------------
 6. When everything goes right
 -----------------------------
 
+When OSMOS reach the end of his process correctly, you should see 2 files appearing
+either in the directories you chose, either in the default directories.
+You can find below examples of files correctly generated.
+
 ************
 .bak content
 ************
+
+.. image:: ./_img/.bak_xmpl.png
+   :width: 600
+   :align: center
 
 ************
 .log content
 ************
 
+.. image:: ./_img/.log_xmpl.png
+   :width: 600
+   :align: center
+
 ===========================
 7. Troubleshooting and help
 ===========================
 
+------------------------
+1. Known bugs on 2023/04
+------------------------
 
+Knowned bugs are presents in README.md as well
+
+- If ``.csv`` files are open in excel, OSMOS crashes
+- protect wrong format of IP adress in "IP address" field in GUI
+- If a field in ``.csv`` files is unreadable, OSMOS crashes
+- The first connection to a ControlBox never works anymore.
+
+-------------------------
+2. enhancements necessary
+-------------------------
+
+- Implementing a stop button : Currently, it is not possible to stop an upload process, wich is problematic.
+
+------------------------
+3. necessary refactoring
+------------------------
+
+- create a "download into controlbox" function: As for today, it is only possible to get informations from
+    a controlbox a save it in a specified file format.
+    It would be useful to be able to load parameter in controlbox using ``.bak`` format previously saved.
+
+- entire rework of the parsing of ``.bak`` file: The today's parsing is based on GalilSuite reverse engineered parsing.
+    Once the "download into controlbox" function is written, a new ``.bak`` parsing could be internaly designed wich will simplify
+    the design off ``.csv`` file as well.
 
 .. Below is a memo on How to put special parts in the documentation 
     Just take the first ".." off
